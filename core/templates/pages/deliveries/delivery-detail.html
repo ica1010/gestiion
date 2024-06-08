@@ -1,0 +1,149 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block 'content' %}
+<div class="main-content">
+
+    <div class="page-content">
+        <div class="container-fluid">
+
+            <!-- start page title -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="page-title-box d-sm-flex align-items-center justify-content-between bg-galaxy-transparent">
+                        <h4 class="mb-sm-0">Order Details</h4>
+
+                        <div class="page-title-right">
+                            <ol class="breadcrumb m-0">
+                                <li class="breadcrumb-item"><a href="javascript: void(0);">Ecommerce</a></li>
+                                <li class="breadcrumb-item active">Order Details</li>
+                            </ol>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <!-- end page title -->
+
+            <div class="row">
+                <div class="col-xl-9">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="d-flex align-items-center">
+                                <h5 class="card-title flex-grow-1 mb-0">Delivery #{{delivery.did}}</h5>
+                                <div class="flex-shrink-0">
+                                    <a href="apps-invoices-details.html" class="btn btn-success btn-sm"><i class="ri-download-2-fill align-middle me-1"></i> Invoice</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive table-card">
+                                <table class="table table-nowrap align-middle table-borderless mb-0">
+                                    <thead class="table-light text-muted">
+                                        <tr>
+                                            <th scope="col">Product Details</th>
+                                            <th scope="col">Quantity</th>
+                                
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for product in products %}
+                                        <tr>
+                                            <td>
+                                                <div class="d-flex">
+                                                    <div class="flex-shrink-0 avatar-md bg-light rounded p-1">
+                                                        <img src="{{product.product.image.url}}" alt="" class="img-fluid d-block">
+                                                    </div>
+                                                    <div class="flex-grow-1 ms-3">
+                                                        <h5 class="fs-15"><a href="apps-ecommerce-product-details.html" class="link-primary">{{product.product.title}}</a></h5>
+                                                        <p class="text-muted mb-0">Category: <span class="fw-medium">{{product.product.category}}</span></p>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        
+                                            <td class="m-auto">{{product.quantity}}</td>
+                                          
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <!--end card-->
+                </div>
+                <!--end col-->
+                <div class="col-xl-3">
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title mb-0"><i class="ri-secure-payment-line align-bottom me-1 text-muted"></i>Delivery Details</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="d-flex align-items-center mb-2">
+                                <div class="flex-shrink-0">
+                                    <p class="text-muted mb-0">Delivery :</p>
+                                </div>
+                                <div class="flex-grow-1 ms-2">
+                                    <h6 class="mb-0">#{{delivery.did}}</h6>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-center mb-2">
+                                <div class="flex-shrink-0">
+                                    <p class="text-muted mb-0">Agent :</p>
+                                </div>
+                                <div class="flex-grow-1 ms-2">
+                                    <h6 class="mb-0">{{delivery.user}}</h6>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-center mb-2">
+                                <div class="flex-shrink-0">
+                                    <p class="text-muted mb-0">Service :</p>
+                                </div>
+                                <div class="flex-grow-1 ms-2">
+                                    <h6 class="mb-0">{{delivery.post.service}}</h6>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-center mb-2">
+                                <div class="flex-shrink-0">
+                                    <p class="text-muted mb-0">Burreau :</p>
+                                </div>
+                                <div class="flex-grow-1 ms-2">
+                                    <h6 class="mb-0">{{delivery.post}}</h6>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-center mb-2">
+                                <div class="flex-shrink-0">
+                                    <p class="text-muted mb-0">Date:</p>
+                                </div>
+                                <div class="flex-grow-1 ms-2">
+                                    <h6 class="mb-0">{{delivery.date}}</h6>
+                                </div>
+                            </div>
+                        
+                        </div>
+                    </div>
+                    <!--end card-->
+                </div>
+                <!--end col-->
+            </div>
+            <!--end row-->
+
+        </div><!-- container-fluid -->
+    </div><!-- End Page-content -->
+
+    <footer class="footer">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-6">
+                    <script>document.write(new Date().getFullYear())</script> © Velzon.
+                </div>
+                <div class="col-sm-6">
+                    <div class="text-sm-end d-none d-sm-block">
+                        Design & Develop by Themesbrand
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+</div>
+{% endblock %}

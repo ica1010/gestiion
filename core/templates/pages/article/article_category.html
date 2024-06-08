@@ -1,0 +1,253 @@
+{% extends 'base/base.html' %} {% load static %} {% block 'content' %}
+<div class="main-content">
+    <div class="page-content">
+        <div class="container-fluid">
+            <!-- start page title -->
+            <div class="row">
+                <div class="col-12">
+                    <div
+                        class="page-title-box d-sm-flex align-items-center justify-content-between bg-galaxy-transparent">
+                        <h4 class="mb-sm-0">Categories</h4>
+
+                        <div class="page-title-right">
+                            <ol class="breadcrumb m-0">
+                                <li class="breadcrumb-item">
+                                    <a href="javascript: void(0);">Gestion</a>
+                                </li>
+                                <li class="breadcrumb-item active">Categories</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- end page title -->
+
+            <div class="row">
+                <div class="col-xl-12 col-lg-12">
+                    <div>
+                        <div class="card">
+                            <div class="card-header border-0">
+                                <div class="row g-4">
+                                    <div class="col-sm-auto">
+                                        <div>
+                                            <a data-bs-toggle="modal" data-bs-target="#exampleModalPopovers" href="#"
+                                                class="btn btn-success" id="addproduct-btn"><i
+                                                    class="ri-add-line align-bottom me-1"></i> Add
+                                                Category</a>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm">
+                                        <div class="d-flex justify-content-sm-end">
+                                            <div class="search-box ms-2">
+                                                <input type="text" class="form-control" id="searchProductList"
+                                                    placeholder="Search Category..." />
+                                                <i class="ri-search-line search-icon"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- end card header -->
+                            <div class="card-body">
+                                <div class="tab-content text-muted">
+                                    <div class="tab-pane active" id="productnav-all" role="tabpanel">
+                                        <div id="table-hidden-column">
+                                            <div role="complementary" class="gridjs gridjs-container"
+                                                style="width: 100%">
+                                                <div class="gridjs-wrapper" style="height: auto">
+                                                    <table role="grid" class="gridjs-table" style="height: auto">
+                                                        <thead class="gridjs-thead">
+                                                            <tr class="gridjs-tr">
+                                                                <th data-column-id="name"
+                                                                    class="gridjs-th gridjs-th-sort" tabindex="0"
+                                                                    style="width: 120px">
+                                                                    <div class="gridjs-th-content">ID</div>
+                                                                    <button tabindex="-1"
+                                                                        aria-label="Sort column ascending"
+                                                                        title="Sort column ascending"
+                                                                        class="gridjs-sort gridjs-sort-neutral"></button>
+                                                                </th>
+                                                                <th data-column-id="email"
+                                                                    class="gridjs-th gridjs-th-sort" tabindex="0"
+                                                                    style="width: 250px">
+                                                                    <div class="gridjs-th-content">Title</div>
+                                                                    <button tabindex="-1"
+                                                                        aria-label="Sort column ascending"
+                                                                        title="Sort column ascending"
+                                                                        class="gridjs-sort gridjs-sort-desc"></button>
+                                                                </th>
+                                                                <th data-column-id="position"
+                                                                    class="gridjs-th gridjs-th-sort" tabindex="0"
+                                                                    style="width: 250px">
+                                                                    <div class="gridjs-th-content">Create at</div>
+                                                                    <button tabindex="-1"
+                                                                        aria-label="Sort column ascending"
+                                                                        title="Sort column ascending"
+                                                                        class="gridjs-sort gridjs-sort-neutral"></button>
+                                                                </th>
+                                                                <th data-column-id="company"
+                                                                    class="gridjs-th gridjs-th-sort" tabindex="0"
+                                                                    style="width: 250px">
+                                                                    <div class="gridjs-th-content">
+                                                                        Modified at
+                                                                    </div>
+                                                                    <button tabindex="-1"
+                                                                        aria-label="Sort column ascending"
+                                                                        title="Sort column ascending"
+                                                                        class="gridjs-sort gridjs-sort-neutral"></button>
+                                                                </th>
+                                                                <th data-column-id="company"
+                                                                    class="gridjs-th gridjs-th-sort" tabindex="0"
+                                                                    style="width: 250px">
+                                                                    <div class="gridjs-th-content">
+                                                                        actions
+                                                                    </div>
+
+                                                                </th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody class="gridjs-tbody">
+                                                            {% for category in categories %}
+                                                            <tr class="gridjs-tr">
+                                                                <td data-column-id="name" class="gridjs-td">
+                                                                    {{category.cid}}
+                                                                </td>
+                                                                <td data-column-id="email" class="gridjs-td">
+                                                                    {{category.title}}
+                                                                </td>
+                                                                <td data-column-id="position" class="gridjs-td">
+                                                                    {{category.created_at}}
+                                                                </td>
+                                                                <td data-column-id="company" class="gridjs-td">
+                                                                    {{category.updated_at}}
+                                                                </td>
+                                                                <td data-column-id="action" class="gridjs-td"><span
+                                                                        class="d-flex justify-content-center">
+                                                                        <a class="btn btn-link edit-list"
+                                                                            data-edit-id="1" data-bs-toggle="modal"
+                                                                            data-bs-target="#edit-{{category.cid}}"
+                                                                            href="apps-ecommerce-add-product.html"><button
+                                                                                class="btn btn-soft-secondary"
+                                                                                style="width: fit-content;"><center>
+                                                                                    <i
+                                                                                    class="ri-pencil-fill align-bottom me-2 text-muted"></i>
+                                                                                </center>
+                                                                            </button></a>
+                                                                        <a class="btn btn-link remove-list" href=""
+                                                                            data-id="1" data-bs-toggle="modal"
+                                                                            data-bs-target="#{{category.cid}}">
+                                                                            <button class="btn btn-soft-secondary"><center>
+                                                                                <i
+                                                                                    class="ri-delete-bin-fill align-bottom me-2 text-muted"></i>
+                                                                            </center>
+                                                                            </button>
+                                                                        </a>
+
+                                                                    </span></td>
+                                                            </tr>
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                                <div class="gridjs-footer">
+                                                    <div class="gridjs-pagination">
+                                                        <div role="status" aria-live="polite" class="gridjs-summary"
+                                                            title="Page 1 of 2">
+                                                            Showing <b>1</b> to <b>5</b> of <b>10</b> results
+                                                        </div>
+                                                        <div class="gridjs-pages">
+                                                            <button tabindex="0" role="button" disabled=""
+                                                                title="Previous" aria-label="Previous" class="">
+                                                                Previous</button><button tabindex="0" role="button"
+                                                                class="gridjs-currentPage" title="Page 1"
+                                                                aria-label="Page 1">
+                                                                1</button><button tabindex="0" role="button" class=""
+                                                                title="Page 2" aria-label="Page 2">
+                                                                2</button><button tabindex="0" role="button"
+                                                                title="Next" aria-label="Next" class="">
+                                                                Next
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div id="gridjs-temp" class="gridjs-temp"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- end tab pane -->
+                                </div>
+                                <!-- end tab content -->
+                            </div>
+                            <!-- end card body -->
+                        </div>
+                        <!-- end card -->
+                    </div>
+                </div>
+                <!-- end col -->
+            </div>
+            <!-- end row -->
+        </div>
+        <!-- container-fluid -->
+    </div>
+    <!-- End Page-content -->
+
+    <!-- tooltips and popovers modal -->
+
+    {% for category in categories %}
+    <div class="modal fade" id="{{category.cid}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-body text-center p-5">
+                    <lord-icon src="https://cdn.lordicon.com/lupuorrc.json" trigger="loop"
+                        colors="primary:#121331,secondary:#08a88a" style="width:120px;height:120px">
+                    </lord-icon>
+
+                    <div class="mt-4">
+                        <h4 class="mb-3">You've made it!</h4>
+                        <p class="text-muted mb-4"> The transfer was not successfully received by us. the email of the
+                            recipient wasn't correct.</p>
+                        <div class="hstack gap-2 justify-content-center">
+                            <a href="javascript:void(0);"
+                                class="btn btn-link link-danger fw-medium material-shadow-none"
+                                data-bs-dismiss="modal"><i class="ri-close-line me-1 align-middle"></i> No</a>
+                            <a href="{% url 'delete_category' category.cid %}" class="btn btn-success">Yes i agree</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="edit-{{category.cid}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form action="{% url 'edit_category' category.cid  %}" method="post">
+                    {% csrf_token %}
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalPopoversLabel">
+                            Edit category
+                        </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="card-body">
+                            <label for="categories-title" class="form-label">Category name</label>
+                            <input type="text" class="form-control" required id="categories-title" name="title"
+                                placeholder="Enter category title" value="{{category.title}}" />
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-success w-100" type="submit">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+
+
+</div>
+{% endblock %}

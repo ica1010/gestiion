@@ -1,0 +1,31 @@
+{% if messages %}
+{% for message in messages %}
+<div class="notification-toast  messages " data-toast>
+    <button class="toast-close-btn" data-toast-close>
+      <ion-icon name="close-outline"></ion-icon>
+    </button>
+    <div class="toast-detail">
+      <p class="toast-title">
+        {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}Important: {% endif %}
+        {{ message }}
+      </p>
+
+    </div>
+</div>
+<div style="z-index: 11">
+    <div class="toast toast-border-{{message.level}} overflow-hidden mt-3" role="alert">
+        <div class="toast-body">
+            <div class="d-flex align-items-center">
+                <div class="flex-shrink-0 me-2">
+                    <i class="ri-alert-line align-middle"></i>
+                </div>
+                <div class="flex-grow-1">
+                    <h6 class="mb-0">   {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}Important: {% endif %}
+                        {{ message }}</h6>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}
+{% endif %}
