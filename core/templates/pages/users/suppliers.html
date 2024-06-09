@@ -30,12 +30,23 @@
                         <div class="card-header border-bottom-dashed">
 
                             <div class="row g-4 align-items-center">
-                                <div class="col-sm">
+                                <div class="col-sm col-6">
                                     <div>
                                         <h5 class="card-title mb-0">Customer List</h5>
                                     </div>
                                 </div>
-                              
+                                <div class="col-sm-auto col-6">
+                                    <div class="d-flex gap-1 flex-wrap">
+                                      <button type="button" class="btn btn-success add-btn" data-bs-toggle="modal" id="create-btn"
+                                        data-bs-target="#showModal">
+                                        <i class="ri-add-line align-bottom me-1"></i> Ajouter un utilisations
+                                      </button>
+                                      <button type="button" class="btn btn-info">
+                                        <i class="ri-file-download-line align-bottom me-1"></i>
+                                        Import
+                                      </button>
+                                    </div>
+                                  </div>
                             </div>
                         </div>
                         <div class="card-body border-bottom-dashed border-bottom">
@@ -64,7 +75,7 @@
                                             </tr>
                                         </thead>
                                         <tbody class="list form-check-all">
-                                            {% for supplier in suppliers %}
+                                            {% for supplier in all_user %}
 
                                             <tr>
 
@@ -74,12 +85,13 @@
                                                     </div>
                                                 </th>
                                                 <td class="id" style="display:none;"><a href="javascript:void(0);" class="fw-medium link-primary">#{{supplier.sid}} /a></td>
-                                                <td class="customer_name">{{supplier.user.first_name}} {{supplier.user.last_name}}</td>
+                                                <td class="customer_name">{{supplier.user.username}}     
+                                                     </td>
                                                 <td class="email">{{supplier.user.email}}</td>
                                                 <td class="phone">{{supplier.user.phone}}</td>
                                                 <td class="date">{{supplier.user.date_joined}}</td>
                                                 <td class="status">
-                                                    {% if supplier.user.is_active %}
+                                                    {% if supplier.active %}
                                                     <span class="badge bg-success-subtle text-success text-uppercase">Active</span>
                                                     {% else %}
                                                     <span class="badge bg-danger-subtle text-danger text-uppercase">inactive</span>
@@ -197,17 +209,53 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="d-flex justify-content-end">
-                                    <div class="pagination-wrap hstack gap-2">
-                                        <a class="page-item pagination-prev disabled" href="#">
-                                            Previous
-                                        </a>
-                                        <ul class="pagination listjs-pagination mb-0"></ul>
-                                        <a class="page-item pagination-next" href="#">
-                                            Next
-                                        </a>
+                                <div class="modal fade" id="showModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                                aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered">
+                                  <div class="modal-content">
+                                    <div class="modal-header bg-light p-3">
+                                      <h5 class="modal-title" id="exampleModalLabel">&nbsp;</h5>
+                                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                                        id="close-modal"></button>
                                     </div>
+                                    <form class="tablelist-form" autocomplete="off" action="{% url 'sign-up'  %}" method="post">
+                                      {% csrf_token %}
+                                      <div class="modal-body">
+                                        <div class="mb-3">
+                                          <div class="row my-4" id="prod-form">
+                                            <div class="col-12">
+                                              <label for="username" class="form-label">Username</label>
+                                              <input type="text" name="username" class="form-control" placeholder="Enter user username" />
+                                            </div>
+                                          </div>
+                                          <div class="row my-4" id="prod-form">
+                                            <div class="col-6">
+                                              <label for="username" class="form-label">Phone number</label>
+                                              <input type="tel" name="phone" class="form-control" placeholder="Enter user phone number" />
+                                            </div>
+                                            <div class="col-6">
+                                                <label for="username" class="form-label">E-mail</label>
+                                                <input type="email" name="email" class="form-control" placeholder="Enter user e-mail" />
+                                              </div>
+                                              <div class="col mt-4">
+                                                <label for="username" class="form-label">Is admin ?</label>
+                                                <input type="checkbox" value="admin" name="admin" class="check-control">
+                                              </div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                      <div class="modal-footer">
+                                        <div class="hstack gap-2 justify-content-end" style="width: 100%;">
+                                          <button type="submit" class="btn btn-success" id="add-btn" style="width: 100%;">
+                                            Add the user
+                                          </button>
+                                          <!-- <button type="button" class="btn btn-success" id="edit-btn">Update</button> -->
+                                        </div>
+                                      </div>
+                                    </form>
+                                  </div>
                                 </div>
+                              </div>
                             </div>
                         </div>
                     </div>

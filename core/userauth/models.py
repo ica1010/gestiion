@@ -17,6 +17,7 @@ class User(AbstractUser):
 class SupplierProfile(models.Model):
     sid = ShortUUIDField(unique=True, max_length=20, primary_key=True  , editable=False)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
+    active = models.BooleanField(default=True)
     # Ajoutez d'autres champs spécifiques au fournisseur si nécessaire
 
     def __str__(self):
@@ -25,8 +26,9 @@ class SupplierProfile(models.Model):
 class AdminProfile(models.Model):
     aid = ShortUUIDField(unique=True, max_length=20, primary_key=True,editable=False)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    # Ajoutez d'autres champs spécifiques à l'administrateur si nécessaire
+    active = models.BooleanField(default=True)
 
+    # Ajoutez d'autres champs spécifiques à l'administrateur si nécessaire
     def __str__(self):
         return str(self.user)
     

@@ -14,7 +14,7 @@ def is_admin(user):
     
 def default(request):
     admin = is_admin(request.user)
-    filter_option = request.GET.get('filter', 'today')
+    filter_option = request.GET.get('filter', 'this_month')
     today = timezone.now().date()
     if filter_option == 'today':
         start_date = today

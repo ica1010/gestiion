@@ -61,7 +61,7 @@ class Delivery(models.Model):
     did = ShortUUIDField(unique=True, length=10, max_length= 20 , alphabet='abcdefghijklmnopqrstuvwxyz1234567890' , editable=False,  prefix='Del-')
     user = models.ForeignKey(User, on_delete=models.CASCADE , null=True , blank=True)
     post = models.CharField(max_length=200)
-
+    service = models.CharField(max_length=200, blank=True, null=True)
     date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

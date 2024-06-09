@@ -67,8 +67,10 @@
                          data-sort="customer_name">User</th>
                         {% endif %}
                         <th 
+                         data-sort="customer_name">Service</th>
+                         <th 
                          data-sort="customer_name">Burreau</th>
-                        <th 
+                        <th>
                          data-sort="date">Delivery Date</th>
                         <th>Action</th>
                       </tr>
@@ -95,6 +97,7 @@
                           {% endif %}
                         </td>
                         {% endif %}
+                        <td class="customer_name">{{delivery.service}}</td>
                         <td class="customer_name">{{delivery.post}}</td>
                         <td class="date">{{delivery.date}}</td>
                         <td>
@@ -181,7 +184,12 @@
                             </div>
                           </div>
                         </div>
-
+                        <div class="row gy-4 mb-3">
+                          <div class="col-12">
+                            <label for="post-field" class="form-label">Code sortie</label>
+                            <input type="text" name="code" class="form-control" >
+                          </div>
+                        </div>
                         <div class="row gy-4 mb-3">
                           <div class="col-md-6">
                             <div>
@@ -189,7 +197,7 @@
                               <select id="id_service" class="form-control" name="service" required="">
                                 <option value="">Service</option>
                                 {% for service in services %}
-                                <option value="{{ service.id }}">
+                                <option value="{{ service.title }}">
                                   {{ service.title }}
                                 </option>
                                 {% endfor %}

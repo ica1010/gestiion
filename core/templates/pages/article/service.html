@@ -1,0 +1,282 @@
+{% extends 'base/base.html' %} {% load static %} {% block 'content' %}
+<div class="main-content">
+  <div class="page-content">
+    <div class="container-fluid">
+      <!-- start page title -->
+      <div class="row">
+        <div class="col-12">
+          <div class="page-title-box d-sm-flex align-items-center justify-content-between bg-galaxy-transparent">
+            <h4 class="mb-sm-0">Services</h4>
+
+            <div class="page-title-right">
+              <ol class="breadcrumb m-0">
+                <li class="breadcrumb-item">
+                  <a href="javascript: void(0);">PNLP</a>
+                </li>
+                <li class="breadcrumb-item active">Services</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- end page title -->
+
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="card" id="orderList">
+            <div class="card-header border-0">
+              <div class="row align-items-center gy-3">
+                <div class="col-sm">
+                  <h5 class="card-title mb-0">Listes des Services</h5>
+                </div>
+                <div class="col-sm-auto">
+                  <div class="d-flex gap-1 flex-wrap">
+                    <button type="button" class="btn btn-success add-btn" data-bs-toggle="modal" id="create-btn"
+                      data-bs-target="#showModal">
+                      <i class="ri-add-line align-bottom me-1"></i> Ajouter un
+                      nouveau Services
+                    </button>
+                    <button type="button" class="btn btn-info">
+                      <i class="ri-file-download-line align-bottom me-1"></i>
+                      Importer la liste
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="card-body pt-0">
+              <div>
+                <ul class="nav nav-tabs nav-tabs-custom nav-success mb-3" role="tablist"></ul>
+
+                <div class="table-responsive table-card mb-1">
+
+                  {% if services %}
+                  <table class="table table-nowrap align-middle" id="orderTable">
+                    <thead class="text-muted table-light">
+                      <tr class="text-uppercase">
+                        <th scope="col" style="width: 25px">
+                          <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="checkAll" value="option" />
+                          </div>
+                        </th>
+                        <th data-sort="id">service ID</th>
+                        <th data-sort="customer_name">service</th>
+                        <th data-sort="date">Date</th>
+                        <th>Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody class="list form-check-all">
+                      {% for service in services %}
+                      <tr>
+                        <th scope="row">
+                          <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="checkAll" value="option1" />
+                          </div>
+                        </th>
+                        <td class="id">
+                          <a href="" class="fw-medium link-primary">#{{service.sid}}</a>
+                        </td>
+                        <td class="customer_name">{{service.title}}</td>
+                        <td class="date">{{service.date|date:"d M Y"}}</td>
+                        <td>
+                          <ul class="list-inline hstack gap-2 mb-0">
+
+                            <li class="list-inline-item" data-bs-toggle="tooltip" data-bs-trigger="hover"
+                              data-bs-placement="top" aria-label="Update {{service.title}}"
+                              data-bs-original-title="Update {{service.title}}">
+                              <a href="" class="text-primary d-inline-block" data-bs-toggle="modal"
+                              data-bs-target="#updateOrder-{{service.sid}}">
+                                <i class=" bx bx-pencil fs-16"></i>
+                              </a>
+                            </li>
+
+                            <li class="list-inline-item" data-bs-toggle="tooltip" data-bs-trigger="hover"
+                              data-bs-placement="top" aria-label="Delete {{service.title}}"
+                              data-bs-original-title="Delete {{service.title}}">
+                              <a href="" class="text-primary d-inline-block" data-bs-toggle="modal"
+                                data-bs-target="#deleteOrder-{{service.sid}}">
+                                <i class=" bx bx-trash fs-16"></i>
+                              </a>
+                            </li>
+                          </ul>
+                        </td>
+
+                      </tr>
+
+                      {% endfor %}
+                    </tbody>
+                  </table>
+                  {% else %}
+
+
+                  <center>
+                    <h1>Aucun service n'as été trouver</h1>
+                  </center>
+
+                  {% endif %}
+
+
+                  <div class="noresult" style="display: none">
+                    <div class="text-center">
+                      <lord-icon src="https://cdn.lordicon.com/msoeawqm.json" trigger="loop"
+                        colors="primary:#405189,secondary:#0ab39c" style="width: 75px; height: 75px"></lord-icon>
+                      <h5 class="mt-2">Sorry! No Result Found</h5>
+                      <p class="text-muted">
+                        We've searched more than 150+ Orders We did not find any
+                        orders for you search.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div class="d-flex justify-content-end">
+                  <div class="pagination-wrap hstack gap-2">
+                    <a class="page-item pagination-prev disabled" href="#">
+                      Previous
+                    </a>
+                    <ul class="pagination listjs-pagination mb-0"></ul>
+                    <a class="page-item pagination-next" href="#"> Next </a>
+                  </div>
+                </div>
+              </div>
+              <div class="modal fade" id="showModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                  <div class="modal-content">
+                    <div class="modal-header bg-light p-3">
+                      <h5 class="modal-title" id="exampleModalLabel">&nbsp;</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                        id="close-modal"></button>
+                    </div>
+                    <form class="tablelist-form" autocomplete="off" action="{% url 'add_serv'  %}" method="post">
+                      {% csrf_token %}
+                      <div class="modal-body">
+                        <div class="mb-3">
+                          <div class="row my-4" id="prod-form">
+                            <div class="col-12">
+                              <label for="payment-field" class="form-label">Code service</label>
+                              <input type="text" name="code" class="form-control" placeholder="code service" />
+                            </div>
+                          </div>
+                          <div class="row my-4" id="prod-form">
+                            <div class="col-12">
+                              <label for="payment-field" class="form-label">Nom du service</label>
+                              <input type="text" name="title" required class="form-control"
+                                placeholder="Nom service" />
+                            </div>
+                          </div>
+                        </div>
+
+
+                      </div>
+                      <div class="modal-footer">
+                        <div style="width: 100%;">
+                          <button type="submit" class="btn btn-success" id="add-btn" style="width: 100%;">
+                            Ajouter
+                          </button>
+                          <!-- <button type="button" class="btn btn-success" id="edit-btn">Update</button> -->
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Modal -->
+              {% for service in services %}
+              <div class="modal fade flip" id="deleteOrder-{{service.sid}}" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                  <div class="modal-content">
+                    <div class="modal-body p-5 text-center">
+                      <lord-icon src="https://cdn.lordicon.com/gsqxdxog.json" trigger="loop"
+                        colors="primary:#405189,secondary:#f06548" style="width: 90px; height: 90px"></lord-icon>
+                      <div class="mt-4 text-center">
+                        <h4>You are about to delete {{service.title}} ?</h4>
+                        <p class="text-muted fs-15 mb-4">
+                          Deleting your order will remove all of your
+                          information from our database.
+                        </p>
+                        <div class="hstack gap-2 justify-content-center remove">
+                          <button class="btn btn-link link-success fw-medium text-decoration-none"
+                            id="deleteRecord-close" data-bs-dismiss="modal">
+                            <i class="ri-close-line me-1 align-middle"></i>
+                            Close
+                          </button>
+                          <a href="{% url 'delete_serv' service.sid %}">
+                            <button class="btn btn-danger" id="delete-record">
+                              Yes, Delete It
+                            </button>
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="modal fade flip" id="updateOrder-{{service.sid}}" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-body p-5 ">
+                     <center>
+                      <lord-icon src="https://cdn.lordicon.com/gsqxdxog.json" trigger="loop" class="text-center"
+                      colors="primary:#405189,secondary:#f06548" style="width: 90px; height: 90px"></lord-icon>
+                   
+                     </center>
+                      <div class="mt-4">
+                        <h4 class="text-center">update {{service.title}}</h4>
+                        
+                        <form class="tablelist-form" autocomplete="off" action="{% url 'update_serv' service.sid %}" method="post">
+                          {% csrf_token %}
+                          <div class="modal-body">
+                            <div class="mb-3">
+                                <input type="tel" name="" form="" id="">
+                              <div class="row my-4" id="prod-form">
+                                <div class="col-12">
+                                  <label for="payment-field" class="form-label">Code service</label>
+                                  <input type="text" value="{{service.sid}}"  name="code" class="form-control" placeholder="code service" />
+                                </div>
+                              </div>   
+                              <div class="row my-4" id="prod-form">
+                                <div class="col-12">
+                                  <label for="payment-field" class="form-label">Nom du service</label>
+                                  <input type="text" name="new_title" required class="form-control"
+                                    placeholder="Nom service" value="{{service.title}}" />
+                                </div>
+                              </div>
+                            </div>
+    
+    
+                          </div>
+                          <div class="modal-footer">
+                            <div style="width: 100%;">
+                              <button type="submit" class="btn btn-success" id="add-btn" style="width: 100%;">
+                                Ajouter
+                              </button>
+                              <!-- <button type="button" class="btn btn-success" id="edit-btn">Update</button> -->
+                            </div>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {% endfor %}
+            </div>
+            <!--end modal -->
+          </div>
+        </div>
+      </div>
+      <!--end col-->
+    </div>
+    <!--end row-->
+  </div>
+  <!-- container-fluid -->
+</div>
+<!-- End Page-content -->
+
+
+</div>
+
+{% endblock %}

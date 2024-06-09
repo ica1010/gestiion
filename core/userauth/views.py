@@ -1,58 +1,69 @@
 from django.conf import settings
 from django.shortcuts import redirect, render
+from django.urls import reverse
 from userauth.form import UserRegisterForm
 from django.contrib import messages
 from django.contrib.auth import login , authenticate, logout
-from userauth.models import User
+from userauth.models import AdminProfile, SupplierProfile, User
 
 
-def register_view(request):
+def add_user(request):
+    url = request.META.get('HTTP_REFERER')
+
     if request.method == 'POST':
-        form = UserRegisterForm(request.POST or None)
-        if form.is_valid():
-            new_user = form.save()
-            username = form.cleaned_data.get('username')
-        
-            messages.success(request, f'Wellcome {username}, your account was successfully created')
-            new_user = authenticate(username=form.cleaned_data['username'],
-                                    password=form.cleaned_data['password1'],
-                                    phone=form.cleaned_data['phone']
-            )
-            login(request , new_user)
-            return redirect('homePage')
-        
-    else:
-        form = UserRegisterForm()
+        username = request.POST.get('username')
+        phone = request.POST.get('phone')
+        email = request.POST.get('email')
+        admin = request.POST.get('admin')
 
-    context = {
-        'form':form,
-    }
-    return render(request, 'registration/signup.html', {'form': form})
+        if not (username and phone and email):
+            messages.error(request, "Please fill out all required fields.")
+            return redirect(reverse('sign-up'))
+
+        if User.objects.filter(username=username).exists():
+            messages.error(request, "This username is already taken.")
+            return redirect(reverse('sign-up'))
+
+        new_user = User.objects.create_user(username=username, email=email, password='12345678')
+        new_user.phone = phone
+        new_user.save()
+
+        if admin:
+            AdminProfile.objects.create(user=new_user)
+            messages.success(request, f"The admin user {username} was added successfully.")
+        else:
+            SupplierProfile.objects.create(user=new_user)
+            messages.success(request, f"The supplier user {username} was added successfully.")
+
+        return redirect(url)
+
+    else:
+        messages.error(request, "Invalid request method.")
+        return redirect(reverse('sign-up'))
+    
 
 def login_view(request):
-    url = request.META.get('HTTP_REFERER')
     if request.user.is_authenticated:
-        messages.warning(request, f'you are already logged in.')
+        messages.warning(request, f'You are already logged in.')
         return redirect('homePage')
-    
+
     if request.method == "POST":
         username = request.POST.get('username')
         password = request.POST.get('password')
 
         try:
-            user = User.objects.get(username=username)
-            user = authenticate(request, username=username , password=password)
+            user = authenticate(request, username=username, password=password)
 
             if user is not None:
-                login(request,user)
-                messages.success(request, 'you are logged in .')
-                return redirect ('homePage')
+                login(request, user)
+                messages.success(request, 'You are logged in.')
+                return redirect('homePage')
             else:
-                messages.warning(request, 'user Does not exist , create an account.')
-        except:
-            messages.error(request, f'user with username : \'{username}\' does not exist')
+                messages.warning(request, 'Invalid username or password. Please try again.')
+        except User.DoesNotExist:
+            messages.error(request, f'User with username \'{username}\' does not exist.')
 
-    return render(request , 'registration/login.html')
+    return render(request, 'registration/login.html')
 
 def logout_view(request):
     logout(request)

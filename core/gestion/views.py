@@ -10,6 +10,10 @@ from . models import *
 # from userauth.form import UserRegisterForm
 from userauth.models import SupplierProfile , User
 # Create your views here.
+from datetime import datetime, timedelta
+from django.utils import timezone
+from django.utils.timezone import now
+from django.db import transaction
 
 
 def is_admin(user):
@@ -218,8 +222,10 @@ def search_view(request):
 
 def Suppliers(request):
     suppliers = SupplierProfile.objects.all()
+    admin = AdminProfile.objects.all()
+    all_user = list(admin)+list(suppliers)
     context = {
-        'suppliers':suppliers,
+        'all_user':all_user,
     }
     return render(request, 'pages/users/suppliers.html', context)
 
@@ -228,16 +234,33 @@ def Supply_view(request):
     products = Product.objects.all()
     fournisseurs = Fournisseur.objects.all()
 
+    suplies_filter_option = request.GET.get('filter', 'this month')
+    today = timezone.now().date()
+    if suplies_filter_option == 'today':
+        start_date = today
+    elif suplies_filter_option == 'yesterday':
+        start_date = today - timedelta(days=1)
+    elif suplies_filter_option == 'last_7_days':
+        start_date = today - timedelta(days=7)
+    elif suplies_filter_option == 'this_month':
+        start_date = today.replace(day=1)
+    elif suplies_filter_option == 'last_month':
+        first_day_of_current_month = today.replace(day=1)
+        start_date = (first_day_of_current_month - timedelta(days=1)).replace(day=1)
+    else:
+        start_date = today
+    
     admin = False
     admin = is_admin(request.user)
     if admin :
-        supplies = Supply.objects.all()
+        supplies = Supply.objects.filter(date__gte=start_date).order_by('-date')
     else :
-        supplies = Supply.objects.filter(user = request.user)
+        supplies = Supply.objects.filter(user = request.user, date__gte=start_date).order_by('-date')
     context = {
         'supplies':supplies,
         'products':products,
         'fournisseurs':fournisseurs,
+        'suplies_filter_option':suplies_filter_option,
 
     }
     return render(request, 'pages/supplies/supplies.html', context)
@@ -268,11 +291,17 @@ def Add_Delivery(request):
         quantities = request.POST.getlist('quantity')
         service = request.POST.get('service')
         post = request.POST.get('post')
+        code = request.POST.get('code')
 
     newDelivery = Delivery.objects.create(
         user = request.user,
-        post = post
+        post = post,
+        service = service
     )
+    if code :
+        newDelivery.did = code
+
+        newDelivery.save()
     for product in products :
         product_e = Product.objects.get(title = product)
         product_e.quantity = product_e.quantity - int(quantities[products.index(product)])
@@ -280,7 +309,7 @@ def Add_Delivery(request):
         DeliveryProduct.objects.create(
             delivery = newDelivery,
             product = product_e,
-            quantity = quantities[products.index(product)]
+            quantity = quantities[products.index(product)],
         )
     newDelivery.save()
         
@@ -294,6 +323,7 @@ def Add_supply(request):
     livrer_phone = []
     fournisseur = []
     detail = []
+    code = []
     if request.method == 'POST':
         products = request.POST.getlist('product')
         quantities = request.POST.getlist('quantity')
@@ -301,6 +331,7 @@ def Add_supply(request):
         livrer_phone = request.POST.getlist('livrer-phone')
         fournisseur = request.POST.getlist('fournisseur')
         detail = request.POST.getlist('detail')
+        code = request.POST.getlist('code')
 
     for product in products :
         fournisseur_in = Fournisseur.objects.get(title = fournisseur[products.index(product)])
@@ -309,7 +340,7 @@ def Add_supply(request):
         product_e.save()
         response = f'products = {products}, fourn = {fournisseur}, livre = {livrer_name}, phone = {livrer_phone}, detail = {detail}'
         try : 
-            Supply.objects.create(
+            new_supply  = Supply.objects.create(
                 user = request.user,
                 product = product_e,
                 quantity = quantities[products.index(product)],
@@ -318,8 +349,14 @@ def Add_supply(request):
                 livrer_phone = livrer_phone[products.index(product)],
                 detail = detail[products.index(product)],
             )
+            if code[products.index(product)]:
+                new_supply.sid = code[products.index(product)]
+                new_supply.save()
+
+            messages.success(request, f'la sortie a ete engistrer avec sucess')
         except Exception as e :
-            return HttpResponse(e)
+            messages.error(request, e)
+            return url
         
     return redirect(url) 
 
@@ -348,6 +385,15 @@ def Four_list(request):
     }
     return render(request, 'pages/article/fournisseur.html', context)
     
+
+def Serv_list(request):
+
+    services = Service.objects.all()
+    context={
+        'services':services,
+    }
+    return render(request, 'pages/article/service.html', context)
+    
 def delete_fourn(request, fid):
     url = request.META.get('HTTP_REFERER')
     fournisseur = Fournisseur.objects.get(fid=fid)
@@ -356,17 +402,69 @@ def delete_fourn(request, fid):
     messages.success(request , message)
     return redirect(url)
 
+    
+def delete_serv(request, sid):
+    url = request.META.get('HTTP_REFERER')
+    service = Service.objects.get(sid=sid)
+    message = f'le service {service.title} a ete supprimé avec succes'
+    service.delete()
+    messages.success(request , message)
+    return redirect(url)
+
 def update_fourn(request, fid):
     url = request.META.get('HTTP_REFERER')
     if request.method == 'POST':
         new_tilte = request.POST.get('new_title')
+        code = request.POST.get('code')
     fournisseur = Fournisseur.objects.get(fid=fid)
 
     try:
-        fournisseur(
-            title=new_tilte
-        )
+        if new_tilte :
+            fournisseur.title=new_tilte
+        if code:
+            fournisseur.fid=code
+        
         fournisseur.save()
+        messages.success(request , 'modification fait avec success')
+    except Exception as e :
+        messages.success(request ,e)
+    return redirect(url)
+
+
+def update_fourn(request, fid):
+    url = request.META.get('HTTP_REFERER')
+    if request.method == 'POST':
+        new_tilte = request.POST.get('new_title')
+        code = request.POST.get('code')
+    fournisseur = Fournisseur.objects.get(fid=fid)
+
+    try:
+        if new_tilte :
+            fournisseur.title=new_tilte
+        if code:
+            fournisseur.fid=code
+        
+        fournisseur.save()
+        messages.success(request , 'modification fait avec success')
+    except Exception as e :
+        messages.success(request ,e)
+    return redirect(url)
+
+
+def update_serv(request, sid):
+    url = request.META.get('HTTP_REFERER')
+    if request.method == 'POST':
+        new_tilte = request.POST.get('new_title')
+        code = request.POST.get('code')
+    service = Service.objects.get(sid=sid)
+
+    try:
+        if new_tilte :
+            service.title=new_tilte
+        if code:
+            service.sid=code
+        
+        service.save()
         messages.success(request , 'modification fait avec success')
     except Exception as e :
         messages.success(request ,e)
@@ -394,5 +492,58 @@ def add_fourn(request):
         messages.success(request ,e)
         return redirect(url)
     
-    return render(request, 'pages/article/fournisseur.html', context)
 
+def add_serv(request):
+    url = request.META.get('HTTP_REFERER')
+    if request.method == 'POST':
+        tilte = request.POST.get('title')
+        code_serv = request.POST.get('code')
+
+    try:
+        new_serv = Service.objects.create(
+            title = tilte
+        )
+        if code_serv:
+            new_serv.sid = code_serv
+            
+        new_serv.save()
+        messages.success(request , f'{new_serv.title} , a été ajouté aux services avec succes')
+        return redirect(url)
+
+    except Exception as e :
+        messages.success(request ,e)
+        return redirect(url)
+
+def reports(request):
+    url = request.META.get('HTTP_REFERER')
+    report_filter_option = request.GET.get('filter', 'this_month')
+    today = timezone.now().date()
+    if report_filter_option == 'today':
+        start_date = today
+    elif report_filter_option == 'yesterday':
+        start_date = today - timedelta(days=1)
+    elif report_filter_option == 'last_7_days':
+        start_date = today - timedelta(days=7)
+    elif report_filter_option == 'last_30_days':
+        start_date = today - timedelta(days=30)
+    elif report_filter_option == 'this_month':
+        start_date = today.replace(day=1)
+    elif report_filter_option == 'last_month':
+        first_day_of_current_month = today.replace(day=1)
+        start_date = (first_day_of_current_month - timedelta(days=1)).replace(day=1)
+    else:
+        start_date = today
+    
+    products = Product.objects.all().filter(created_at__gte=start_date)
+    supplies = Supply.objects.all().filter(date__gte=start_date)
+    deliveries = Delivery.objects.all().filter(date__gte=start_date)
+    deliveries_product = DeliveryProduct.objects.all()
+    context={
+        'products':products,
+        'supplies':supplies,
+        'deliveries':deliveries,
+        'deliveries_product':deliveries_product,
+    }
+    return render(request, 'pages/report/reprts.html', context)
+
+    

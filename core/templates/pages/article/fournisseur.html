@@ -214,13 +214,16 @@
               </div>
 
               <div class="modal fade flip" id="updateOrder-{{fournisseur.fid}}" tabindex="-1" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-dialog">
                   <div class="modal-content">
-                    <div class="modal-body p-5 text-center">
-                      <lord-icon src="https://cdn.lordicon.com/gsqxdxog.json" trigger="loop"
-                        colors="primary:#405189,secondary:#f06548" style="width: 90px; height: 90px"></lord-icon>
-                      <div class="mt-4 text-center">
-                        <h4>update {{fournisseur.title}}</h4>
+                    <div class="modal-body p-5 ">
+                     <center>
+                      <lord-icon src="https://cdn.lordicon.com/gsqxdxog.json" trigger="loop" class="text-center"
+                      colors="primary:#405189,secondary:#f06548" style="width: 90px; height: 90px"></lord-icon>
+                   
+                     </center>
+                      <div class="mt-4">
+                        <h4 class="text-center">update {{fournisseur.title}}</h4>
                         
                         <form class="tablelist-form" autocomplete="off" action="{% url 'update_fourn' fournisseur.fid %}" method="post">
                           {% csrf_token %}
@@ -229,14 +232,14 @@
                               <div class="row my-4" id="prod-form">
                                 <div class="col-12">
                                   <label for="payment-field" class="form-label">Code Fournisseur</label>
-                                  <input type="text" name="code" class="form-control" placeholder="code fournisseur" />
+                                  <input type="text" value="{{fournisseur.fid}}"  name="code" class="form-control" placeholder="code fournisseur" />
                                 </div>
                               </div>   
                               <div class="row my-4" id="prod-form">
                                 <div class="col-12">
                                   <label for="payment-field" class="form-label">Nom du Fournisseur</label>
-                                  <input type="text" name="title" required class="form-control"
-                                    placeholder="Nom fournisseur" />
+                                  <input type="text" name="new_title" required class="form-control"
+                                    placeholder="Nom fournisseur" value="{{fournisseur.title}}" />
                                 </div>
                               </div>
                             </div>

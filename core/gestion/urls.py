@@ -18,12 +18,21 @@ urlpatterns = [
     path('edit-articles/<pid>',Edit_article, name='edit_article'),
     path('delete-articles/<pid>',Remove_article, name='remove_article'),
 
-    ################################### article urls ##################################
+    ################################### fournisseur urls ##################################
 
     path('fournisseur/',Four_list, name='fourn'),
     path('fournisseur/add/',add_fourn, name='add_fourn'),
     path('fournisseur/<fid>',delete_fourn, name='delete_fourn'),
     path('fournisseur/update/<fid>',update_fourn, name='update_fourn'),
+
+
+
+    ################################### services urls ##################################
+
+    path('services/',Serv_list, name='serv'),
+    path('services/add/',add_serv, name='add_serv'),
+    path('services/<sid>',delete_serv, name='delete_serv'),
+    path('services/update/<sid>',update_serv, name='update_serv'),
 
     ################################### article category urls ##################################
 
@@ -48,6 +57,9 @@ urlpatterns = [
     path('supplies/' ,Supply_view, name='supplies'),
     path('supplies-detail/<sid>' ,SupplyDetail, name='supplies-detail'),
     path('add-supply/' ,Add_supply, name='Add_supply'),
+
+    ################################### reports urls #######################################
+    path('reports/' ,reports, name='reports'),
 
 
 

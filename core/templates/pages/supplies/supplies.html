@@ -1,4 +1,7 @@
-{% extends 'base/base.html' %} {% load static %} {% block 'content' %}
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block 'content' %}
 <div class="main-content">
   <div class="page-content">
     <div class="container-fluid">
@@ -28,21 +31,38 @@
               <div class="row align-items-center gy-3">
                 <div class="col-sm">
                   <h5 class="card-title mb-0">Supplies History</h5>
+                  <div class="dropdown card-header-dropdown">
+                    <a class="text-reset dropdown-btn" href="#" data-bs-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">
+                        <span class="fw-semibold text-uppercase fs-12">Sort by:</span>
+                        <span class="text-muted">{{ suplies_filter_option|title }}<i
+                                class="mdi mdi-chevron-down ms-1"></i></span>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-end">
+                        <a class="dropdown-item" href="?filter=today">Today</a>
+                        <a class="dropdown-item" href="?filter=yesterday">Yesterday</a>
+                        <a class="dropdown-item" href="?filter=last_7_days">Last 7 Days</a>
+                        <!-- <a class="dropdown-item" href="?filter=last_30_days">Last 30 Days</a> -->
+                        <a class="dropdown-item" href="?filter=this_month">This Month</a>
+                        <a class="dropdown-item" href="?filter=last_month">Last Month</a>
+                    </div>
+                </div>
                 </div>
                 <div class="col-sm-auto">
+              
+                   
+              
                   <div class="d-flex gap-1 flex-wrap">
+                   
                     <button type="button" class="btn btn-success add-btn" data-bs-toggle="modal" id="create-btn"
                       data-bs-target="#showModal">
-                      <i class="ri-add-line align-bottom me-1"></i> Ajouter une
-                      Entrer
+                      <i class="ri-add-line align-bottom me-1"></i> Add New Supply
                     </button>
-                    <button type="button" class="btn btn-info">
+                    <button type="button" class="btn btn-info" id="dwnldBtn">
                       <i class="ri-file-download-line align-bottom me-1"></i>
                       Import
                     </button>
-                    <button class="btn btn-soft-danger" id="remove-actions" onclick="deleteMultiple()">
-                      <i class="ri-delete-bin-2-line"></i>
-                    </button>
+                
                   </div>
                 </div>
               </div>
@@ -57,15 +77,15 @@
                   <table class="table table-nowrap align-middle" id="orderTable">
                     <thead class="text-muted table-light">
                       <tr class="text-uppercase">
-                        <th  data-sort="id">Supplies ID</th>
+                        <th>Supplies ID</th>
                         {% if admin %}
-                        <th  data-sort="id">Enregister par</th>
+                        <th>Recorded By</th>
                         {% endif %}
-                        <th  data-sort="customer_name">Poduct Code</th>
-                        <th  data-sort="customer_name">Poduct</th>
-                        <th  data-sort="customer_name">Quantity</th>
-                        <th  data-sort="customer_name">Fournisseur</th>
-                        <th  data-sort="date">Date</th>
+                        <th>Product Code</th>
+                        <th>Product</th>
+                        <th>Quantity</th>
+                        <th>Supplier</th>
+                        <th>Date</th>
                       </tr>
                     </thead>
                     <tbody class="list form-check-all">
@@ -77,12 +97,11 @@
                         {% if admin %}
                         <td class="date">
                           {% if request.user == supply.user %}
-                          Vous
+                          {{supply.user}} (vous)
                           {% else %}
-                      {{supply.user}}
-                              
-                      {% endif %}
-                       </td>
+                          {{supply.user}}
+                          {% endif %}
+                        </td>
                         {% endif %}
                         <td class="date">{{supply.product.pid}}</td>
 
@@ -90,8 +109,7 @@
                           <div class="d-flex align-items-center">
                             <div class="flex-shrink-0 me-3">
                               <div class="avatar-sm bg-light rounded p-1">
-                                <center><img src="{{supply.product.image.url}}" alt="" class="img-fluid d-block">
-                                </center>
+                                <center><img src="{{supply.product.image.url}}" alt="" class="img-fluid d-block"></center>
                               </div>
                             </div>
                             <div class="flex-grow-1">
@@ -101,7 +119,7 @@
                             </div>
                           </div>
                         </td>
-                      
+
                         <td class="date">{{supply.quantity}}</td>
                         <td class="date">{{supply.fournisseur}}</td>
                         <td class="date">{{supply.date|date:"d M Y"}}</td>
@@ -112,101 +130,90 @@
                   </table>
                   <div class="noresult" style="display: none">
                     <div class="text-center">
-                      <lord-icon src="https://cdn.lordicon.com/msoeawqm.json" trigger="loop"
-                        colors="primary:#405189,secondary:#0ab39c" style="width: 75px; height: 75px"></lord-icon>
+                      <lord-icon src="https://cdn.lordicon.com/msoeawqm.json" trigger="loop" colors="primary:#405189,secondary:#0ab39c" style="width: 75px; height: 75px"></lord-icon>
                       <h5 class="mt-2">Sorry! No Result Found</h5>
                       <p class="text-muted">
                         We've searched more than 150+ Orders We did not find any
-                        orders for you search.
+                        orders for your search.
                       </p>
                     </div>
                   </div>
                 </div>
-                <div class="d-flex justify-content-end">
-                  <div class="pagination-wrap hstack gap-2">
-                    <a class="page-item pagination-prev disabled" href="#">
-                      Previous
-                    </a>
-                    <ul class="pagination listjs-pagination mb-0"></ul>
-                    <a class="page-item pagination-next" href="#"> Next </a>
-                  </div>
-                </div>
               </div>
-              <div class="modal fade" id="showModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-                aria-hidden="true">
+              <div class="modal fade" id="showModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered">
                   <div class="modal-content">
                     <div class="modal-header bg-light p-3">
-                      <h5 class="modal-title" id="exampleModalLabel">&nbsp; Ajouter une entrer</h5>
-                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
-                        id="close-modal"></button>
+                      <h5 class="modal-title" id="exampleModalLabel">&nbsp; Add a New Supply</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"></button>
                     </div>
                     <form class="tablelist-form" autocomplete="off" action="{% url 'Add_supply'  %}" method="post">
                       {% csrf_token %}
                       <div class="modal-body">
                         <div class="mb-3">
                           <div class="my-4" id="prod-form">
-                           <div class="row">
-                            <div class="col-8">
-                              <label for="payment-field" class="form-label">Article</label>
-                              <select class="form-control" data-trigger="" name="product">
-                                <option value="" selected disabled>Article</option>
-                                {% for product in products %}
-                                <option value="{{product.title}}">({{product.pid}}) {{product.title}}</option>
-
-                                {% endfor %}
-                              </select>
+                            <div class="row">
+                              <div class="col-12">
+                                <label for="payment-field" class="form-label">Supply Code</label>
+                                <input type="text" name="code" class="form-control" placeholder="Enter the supply code" />
+                              </div>
+                              <div class="row">
+                                <div class="col-8">
+                                  <label for="payment-field" class="form-label">Product</label>
+                                  <select class="form-control" data-trigger="" name="product">
+                                    <option value="" selected disabled>Product</option>
+                                    {% for product in products %}
+                                    <option value="{{product.title}}">({{product.pid}}) {{product.title}}</option>
+                                    {% endfor %}
+                                  </select>
+                                </div>
+                                <div class="col-4">
+                                  <label for="username" class="form-label">Quantity</label>
+                                  <input type="number" name="quantity" class="form-control" placeholder="Enter quantity" />
+                                </div>
+                              </div>
+                              <div class="row mt-3">
+                                <div class="col-4">
+                                  <label for="payment-field" class="form-label">Supplier</label>
+                                  <select class="form-control" data-trigger="" name="fournisseur">
+                                    <option value="" selected disabled>Supplier</option>
+                                    {% for fournisseur in fournisseurs %}
+                                    <option value="{{fournisseur.title}}">{{fournisseur.title}}</option>
+                                    {% endfor %}
+                                  </select>
+                                </div>
+                                <div class="col-4">
+                                  <label for="username" class="form-label">Delivery Person's Name</label>
+                                  <input type="text" name="livrer-name" class="form-control" required placeholder="Enter the delivery person's name" />
+                                </div>
+                                <div class="col-4">
+                                  <label for="username" class="form-label">Delivery Person's Contact</label>
+                                  <input type="text" name="livrer-phone" class="form-control" required placeholder="E.g.: +228 99 96 98 85" />
+                                </div>
+                              </div>
+                              <div class="row mt-3">
+                                <label for="payment-field" class="form-label">Detail</label>
+                                <div class="col-12">
+                                  <textarea name="detail" class="form-control"></textarea>
+                                </div>
+                              </div>
                             </div>
-                            <div class="col-4">
-                              <label for="username" class="form-label">Quantity</label>
-                              <input type="number" name="quantity" class="form-control" placeholder="Enter quantity" />
-                            </div>
-
-                           </div>
-                           <div class="row mt-3">
-                            <div class="col-4">
-                              <label for="payment-field" class="form-label">Entreprise</label>
-                              <select class="form-control" data-trigger="" name="fournisseur">
-                                <option value="" selected disabled>Entreprise</option>
-                                {% for fournisseur in fournisseurs %}
-                                <option value="{{fournisseur.title}}">{{fournisseur.title}}</option>
-                                {% endfor %}
-                              </select>
-                            </div>
-                            <div class="col-4">
-                              <label for="username" class="form-label">Nom du livreur</label>
-                              <input type="text" name="livrer-name" class="form-control" required placeholder="Entrer le nom du livreur" />
-                            </div>
-                            <div class="col-4">
-                              <label for="username" class="form-label">Contact du livreur</label>
-                              <input type="text" name="livrer-phone" class="form-control" required placeholder="Ex : +228 99 96 98 85" />
-                            </div>
-                           </div>
-                           <div class="row mt-3">
-                            <label for="payment-field"  class="form-label">Detail</label>
-                          <div class="col-12">
-                            <textarea name="detail" id="" class="form-control"></textarea>
-                          </div>
-                           </div>
-                          </div>
-                          <div id="form-box">
-
+                            <div id="form-box"></div>
+                  
                           </div>
                           <div class="row">
-                            <div class=" mt-0 btn">
-                              <button class="btn-outline-primary btn " style="cursor: pointer;width: 50%;"
-                                onclick=dupliquerElement()>
-                                <i  class="ri ri-add-circle-line"></i> <span>Ajouter une nouvelle entrer</span>
-                              </button>
+                            <div class="mt-0 btn">
+                              <a class="btn-outline-primary btn " style="cursor: pointer;width: 50%;" onclick=dupliquerElement()>
+                                <i class="ri ri-add-circle-line"></i> <span>Add a New Supply</span>
+                              </a>
                             </div>
                           </div>
                         </div>
-
                       </div>
                       <div class="modal-footer">
                         <div class="hstack gap-2 justify-content-end" style="width: 100%;">
                           <button type="submit" class="btn btn-primary" id="add-btn" style="width: 100%;">
-                            Enregister 
+                            Save
                           </button>
                         </div>
                       </div>
@@ -224,23 +231,27 @@
     <!-- container-fluid -->
   </div>
   <!-- End Page-content -->
-
-
 </div>
 
 <script>
   function dupliquerElement() {
-    // Sélectionnez l'élément que vous souhaitez dupliquer
+    // Select the element you want to duplicate
     var elementA = document.getElementById("prod-form");
 
-    // Créez une copie de l'élément
+    // Create a copy of the element
     var cloneElement = elementA.cloneNode(true);
 
-    // Ajoutez la copie à un conteneur dans le DOM
+    // Add the copy to a container in the DOM
     var conteneurElements = document.getElementById("form-box");
     conteneurElements.appendChild(cloneElement);
   }
 
+  $(document).ready(function () {
+      $('#dwnldBtn').on('click', function () {
+        $("#orderTable").table2excel({
+        filename: "entrer.xls"
+    });
+      });
+  });
 </script>
-
 {% endblock %}

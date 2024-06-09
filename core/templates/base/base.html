@@ -34,6 +34,8 @@
   <link href="{% static 'assets/css/app.min.css' %}" rel="stylesheet" type="text/css" />
   <!-- custom Css-->
   <link href="{% static 'assets/css/custom.min.css' %}" rel="stylesheet" type="text/css" />
+  <!-- table2excel plugin CDN -->
+<script src="//cdn.rawgit.com/rainabba/jquery-table2excel/1.1.0/dist/jquery.table2excel.min.js"></script>
   
   <style>
     .logo{
@@ -390,13 +392,20 @@
             {% if admin %}
             <li class="menu-title">
               <i class="ri-more-fill"></i>
-              <span data-key="t-pages">Fournisseur</span>
+              <span data-key="t-pages">Fournisseurs & Services</span>
             </li>
             <li class="nav-item">
               <a class="nav-link menu-link {% if request.path == '/fournisseur/' %} active {% endif %}"
                 href="{% url 'fourn'  %}">
                 <i class="bx bx-store"></i>
                 <span data-key="t-widgets">List des Founisseur</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link menu-link {% if request.path == '/fournisseur/' %} active {% endif %}"
+                href="{% url 'serv'  %}">
+                <i class="bx bx-store"></i>
+                <span data-key="t-widgets">List des Services</span>
               </a>
             </li>
             {% endif %}
@@ -428,6 +437,17 @@
               <a class="nav-link menu-link {% if request.path == '/suppliers/' %} active {% endif %}"
                 href="{% url 'suppliers'  %}">
                 <i class="las la-user-tag"></i><span data-key="t-widgets">Supplies</span>
+              </a>
+            </li>
+
+            <li class="menu-title">
+              <i class="ri-more-fill"></i>
+              <span data-key="t-components">Reprot</span>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link menu-link {% if request.path == '/reports/' %} active {% endif %}"
+                href="{% url 'reports'  %}">
+                <i class="las la-user-tag"></i><span data-key="t-widgets">reports</span>
               </a>
             </li>
             {% endif %}
