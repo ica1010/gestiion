@@ -2,246 +2,210 @@
 {% load static %}
 {% block 'content' %}
 <div class="main-content">
-
     <div class="page-content">
         <div class="container-fluid">
-
-            <!-- start page title -->
+            <!-- Titre de la page -->
             <div class="row">
                 <div class="col-12">
-                    <div
-                        class="page-title-box d-sm-flex align-items-center justify-content-between bg-galaxy-transparent">
-                        <h4 class="mb-sm-0">Reports</h4>
-
+                    <div class="page-title-box d-sm-flex align-items-center justify-content-between bg-galaxy-transparent">
+                        <h4 class="mb-sm-0">Rapports</h4>
                         <div class="page-title-right">
                             <ol class="breadcrumb m-0">
                                 <li class="breadcrumb-item"><a href="javascript: void(0);">Gestions</a></li>
-                                <li class="breadcrumb-item active">Reports</li>
+                                <li class="breadcrumb-item active">Rapports</li>
                             </ol>
                         </div>
-
                     </div>
                 </div>
             </div>
-            <!-- end page title -->
+            <!-- Fin du titre de la page -->
 
             <div class="row">
                 <div class="col-lg-12">
                     <div class="card" id="customerList">
                         <div class="card-header border-bottom-dashed">
-
                             <div class="row g-4 align-items-center">
                                 <div class="col-sm col-6">
                                     <div>
-                                        <h5 class="card-title mb-0">Reports</h5>
+                                        <h5 class="card-title mb-0">Rapports</h5>
                                     </div>
                                 </div>
                                 <div class="col-sm-auto">
                                     <div class="flex-shrink-0">
                                         <div class="dropdown card-header-dropdown">
-                                            <a class="text-reset dropdown-btn" href="#" data-bs-toggle="dropdown"
-                                                aria-haspopup="true" aria-expanded="false">
-                                                <span class="fw-semibold text-uppercase fs-12">Sort by:</span>
-                                                <span class="text-muted">{{ filter_option|title }}<i
-                                                        class="mdi mdi-chevron-down ms-1"></i></span>
+                                            <a class="text-reset dropdown-btn" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <span class="fw-semibold text-uppercase fs-12">Trier par :</span>
+                                                <span class="text-muted">{{ filter_option|title }}<i class="mdi mdi-chevron-down ms-1"></i></span>
                                             </a>
                                             <div class="dropdown-menu dropdown-menu-end">
-                                                <a class="dropdown-item" href="?filter=today">Today</a>
-                                                <a class="dropdown-item" href="?filter=yesterday">Yesterday</a>
-                                                <a class="dropdown-item" href="?filter=last_7_days">Last 7 Days</a>
-                                                <a class="dropdown-item" href="?filter=last_30_days">Last 30 Days</a>
-                                                <a class="dropdown-item" href="?filter=this_month">This Month</a>
-                                                <a class="dropdown-item" href="?filter=last_month">Last Month</a>
+                                                <a class="dropdown-item" href="?filter=today">Aujourd'hui</a>
+                                                <a class="dropdown-item" href="?filter=yesterday">Hier</a>
+                                                <a class="dropdown-item" href="?filter=last_7_days">Les 7 derniers jours</a>
+                                                <a class="dropdown-item" href="?filter=last_30_days">Les 30 derniers jours</a>
+                                                <a class="dropdown-item" href="?filter=this_month">Ce mois-ci</a>
+                                                <a class="dropdown-item" href="?filter=last_month">Le mois dernier</a>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-sm-auto">
-              
-                   
-              
                                     <div class="d-flex gap-1 flex-wrap">
-                                     
-                                      <button type="button" class="btn btn-info" id="dwnldBtn">
-                                        <i class="ri-download-line align-bottom me-1"></i>
-                                        Import as Excel file  
-                                      </button>
-                                  
+                                        <button type="button" class="btn btn-info" id="dwnldBtn">
+                                            <i class="ri-download-line align-bottom me-1"></i>
+                                            Exporter en fichier PDF  
+                                        </button>
                                     </div>
-                                  </div>
+                                </div>
                             </div>
-                        
                         </div>
+
                         <div class="card-body border-bottom-dashed border-bottom">
-                            <form>
-                                <!--end row-->
-                            </form>
+                            <form></form>
                         </div>
-                        <div class="card-body">
-                            <!-- product table -->
-                           
+                        <div class="card-body" id="pdfcontent">
+                            <!-- Table des produits -->
                             <div class="table-responsive table-card mb-1">
                                 <h1 class="p-3 text-center">Liste des Articles</h1>
                                 <table class="table align-middle" id="prod">
                                     <thead class="table-light text-muted">
                                         <tr>
-                                            <th data-sort="customer_name">code produit</th>
-                                            <th data-sort="email">Nom du produit</th>
-                                            <th data-sort="phone">Quantité en stock</th>
-                                            <th data-sort="date">Categorie</th>
-                                            <th data-sort="status">ajouter le</th>
-                                            <th data-sort="status">modifier le</th>
+                                            <th>Code produit</th>
+                                            <th>Nom du produit</th>
+                                            <th>Quantité en stock</th>
+                                            <th>Catégorie</th>
+                                            <th>Ajouté le</th>
+                                            <th>Modifié le</th>
                                         </tr>
                                     </thead>
                                     <tbody class="list form-check-all">
                                         {% for product in products %}
-
                                         <tr>
-                                            <td class="customer_name">#{{product.pid}}</td>
-                                            <td class="email">{{product.title}}</td>
-                                            <td class="phone">{{product.quantity}}</td>
-                                            <td class="date">{{product.category}}</td>
-                                            <td class="date">{{product.created_at |date:"d M Y" }}</td>
-                                            <td class="date">{{product.updated_at |date:"d M Y" }}</td>
-
+                                            <td>#{{ product.pid }}</td>
+                                            <td>{{ product.title }}</td>
+                                            <td>{{ product.quantity }}</td>
+                                            <td>{{ product.category }}</td>
+                                            <td>{{ product.created_at|date:"d M Y" }}</td>
+                                            <td>{{ product.updated_at|date:"d M Y" }}</td>
                                         </tr>
                                         {% endfor %}
-
                                     </tbody>
                                 </table>
                             </div>
-                            <!-- product table -->
-                            <!-- enter table -->
+                            <!-- Fin de la table des produits -->
 
+                            <!-- Table des entrées -->
                             <div class="table-responsive table-card mb-1">
+                                <h1 class="p-3 text-center">Liste des Entrées</h1>
                                 <table class="table align-middle" id="ent">
-                                <h1 class="p-3 text-center">Liste des Entrer</h1>
-
                                     <thead class="table-light text-muted">
                                         <tr>
-                                            <th data-sort="customer_name">code Entrer</th>
-                                            <th data-sort="email">Fait par</th>
-                                            <th data-sort="phone">Code produit</th>
-                                            <th data-sort="date">Nom du produit</th>
-                                            <th data-sort="date">Quantité</th>
-                                            <th data-sort="date">Companie</th>
-                                            <th data-sort="status">Livreur</th>
-                                            <th data-sort="status">Numero du ivreur</th>
-                                            <th data-sort="status">Detail</th>
-                                            <th data-sort="status">Livrer le</th>
+                                            <th>Code Entrée</th>
+                                            <th>Fait par</th>
+                                            <th>Code produit</th>
+                                            <th>Nom du produit</th>
+                                            <th>Quantité</th>
+                                            <th>Compagnie</th>
+                                            <th>Livreur</th>
+                                            <th>Numéro du livreur</th>
+                                            <th>Détail</th>
+                                            <th>Livré le</th>
                                         </tr>
                                     </thead>
                                     <tbody class="list form-check-all">
                                         {% for supply in supplies %}
-
                                         <tr>
-                                            <td class="customer_name">#{{supply.sid}}</td>
-                                            <td class="email">{{supply.user}}</td>
-                                            <td class="phone">#{{supply.product.pid}}</td>
-                                            <td class="date">{{supply.product}}</td>
-                                            <td class="date">{{supply.quantity}}</td>
-                                            <td class="date">{{supply.fournisseur}}</td>
-                                            <td class="date">{{supply.livrer_name}}</td>
-                                            <td class="date">{{supply.livrer_phone}}</td>
-                                            <td class="date">{{supply.detail}}</td>
-                                            <td class="date">{{supply.date |date:"d M Y" }}</td>
+                                            <td>#{{ supply.sid }}</td>
+                                            <td>{{ supply.user }}</td>
+                                            <td>#{{ supply.product.pid }}</td>
+                                            <td>{{ supply.product }}</td>
+                                            <td>{{ supply.quantity }}</td>
+                                            <td>{{ supply.fournisseur }}</td>
+                                            <td>{{ supply.livrer_name }}</td>
+                                            <td>{{ supply.livrer_phone }}</td>
+                                            <td>{{ supply.detail }}</td>
+                                            <td>{{ supply.date|date:"d M Y" }}</td>
                                         </tr>
                                         {% endfor %}
-
                                     </tbody>
                                 </table>
                             </div>
-                            <!-- end enter tble -->
-                            <!-- out table -->
+                            <!-- Fin de la table des entrées -->
+
+                            <!-- Table des sorties -->
                             <div class="table-responsive table-card mb-1">
                                 <h1 class="p-3 text-center">Liste des Sorties</h1>
-
                                 <table class="table align-middle" id="out">
                                     <thead class="table-light text-muted">
                                         <tr>
-                                            <th data-sort="customer_name">Code Sortie</th>
-                                            <th data-sort="customer_name">Fait par</th>
-                                            <th data-sort="email">Produits livrées</th>
-                                            <th data-sort="date">Service</th>
-                                            <th data-sort="status">Burreau</th>
-                                            <th data-sort="status">date</th>
+                                            <th>Code Sortie</th>
+                                            <th>Fait par</th>
+                                            <th>Produits livrés</th>
+                                            <th>Service</th>
+                                            <th>Bureau</th>
+                                            <th>Date</th>
                                         </tr>
                                     </thead>
                                     <tbody class="list form-check-all">
                                         {% for delivery in deliveries %}
-
                                         <tr>
-                                            <td class="customer_name">#{{delivery.did}}</td>
-                                            <td class="email">{{delivery.user}}</td>
-                                            <td class="date">
+                                            <td>#{{ delivery.did }}</td>
+                                            <td>{{ delivery.user }}</td>
+                                            <td>
                                                 <ul>
-                                                    
                                                     {% for item in deliveries_product %}
-                                                     
-                                                     {% if item.delivery == delivery %}
-                                                     <li>({{item.product.pid}}) {{item.product}} | quantity: {{item.quantity}}</li>
-                                                     {% endif %}
-                                                        
+                                                    {% if item.delivery == delivery %}
+                                                    <li>({{ item.product.pid }}) {{ item.product }} | Quantité: {{ item.quantity }}</li>
+                                                    {% endif %}
                                                     {% endfor %}
-                                                        
                                                 </ul>
                                             </td>
-                                            <td class="date">{{delivery.service}}</td>
-                                            <td class="date">{{delivery.post}}</td>
-                                            <td class="date">{{delivery.date |date:"d M Y" }}</td>
-
+                                            <td>{{ delivery.service }}</td>
+                                            <td>{{ delivery.post }}</td>
+                                            <td>{{ delivery.date|date:"d M Y" }}</td>
                                         </tr>
                                         {% endfor %}
-
                                     </tbody>
                                 </table>
                             </div>
-                        
-                            <!-- ou table end -->
+                            <!-- Fin de la table des sorties -->
                         </div>
                     </div>
-
                 </div>
-                <!--end col-->
             </div>
-            <!--end row-->
-
         </div>
-        <!-- container-fluid -->
     </div>
-    
 </div>
-<script>$(document).ready(function () {
+
+<script>     
+$(document).ready(function () {
     $('#dwnldBtn').on('click', function () {
-        // Création d'une table temporaire
-        var tempTable = $('<table></table>');
+        var doc = new jspdf.jsPDF('p', 'mm', 'a4');
+        var content = document.querySelector('#pdfcontent');
 
-        // Ajout des en-têtes et des descriptions des tables
-        $('#prod, #ent, #out').each(function() {
-            var tableTitle = $(this).prev('h3').text(); // Récupérer le titre de la table (contenu dans la balise h3 juste avant la table)
-            var tableHeader = $(this).find('thead').html(); // Récupérer le contenu de la balise <thead> de chaque table
+        html2canvas(content).then(canvas => {
+            var imgData = canvas.toDataURL('image/png');
+            var imgWidth = 190; // Largeur en mm pour A4, ajustée pour les marges
+            var pageHeight = 297; // Hauteur en mm pour A4
+            var imgHeight = canvas.height * imgWidth / canvas.width;
+            var heightLeft = imgHeight;
+            var position = 10; // 10 mm de marge supérieure
 
-            // Ajouter le titre comme en-tête visuel dans le fichier Excel
-            tempTable.append('<tr><th colspan="10">' + tableTitle + '</th></tr>');
+            doc.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight); // 10 mm de marge à gauche
+            heightLeft -= pageHeight;
+
+            while (heightLeft >= 0) {
+                position = heightLeft - imgHeight;
+                doc.addPage();
+                doc.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight); // 10 mm de marge à gauche
+                heightLeft -= pageHeight;
+            }
             
-            // Ajouter l'en-tête de la table
-            tempTable.append('<thead>' + tableHeader + '</thead>');
-
-            // Copie des données de chaque table existante dans la table temporaire
-            var tableData = $(this).find('tbody').html(); // Récupérer le contenu de la <tbody> de chaque table
-            tempTable.append('<tbody>' + tableData + '</tbody>'); // Ajouter le contenu à la table temporaire
-
-            // Ajouter une ligne vide après chaque table pour la séparation visuelle
-            tempTable.append('<tr><td colspan="10"></td></tr>'); // Changer 10 selon le nombre de colonnes dans vos tables
-        });
-
-        // Exporter la table temporaire vers un fichier Excel
-        tempTable.table2excel({
-            filename: 'multiple_tables_report.xls'
+            var timestamp = new Date().toISOString().replace(/[\-:]/g, "").replace("T", "_").split(".")[0];
+            var filename = 'rapport_tables_multiples_' + timestamp + '.pdf';
+            
+            doc.save(filename);
         });
     });
 });
-  </script>
-    
-    
+</script>
 {% endblock %}
