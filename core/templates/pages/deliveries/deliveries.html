@@ -70,8 +70,7 @@
                          data-sort="customer_name">Service</th>
                          <th 
                          data-sort="customer_name">Burreau</th>
-                        <th>
-                         data-sort="date">Delivery Date</th>
+                        <th data-sort="date">Delivery Date</th>
                         <th>Action</th>
                       </tr>
                     </thead>
@@ -99,7 +98,7 @@
                         {% endif %}
                         <td class="customer_name">{{delivery.service}}</td>
                         <td class="customer_name">{{delivery.post}}</td>
-                        <td class="date">{{delivery.date}}</td>
+                        <td class="date">{{delivery.date|date:"d M Y"}}</td>
                         <td>
                           <ul class="list-inline hstack gap-2 mb-0">
                             <li class="list-inline-item" data-bs-toggle="tooltip" data-bs-trigger="hover"
@@ -133,15 +132,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="d-flex justify-content-end">
-                  <div class="pagination-wrap hstack gap-2">
-                    <a class="page-item pagination-prev disabled" href="#">
-                      Previous
-                    </a>
-                    <ul class="pagination listjs-pagination mb-0"></ul>
-                    <a class="page-item pagination-next" href="#"> Next </a>
-                  </div>
-                </div>
+                
               </div>
               <div class="modal fade" id="showModal" tabindex="-1" aria-labelledby="exampleModalLabel"
                 aria-hidden="true">
@@ -165,7 +156,7 @@
                                 </option>
                                 {% for product in products %}
                                 <option value="{{product.title}}">
-                                  {{product.title}}
+                                 ({{product.pid}}) {{product.title}}
                                 </option>
 
                                 {% endfor %}

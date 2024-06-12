@@ -45,6 +45,7 @@ class Service(models.Model):
     sid = ShortUUIDField(unique=True, length=10, max_length= 20 , alphabet='abcdefghijklmnopqrstuvwxyz1234567890' , editable=False,  prefix='Service-')
     title = models.CharField(max_length=100, default='untitle service')
 
+    date = models.DateField(auto_now_add=True)
     def __str__(self):
         return self.title    
 
@@ -92,4 +93,12 @@ class Supply(models.Model):
         return self.product.title
 
 
-   
+class Action(models.Model):
+    aid = ShortUUIDField(unique=True, length=10, max_length= 20 , alphabet='abcdefghijklmnopqrstuvwxyz1234567890' , editable=False,  prefix='Action-')
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    action = models.TextField()
+
+    at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return 

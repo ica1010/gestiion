@@ -14,6 +14,7 @@ from datetime import datetime, timedelta
 from django.utils import timezone
 from django.utils.timezone import now
 from django.db import transaction
+from django.utils.dateparse import parse_date
 
 
 def is_admin(user):
@@ -513,37 +514,41 @@ def add_serv(request):
     except Exception as e :
         messages.success(request ,e)
         return redirect(url)
+    
 
 def reports(request):
-    url = request.META.get('HTTP_REFERER')
-    report_filter_option = request.GET.get('filter', 'this_month')
-    today = timezone.now().date()
-    if report_filter_option == 'today':
-        start_date = today
-    elif report_filter_option == 'yesterday':
-        start_date = today - timedelta(days=1)
-    elif report_filter_option == 'last_7_days':
-        start_date = today - timedelta(days=7)
-    elif report_filter_option == 'last_30_days':
-        start_date = today - timedelta(days=30)
-    elif report_filter_option == 'this_month':
-        start_date = today.replace(day=1)
-    elif report_filter_option == 'last_month':
-        first_day_of_current_month = today.replace(day=1)
-        start_date = (first_day_of_current_month - timedelta(days=1)).replace(day=1)
-    else:
-        start_date = today
-    
-    products = Product.objects.all().filter(created_at__gte=start_date)
-    supplies = Supply.objects.all().filter(date__gte=start_date)
-    deliveries = Delivery.objects.all().filter(date__gte=start_date)
-    deliveries_product = DeliveryProduct.objects.all()
-    context={
-        'products':products,
-        'supplies':supplies,
-        'deliveries':deliveries,
-        'deliveries_product':deliveries_product,
-    }
-    return render(request, 'pages/report/reprts.html', context)
+    start_date = request.GET.get('start-date')
+    end_date = request.GET.get('end-date')
+    products = Product.objects.all()
+    supplies = Supply.objects.all()
+    deliveries = Delivery.objects.all()
 
+    if start_date:
+        start_date = parse_date(start_date)
+        if start_date:
+            products = products.filter(created_at__gte=start_date)
+            supplies = supplies.filter(date__gte=start_date)
+            deliveries = deliveries.filter(date__gte=start_date)
+
+    if end_date:
+        end_date = parse_date(end_date)
+        if end_date:
+            products = products.filter(created_at__lte=end_date)
+            supplies = supplies.filter(date__lte=end_date)
+            deliveries = deliveries.filter(date__lte=end_date)
+
+    deliveries_product = DeliveryProduct.objects.all()
     
+    context = {
+        'products': products,
+        'supplies': supplies,
+        'deliveries': deliveries,
+        'deliveries_product': deliveries_product,
+        'start_date': start_date,
+        'end_date': end_date,
+        'start_date_i': start_date.strftime('%Y-%m-%d') if start_date else None,
+        'end_date_i': end_date.strftime('%Y-%m-%d') if end_date else None,
+
+    }
+    
+    return render(request, 'pages/report/reports.html', context)

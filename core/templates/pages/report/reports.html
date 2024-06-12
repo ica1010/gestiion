@@ -1,6 +1,40 @@
 {% extends 'base/base.html' %}
 {% load static %}
 {% block 'content' %}
+
+<style>
+.date-range-picker {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.date-range-picker label {
+  margin-right: 10px;
+}
+
+.date-range-picker input {
+  margin-right: 20px;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.date-range-picker button {
+  padding: 5px 10px;
+  border: none;
+  background-color: #007bff;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.date-range-picker button:hover {
+  background-color: #0056b3;
+}
+</style>
+
 <div class="main-content">
     <div class="page-content">
         <div class="container-fluid">
@@ -33,17 +67,16 @@
                                 <div class="col-sm-auto">
                                     <div class="flex-shrink-0">
                                         <div class="dropdown card-header-dropdown">
-                                            <a class="text-reset dropdown-btn" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                <span class="fw-semibold text-uppercase fs-12">Trier par :</span>
-                                                <span class="text-muted">{{ filter_option|title }}<i class="mdi mdi-chevron-down ms-1"></i></span>
-                                            </a>
-                                            <div class="dropdown-menu dropdown-menu-end">
-                                                <a class="dropdown-item" href="?filter=today">Aujourd'hui</a>
-                                                <a class="dropdown-item" href="?filter=yesterday">Hier</a>
-                                                <a class="dropdown-item" href="?filter=last_7_days">Les 7 derniers jours</a>
-                                                <a class="dropdown-item" href="?filter=last_30_days">Les 30 derniers jours</a>
-                                                <a class="dropdown-item" href="?filter=this_month">Ce mois-ci</a>
-                                                <a class="dropdown-item" href="?filter=last_month">Le mois dernier</a>
+                                            <div class="date-range-picker">
+                                                <form method="get">
+                                                    <label for="start-date">Start Date:</label>
+                                                    <input type="date" id="start-date" name="start-date" value="{{ start_date_i }}">
+                                                    
+                                                    <label for="end-date">End Date:</label>
+                                                    <input type="date" id="end-date" name="end-date" value="{{ end_date_i}}">
+                                                    
+                                                    <button type="submit" id="submit-dates">Submit</button>
+                                                </form>
                                             </div>
                                         </div>
                                     </div>
@@ -65,7 +98,9 @@
                         <div class="card-body" id="pdfcontent">
                             <!-- Table des produits -->
                             <div class="table-responsive table-card mb-1">
-                                <h1 class="p-3 text-center">Liste des Articles</h1>
+                                <h1 class="p-3 text-center">Liste des Articles du   {% if start_date %}
+                                    du {{ start_date|date:"d M Y"}} au {{ end_date|date:"d M Y" }}
+                                    {% endif %}</h1>
                                 <table class="table align-middle" id="prod">
                                     <thead class="table-light text-muted">
                                         <tr>
@@ -81,7 +116,7 @@
                                         {% for product in products %}
                                         <tr>
                                             <td>#{{ product.pid }}</td>
-                                            <td>{{ product.title }}</td>
+                                            <td>{{ product.titlle }}</td>
                                             <td>{{ product.quantity }}</td>
                                             <td>{{ product.category }}</td>
                                             <td>{{ product.created_at|date:"d M Y" }}</td>
@@ -95,7 +130,9 @@
 
                             <!-- Table des entrées -->
                             <div class="table-responsive table-card mb-1">
-                                <h1 class="p-3 text-center">Liste des Entrées</h1>
+                                <h1 class="p-3 text-center">Liste des Entrées    {% if start_date %}
+                                    du {{ start_date|date:"d M Y"}} au {{ end_date|date:"d M Y" }}
+                                    {% endif %}</h1>
                                 <table class="table align-middle" id="ent">
                                     <thead class="table-light text-muted">
                                         <tr>
@@ -117,7 +154,7 @@
                                             <td>#{{ supply.sid }}</td>
                                             <td>{{ supply.user }}</td>
                                             <td>#{{ supply.product.pid }}</td>
-                                            <td>{{ supply.product }}</td>
+                                            <td>{{ supply.product.title }}</td>
                                             <td>{{ supply.quantity }}</td>
                                             <td>{{ supply.fournisseur }}</td>
                                             <td>{{ supply.livrer_name }}</td>
@@ -133,7 +170,10 @@
 
                             <!-- Table des sorties -->
                             <div class="table-responsive table-card mb-1">
-                                <h1 class="p-3 text-center">Liste des Sorties</h1>
+                                <h1 class="p-3 text-center">Liste des Sorties  
+                                {% if start_date %}
+                                du {{ start_date|date:"d M Y"}} au {{ end_date|date:"d M Y" }}
+                                {% endif %}</h1>
                                 <table class="table align-middle" id="out">
                                     <thead class="table-light text-muted">
                                         <tr>
@@ -153,8 +193,8 @@
                                             <td>
                                                 <ul>
                                                     {% for item in deliveries_product %}
-                                                    {% if item.delivery == delivery %}
-                                                    <li>({{ item.product.pid }}) {{ item.product }} | Quantité: {{ item.quantity }}</li>
+                                                    {% if item.delivery.did == delivery.did %}
+                                                    <li>({{ item.product.pid }}) {{ item.product.title }} | Quantité: {{ item.quantity }}</li>
                                                     {% endif %}
                                                     {% endfor %}
                                                 </ul>
@@ -176,7 +216,7 @@
     </div>
 </div>
 
-<script>     
+<script>
 $(document).ready(function () {
     $('#dwnldBtn').on('click', function () {
         var doc = new jspdf.jsPDF('p', 'mm', 'a4');
@@ -184,19 +224,19 @@ $(document).ready(function () {
 
         html2canvas(content).then(canvas => {
             var imgData = canvas.toDataURL('image/png');
-            var imgWidth = 190; // Largeur en mm pour A4, ajustée pour les marges
-            var pageHeight = 297; // Hauteur en mm pour A4
+            var imgWidth = 190;
+            var pageHeight = 297;
             var imgHeight = canvas.height * imgWidth / canvas.width;
             var heightLeft = imgHeight;
-            var position = 10; // 10 mm de marge supérieure
+            var position = 10;
 
-            doc.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight); // 10 mm de marge à gauche
+            doc.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight);
             heightLeft -= pageHeight;
 
             while (heightLeft >= 0) {
                 position = heightLeft - imgHeight;
                 doc.addPage();
-                doc.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight); // 10 mm de marge à gauche
+                doc.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight);
                 heightLeft -= pageHeight;
             }
             
@@ -206,6 +246,21 @@ $(document).ready(function () {
             doc.save(filename);
         });
     });
+});
+
+document.getElementById('submit-dates').addEventListener('click', function() {
+  const startDate = document.getElementById('start-date').value;
+  const endDate = document.getElementById('end-date').value;
+
+  if (startDate && endDate) {
+    if (new Date(startDate) <= new Date(endDate)) {
+      console.log(`Selected Date Range:\nStart: ${startDate}\nEnd: ${endDate}`);
+    } else {
+      alert('End date must be later than or equal to start date.');
+    }
+  } else {
+    alert('Please select both start and end dates.');
+  }
 });
 </script>
 {% endblock %}
