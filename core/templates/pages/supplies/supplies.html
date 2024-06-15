@@ -31,29 +31,26 @@
               <div class="row align-items-center gy-3">
                 <div class="col-sm">
                   <h5 class="card-title mb-0">Supplies History</h5>
-                  <div class="dropdown card-header-dropdown">
-                    <a class="text-reset dropdown-btn" href="#" data-bs-toggle="dropdown"
-                        aria-haspopup="true" aria-expanded="false">
-                        <span class="fw-semibold text-uppercase fs-12">Sort by:</span>
-                        <span class="text-muted">{{ suplies_filter_option|title }}<i
-                                class="mdi mdi-chevron-down ms-1"></i></span>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-end">
-                        <a class="dropdown-item" href="?filter=today">Today</a>
-                        <a class="dropdown-item" href="?filter=yesterday">Yesterday</a>
-                        <a class="dropdown-item" href="?filter=last_7_days">Last 7 Days</a>
-                        <!-- <a class="dropdown-item" href="?filter=last_30_days">Last 30 Days</a> -->
-                        <a class="dropdown-item" href="?filter=this_month">This Month</a>
-                        <a class="dropdown-item" href="?filter=last_month">Last Month</a>
+                </div>
+                <div class="col-sm-auto">
+                  <div class="flex-shrink-0">
+                    <div class="dropdown card-header-dropdown">
+                        <div class="date-range-picker">
+                            <form method="get" class="d-flex" style="gap: 05px;justify-content: center;align-items: center;">
+                                <label for="start-date" class="form-label m-0">From: </label>
+                                <input type="date" id="start-date" class="form-control" name="start-date" value="{{ start_date_i }}">
+                                
+                                <label for="end-date" class="form-label m-0">To: </label>
+                                <input type="date" id="end-date" class="form-control" name="end-date" value="{{ end_date_i}}">
+                                
+                                <button type="submit" id="submit-dates" class="btn btn-info">Filter</button>
+                            </form>
+                        </div>
                     </div>
                 </div>
                 </div>
                 <div class="col-sm-auto">
-              
-                   
-              
                   <div class="d-flex gap-1 flex-wrap">
-                   
                     <button type="button" class="btn btn-success add-btn" data-bs-toggle="modal" id="create-btn"
                       data-bs-target="#showModal">
                       <i class="ri-add-line align-bottom me-1"></i> Add New Supply
@@ -62,7 +59,6 @@
                       <i class="ri-file-download-line align-bottom me-1"></i>
                       Import
                     </button>
-                
                   </div>
                 </div>
               </div>
@@ -223,6 +219,47 @@
               </div>
             </div>
           </div>
+          <div class="card-body card" id="pdfcontent">
+            <!-- Table des entrées -->
+            <div class="table-responsive table-card mb-1">
+                <h1 class="p-3 text-center">Liste des Entrées    {% if start_date %}
+                    du {{ start_date|date:"d M Y"}} au {{ end_date|date:"d M Y" }}
+                    {% endif %}</h1>
+                <table class="table align-middle" id="ent">
+                    <thead class="table-light text-muted">
+                        <tr>
+                            <th>Code Entrée</th>
+                            <th>Fait par</th>
+                            <th>Code produit</th>
+                            <th>Nom du produit</th>
+                            <th>Quantité</th>
+                            <th>Compagnie</th>
+                            <th>Livreur</th>
+                            <th>Numéro du livreur</th>
+                            <th>Détail</th>
+                            <th>Livré le</th>
+                        </tr>
+                    </thead>
+                    <tbody class="list form-check-all">
+                        {% for supply in supplies %}
+                        <tr>
+                            <td>#{{ supply.sid }}</td>
+                            <td>{{ supply.user }}</td>
+                            <td>#{{ supply.product.pid }}</td>
+                            <td>{{ supply.product.title }}</td>
+                            <td>{{ supply.quantity }}</td>
+                            <td>{{ supply.fournisseur }}</td>
+                            <td>{{ supply.livrer_name }}</td>
+                            <td>{{ supply.livrer_phone }}</td>
+                            <td>{{ supply.detail }}</td>
+                            <td>{{ supply.date|date:"d M Y" }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <!-- Fin de la table des entrées -->
+        </div>
         </div>
         <!--end col-->
       </div>
@@ -232,7 +269,6 @@
   </div>
   <!-- End Page-content -->
 </div>
-
 <script>
   function dupliquerElement() {
     // Select the element you want to duplicate
@@ -245,13 +281,5 @@
     var conteneurElements = document.getElementById("form-box");
     conteneurElements.appendChild(cloneElement);
   }
-
-  $(document).ready(function () {
-      $('#dwnldBtn').on('click', function () {
-        $("#orderTable").table2excel({
-        filename: "entrer.xls"
-    });
-      });
-  });
 </script>
 {% endblock %}

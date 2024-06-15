@@ -60,11 +60,7 @@
                                     <table class="table align-middle" id="customerTable">
                                         <thead class="table-light text-muted">
                                             <tr>
-                                                <th scope="col" style="width: 50px;">
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="checkbox" id="checkAll" value="option">
-                                                    </div>
-                                                </th>
+                                                
 
                                                 <th  data-sort="customer_name">Customer</th>
                                                 <th  data-sort="email">Email</th>
@@ -79,31 +75,36 @@
 
                                             <tr>
 
-                                                <th scope="row">
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="checkbox" name="chk_child" value="option1">
-                                                    </div>
-                                                </th>
+                                                
                                                 <td class="id" style="display:none;"><a href="javascript:void(0);" class="fw-medium link-primary">#{{supplier.sid}} /a></td>
-                                                <td class="customer_name">{{supplier.user.username}}     
+                                                <td class="customer_name">{{supplier.user.username}} 
+                                                    {% if supplier in admin %}
+                                                    <span class="badge bg-success-subtle text-success text-uppercase" style="border: none;">
+                                                        Admin 
+                                                    </span> 
+                                                    {% endif %}
+                                                {% if request.user == supplier.user %}
+                                                    (Vous)
+                                                {% endif %}
                                                      </td>
                                                 <td class="email">{{supplier.user.email}}</td>
                                                 <td class="phone">{{supplier.user.phone}}</td>
-                                                <td class="date">{{supplier.user.date_joined}}</td>
+                                                <td class="date">{{supplier.user.date_joined|date:"d M Y" }}</td>
                                                 <td class="status">
-                                                    {% if supplier.active %}
-                                                    <span class="badge bg-success-subtle text-success text-uppercase">Active</span>
-                                                    {% else %}
-                                                    <span class="badge bg-danger-subtle text-danger text-uppercase">inactive</span>
-                                                    {% endif %}
+                                                    <form method="post" action="{% url 'toggle_supplier_status' %}" >
+                                                        {% csrf_token %}
+                                                        <input type="hidden" name="user_id" value="{{ supplier.user.id }}">
+                                                        <button class="badge {% if supplier.active %} bg-success-subtle text-success {% else %} bg-danger-subtle text-danger {% endif %} text-uppercase" style="border: none;"      {% if request.user == supplier.user %}
+                                                        disabled
+                                                        {% endif %}>
+                                                            {% if supplier.active %}Active{% else %}Inactive{% endif %}
+                                                        </button>
+                                                    </form>
                                                 </td>
                                                 <td>
-                                                    <ul class="list-inline hstack gap-2 mb-0">
-                                                        <li class="list-inline-item edit" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Edit">
-                                                            <a href="#{{supplier.sid}}" data-bs-toggle="modal" class="text-primary d-inline-block edit-item-btn">
-                                                                <i class="ri-pencil-fill fs-16"></i>
-                                                            </a>
-                                                        </li>
+                                                    <ul class="list-inline hstack gap-2 mb-0" {% if request.user == supplier.user %}
+                                                    style="display: none;"
+                                                    {% endif %}>
                                                         <li class="list-inline-item" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Remove">
                                                             <a class="text-danger d-inline-block remove-item-btn" data-bs-toggle="modal" href="#deleteRecordModal">
                                                                 <i class="ri-delete-bin-5-fill fs-16"></i>
@@ -189,7 +190,7 @@
                                                                 </div>
                                                                 <div class="d-flex gap-2 justify-content-center mt-4 mb-2">
                                                                     <button type="button" class="btn w-sm btn-light" data-bs-dismiss="modal">Close</button>
-                                                                    <button type="button" class="btn w-sm btn-danger" id="delete-record">Yes, Delete It!</button>
+                                                                    <a type="button" class="btn w-sm btn-danger" id="delete-record" href="{% url 'delete_user' supplier.user.id %}">Yes, Delete It!</a>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -258,6 +259,7 @@
                               </div>
                             </div>
                         </div>
+                    
                     </div>
 
                 </div>

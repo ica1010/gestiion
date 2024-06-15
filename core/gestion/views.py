@@ -1,11 +1,12 @@
 
 from django.db.models import Q
-from django.shortcuts import redirect, render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth import logout,authenticate, login
 from django.contrib import messages, auth 
 from django.contrib.auth.decorators import login_required , permission_required
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.core.paginator import EmptyPage, Paginator, PageNotAnInteger
+from django.urls import reverse
 from . models import *
 # from userauth.form import UserRegisterForm
 from userauth.models import SupplierProfile , User
@@ -93,7 +94,18 @@ def Add_article(request):
     return render(request, 'pages/article/add_article.html',context)
   
 def Article_list(request):
+    start_date = request.GET.get('start-date')
+    end_date = request.GET.get('end-date')
     products = Product.objects.all()
+    if start_date:
+        start_date = parse_date(start_date)
+        if start_date:
+            products = products.filter(created_at__gte=start_date)
+
+    if end_date:
+        end_date = parse_date(end_date)
+        if end_date:
+            products = products.filter(created_at__lte=end_date)
     categories = Category.objects.all()
     paginator = Paginator(products, 15)
     page = request.GET.get('page')
@@ -105,6 +117,10 @@ def Article_list(request):
         'categories' :categories ,
         'paged_products':paged_products,
         'product_count':product_count,
+        'start_date': start_date,
+        'end_date': end_date,
+        'start_date_i': start_date.strftime('%Y-%m-%d') if start_date else None,
+        'end_date_i': end_date.strftime('%Y-%m-%d') if end_date else None,
     }
     return render(request, 'pages/article/article_list.html', context )
 
@@ -220,66 +236,117 @@ def search_view(request):
 
 
 ######################################################## Suppliers & Delivers views #################################################################################################
+def toggle_supplier_status(request):
+    user_id = request.POST.get('user_id')
+    if user_id:
+        try:
+            user_profile = get_object_or_404(SupplierProfile, user__id=user_id)
+        except:
+            user_profile = get_object_or_404(AdminProfile, user__id=user_id)
+
+        user_profile.active = not user_profile.active
+        user_profile.save()
+
+
+    return HttpResponseRedirect(reverse('suppliers'))  # Redirect to the suppliers page
 
 def Suppliers(request):
+    user_id = request.GET.get('user_id')
     suppliers = SupplierProfile.objects.all()
+    
+    if user_id :
+        user_profile = SupplierProfile.objects.get(user__id = user_id)
+        user_profile.active != user_profile.active 
     admin = AdminProfile.objects.all()
     all_user = list(admin)+list(suppliers)
     context = {
         'all_user':all_user,
+        'admin':admin,
     }
     return render(request, 'pages/users/suppliers.html', context)
 
+def Del_supplier(request, id):
+    try:
+        user = get_object_or_404(AdminProfile, user__id=id)
+        is_admin = True
+    except:
+        user = get_object_or_404(SupplierProfile, user__id=id)
+        is_admin = False
+
+    user.delete()
+    if is_admin:
+        messages.success(request, "L'administrateur a été supprimé avec succès.")
+    else:
+        messages.success(request, "Le fournisseur a été supprimé avec succès.")
+    
+    return redirect(reverse('suppliers'))
 
 def Supply_view(request):
     products = Product.objects.all()
     fournisseurs = Fournisseur.objects.all()
+    start_date = request.GET.get('start-date')
+    end_date = request.GET.get('end-date')
 
-    suplies_filter_option = request.GET.get('filter', 'this month')
-    today = timezone.now().date()
-    if suplies_filter_option == 'today':
-        start_date = today
-    elif suplies_filter_option == 'yesterday':
-        start_date = today - timedelta(days=1)
-    elif suplies_filter_option == 'last_7_days':
-        start_date = today - timedelta(days=7)
-    elif suplies_filter_option == 'this_month':
-        start_date = today.replace(day=1)
-    elif suplies_filter_option == 'last_month':
-        first_day_of_current_month = today.replace(day=1)
-        start_date = (first_day_of_current_month - timedelta(days=1)).replace(day=1)
-    else:
-        start_date = today
-    
     admin = False
     admin = is_admin(request.user)
     if admin :
-        supplies = Supply.objects.filter(date__gte=start_date).order_by('-date')
+        supplies = Supply.objects.all().order_by('-date')
+        
+        if start_date:
+            start_date = parse_date(start_date)
+            if start_date:
+                supplies = supplies.filter(date__gte=start_date)
+
+        if end_date:
+            end_date = parse_date(end_date)
+            if end_date:
+                supplies = supplies.filter(date__lte=end_date)
+
+
     else :
         supplies = Supply.objects.filter(user = request.user, date__gte=start_date).order_by('-date')
     context = {
         'supplies':supplies,
         'products':products,
         'fournisseurs':fournisseurs,
-        'suplies_filter_option':suplies_filter_option,
-
+        'start_date': start_date,
+        'end_date': end_date,
+        'start_date_i': start_date.strftime('%Y-%m-%d') if start_date else None,
+        'end_date_i': end_date.strftime('%Y-%m-%d') if end_date else None,
     }
     return render(request, 'pages/supplies/supplies.html', context)
 
 def Deliveries(request) : 
     products = Product.objects.all()
-
+    start_date = request.GET.get('start-date')
+    end_date = request.GET.get('end-date')
     admin = False
     admin = is_admin(request.user)
     if admin :
         deliveries = Delivery.objects.all()
+        if start_date:
+            start_date = parse_date(start_date)
+            if start_date:
+                deliveries = deliveries.filter(date__gte=start_date)
+
+        if end_date:
+            end_date = parse_date(end_date)
+            if end_date:
+                deliveries = deliveries.filter(date__lte=end_date)
     else:
         deliveries = Delivery.objects.filter(user=request.user)
     services = Service.objects.all()
+    deliveries_product = DeliveryProduct.objects.all()
+
     context = {
         'deliveries':deliveries,
         'products':products,
         'services':services,
+        'deliveries_product': deliveries_product,
+        'start_date': start_date,
+        'end_date': end_date,
+        'start_date_i': start_date.strftime('%Y-%m-%d') if start_date else None,
+        'end_date_i': end_date.strftime('%Y-%m-%d') if end_date else None,
     }
     return render(request, 'pages/deliveries/deliveries.html', context)
 
@@ -379,19 +446,48 @@ def SupplyDetail(request, sid) :
     return render(request, 'pages/supplies/supply-detail.html', context)
 
 def Four_list(request):
-
+    start_date = request.GET.get('start-date')
+    end_date = request.GET.get('end-date')
     fournisseurs = Fournisseur.objects.all()
+    if start_date:
+        start_date = parse_date(start_date)
+        if start_date:
+            fournisseurs = fournisseurs.filter(date__gte=start_date)
+
+    if end_date:
+        end_date = parse_date(end_date)
+        if end_date:
+            fournisseurs = fournisseurs.filter(date__lte=end_date)
     context={
+        'start_date': start_date,
+        'end_date': end_date,
+        'start_date_i': start_date.strftime('%Y-%m-%d') if start_date else None,
+        'end_date_i': end_date.strftime('%Y-%m-%d') if end_date else None,
         'fournisseurs':fournisseurs,
     }
     return render(request, 'pages/article/fournisseur.html', context)
     
 
 def Serv_list(request):
-
+    start_date = request.GET.get('start-date')
+    end_date = request.GET.get('end-date')
     services = Service.objects.all()
+    if start_date:
+        start_date = parse_date(start_date)
+        if start_date:
+            services = services.filter(date__gte=start_date)
+
+    if end_date:
+        end_date = parse_date(end_date)
+        if end_date:
+            services = services.filter(date__lte=end_date)
     context={
         'services':services,
+        'start_date': start_date,
+        'end_date': end_date,
+        'start_date_i': start_date.strftime('%Y-%m-%d') if start_date else None,
+        'end_date_i': end_date.strftime('%Y-%m-%d') if end_date else None,
+       
     }
     return render(request, 'pages/article/service.html', context)
     

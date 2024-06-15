@@ -43,10 +43,9 @@ urlpatterns = [
 
     ################################### users urls ###########################################
     path('search/',search_view ,name='search'),
-
-
     path('suppliers/' ,Suppliers, name='suppliers'),
-
+    path('deletes-user/<id>' ,Del_supplier, name='delete_user'),
+    path('toggle-supplier-status/', toggle_supplier_status, name='toggle_supplier_status'),
     ################################## deliveries urls #######################################
 
     path('deliveries/' ,Deliveries, name='deliveries'),

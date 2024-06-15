@@ -30,22 +30,36 @@
                   <h5 class="card-title mb-0">Delivery History</h5>
                 </div>
                 <div class="col-sm-auto">
+                  <div class="flex-shrink-0">
+                      <div class="dropdown card-header-dropdown">
+                          <div class="date-range-picker">
+                              <form method="get" class="d-flex" style="gap: 05px;justify-content: center;align-items: center;">
+                                  <label for="start-date" class="form-label m-0">From: </label>
+                                  <input type="date" id="start-date" class="form-control" name="start-date" value="{{ start_date_i }}">
+                                  
+                                  <label for="end-date" class="form-label m-0">To: </label>
+                                  <input type="date" id="end-date" class="form-control" name="end-date" value="{{ end_date_i}}">
+                                  
+                                  <button type="submit" id="submit-dates" class="btn btn-info">Filter</button>
+                              </form>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+                <div class="col-sm-auto">
                   <div class="d-flex gap-1 flex-wrap">
                     <button type="button" class="btn btn-success add-btn" data-bs-toggle="modal" id="create-btn"
                       data-bs-target="#showModal">
                       <i class="ri-add-line align-bottom me-1"></i> Ajouter une 
                       Sortie
                     </button>
-                    <button type="button" class="btn btn-info">
+                    <button type="button" class="btn btn-info"  id="dwnldBtn" >
                       <i class="ri-file-download-line align-bottom me-1"></i>
                       Import
                     </button>
                   </div>
                 </div>
               </div>
-            </div>
-            <div class="card-body border border-dashed border-end-0 border-start-0">
-        
             </div>
             <div class="card-body pt-0">
               <div>
@@ -250,6 +264,48 @@
               <!--end modal -->
             </div>
           </div>
+          <div class="card-body card" id="pdfcontent">
+            <!-- Table des sorties -->
+            <div class="table-responsive table-card mb-1">
+                <h1 class="p-3 text-center">Liste des Sorties  
+                {% if start_date %}
+                du {{ start_date|date:"d M Y"}} au {{ end_date|date:"d M Y" }}
+                {% endif %}</h1>
+                <table class="table align-middle" id="out">
+                    <thead class="table-light text-muted">
+                        <tr>
+                            <th>Code Sortie</th>
+                            <th>Fait par</th>
+                            <th>Produits livrés</th>
+                            <th>Service</th>
+                            <th>Bureau</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+                    <tbody class="list form-check-all">
+                        {% for delivery in deliveries %}
+                        <tr>
+                            <td>#{{ delivery.did }}</td>
+                            <td>{{ delivery.user }}</td>
+                            <td>
+                                <ul>
+                                    {% for item in deliveries_product %}
+                                    {% if item.delivery.did == delivery.did %}
+                                    <li>({{ item.product.pid }}) {{ item.product.title }} | Quantité: {{ item.quantity }}</li>
+                                    {% endif %}
+                                    {% endfor %}
+                                </ul>
+                            </td>
+                            <td>{{ delivery.service }}</td>
+                            <td>{{ delivery.post }}</td>
+                            <td>{{ delivery.date|date:"d M Y" }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <!-- Fin de la table des sorties -->
+        </div>
         </div>
         <!--end col-->
       </div>
@@ -258,8 +314,6 @@
     <!-- container-fluid -->
   </div>
   <!-- End Page-content -->
-
-
 </div>
 
 <script>

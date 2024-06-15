@@ -30,6 +30,23 @@
                   <h5 class="card-title mb-0">Listes des fournisseurs</h5>
                 </div>
                 <div class="col-sm-auto">
+                  <div class="flex-shrink-0">
+                    <div class="dropdown card-header-dropdown">
+                        <div class="date-range-picker">
+                            <form method="get" class="d-flex" style="gap: 05px;justify-content: center;align-items: center;">
+                                <label for="start-date" class="form-label m-0">From: </label>
+                                <input type="date" id="start-date" class="form-control" name="start-date" value="{{ start_date_i }}">
+                                
+                                <label for="end-date" class="form-label m-0">To: </label>
+                                <input type="date" id="end-date" class="form-control" name="end-date" value="{{ end_date_i}}">
+                                
+                                <button type="submit" id="submit-dates" class="btn btn-info">Filter</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                </div>
+                <div class="col-sm-auto">
                   <div class="d-flex gap-1 flex-wrap">
                     <button type="button" class="btn btn-success add-btn" data-bs-toggle="modal" id="create-btn"
                       data-bs-target="#showModal">
@@ -257,6 +274,33 @@
             </div>
             <!--end modal -->
           </div>
+          <div class="card-body card" id="pdfcontent">
+            <!-- Table des entrées -->
+            <div class="table-responsive table-card mb-1">
+                <h1 class="p-3 text-center">Liste des Fournisseurs    {% if start_date %}
+                    du {{ start_date|date:"d M Y"}} au {{ end_date|date:"d M Y" }}
+                    {% endif %}</h1>
+                <table class="table align-middle" id="ent">
+                    <thead class="table-light text-muted">
+                        <tr>
+                            <th>Code Fournisseur</th>
+                            <th>Nom du fournisseur</th>
+                            <th>Date D'ajout</th>
+                        </tr>
+                    </thead>
+                    <tbody class="list form-check-all">
+                        {% for fournisseur in fournisseurs %}
+                        <tr>
+                            <td>#{{ fournisseur.fid }}</td>
+                            <td>{{ fournisseur.title }}</td>
+                            <td>{{ fournisseur.date|date:"d M Y" }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <!-- Fin de la table des entrées -->
+        </div>
         </div>
       </div>
       <!--end col-->

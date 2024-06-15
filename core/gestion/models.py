@@ -60,7 +60,7 @@ class Fournisseur(models.Model):
 
 class Delivery(models.Model):
     did = ShortUUIDField(unique=True, length=10, max_length= 20 , alphabet='abcdefghijklmnopqrstuvwxyz1234567890' , editable=False,  prefix='Del-')
-    user = models.ForeignKey(User, on_delete=models.CASCADE , null=True , blank=True)
+    user = models.ForeignKey(User, on_delete=models.SET_NULL , null=True , blank=True)
     post = models.CharField(max_length=200)
     service = models.CharField(max_length=200, blank=True, null=True)
     date = models.DateTimeField(auto_now_add=True)
@@ -70,7 +70,7 @@ class Delivery(models.Model):
     
 class DeliveryProduct(models.Model):
     #dpid = ShortUUIDField(unique=True, length=10, max_length= 20 , alphabet='abcdefghijklmnopqrstuvwxyz1234567890' , editable=False,  prefix='DelProd-')
-    delivery = models.ForeignKey(Delivery,on_delete=models.CASCADE)
+    delivery = models.ForeignKey(Delivery,on_delete=models.SET_NULL , null=True)
     product = models.ForeignKey(Product,on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField()
     
@@ -79,7 +79,7 @@ class DeliveryProduct(models.Model):
     
 class Supply(models.Model):
     sid = ShortUUIDField(unique=True, length=10, max_length= 20 , alphabet='abcdefghijklmnopqrstuvwxyz1234567890' , editable=False,  prefix='Sup-')
-    user = models.ForeignKey(User, on_delete=models.CASCADE , null=True , blank=True)
+    user = models.ForeignKey(User, on_delete=models.SET_NULL , null=True , blank=True)
     product = models.ForeignKey(Product,on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField()
     fournisseur = models.ForeignKey(Fournisseur, verbose_name=("Fournisseur"), on_delete=models.SET_NULL,blank=True, null=True)

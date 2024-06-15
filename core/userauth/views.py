@@ -1,4 +1,5 @@
 from django.conf import settings
+from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse
 from userauth.form import UserRegisterForm
@@ -46,14 +47,19 @@ def login_view(request):
     if request.user.is_authenticated:
         messages.warning(request, f'You are already logged in.')
         return redirect('homePage')
-
     if request.method == "POST":
         username = request.POST.get('username')
         password = request.POST.get('password')
 
         try:
             user = authenticate(request, username=username, password=password)
+            try:
+                profile = SupplierProfile.objects.get(user=user)
+            except:
+                profile = AdminProfile.objects.get(user=user)
 
+            if profile.active == False :
+                return HttpResponse('your account was disabled')
             if user is not None:
                 login(request, user)
                 messages.success(request, 'You are logged in.')

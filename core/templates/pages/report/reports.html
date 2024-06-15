@@ -1,40 +1,6 @@
 {% extends 'base/base.html' %}
 {% load static %}
 {% block 'content' %}
-
-<style>
-.date-range-picker {
-  background-color: #fff;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-}
-
-.date-range-picker label {
-  margin-right: 10px;
-}
-
-.date-range-picker input {
-  margin-right: 20px;
-  padding: 5px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-}
-
-.date-range-picker button {
-  padding: 5px 10px;
-  border: none;
-  background-color: #007bff;
-  color: white;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.date-range-picker button:hover {
-  background-color: #0056b3;
-}
-</style>
-
 <div class="main-content">
     <div class="page-content">
         <div class="container-fluid">
@@ -68,14 +34,14 @@
                                     <div class="flex-shrink-0">
                                         <div class="dropdown card-header-dropdown">
                                             <div class="date-range-picker">
-                                                <form method="get">
-                                                    <label for="start-date">Start Date:</label>
-                                                    <input type="date" id="start-date" name="start-date" value="{{ start_date_i }}">
+                                                <form method="get" class="d-flex" style="gap: 05px;justify-content: center;align-items: center;">
+                                                    <label for="start-date" class="form-label m-0">From: </label>
+                                                    <input type="date" id="start-date" class="form-control" name="start-date" value="{{ start_date_i }}">
                                                     
-                                                    <label for="end-date">End Date:</label>
-                                                    <input type="date" id="end-date" name="end-date" value="{{ end_date_i}}">
+                                                    <label for="end-date" class="form-label m-0">To: </label>
+                                                    <input type="date" id="end-date" class="form-control" name="end-date" value="{{ end_date_i}}">
                                                     
-                                                    <button type="submit" id="submit-dates">Submit</button>
+                                                    <button type="submit" id="submit-dates" class="btn btn-info">Filter</button>
                                                 </form>
                                             </div>
                                         </div>
@@ -215,52 +181,4 @@
         </div>
     </div>
 </div>
-
-<script>
-$(document).ready(function () {
-    $('#dwnldBtn').on('click', function () {
-        var doc = new jspdf.jsPDF('p', 'mm', 'a4');
-        var content = document.querySelector('#pdfcontent');
-
-        html2canvas(content).then(canvas => {
-            var imgData = canvas.toDataURL('image/png');
-            var imgWidth = 190;
-            var pageHeight = 297;
-            var imgHeight = canvas.height * imgWidth / canvas.width;
-            var heightLeft = imgHeight;
-            var position = 10;
-
-            doc.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight);
-            heightLeft -= pageHeight;
-
-            while (heightLeft >= 0) {
-                position = heightLeft - imgHeight;
-                doc.addPage();
-                doc.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight);
-                heightLeft -= pageHeight;
-            }
-            
-            var timestamp = new Date().toISOString().replace(/[\-:]/g, "").replace("T", "_").split(".")[0];
-            var filename = 'rapport_tables_multiples_' + timestamp + '.pdf';
-            
-            doc.save(filename);
-        });
-    });
-});
-
-document.getElementById('submit-dates').addEventListener('click', function() {
-  const startDate = document.getElementById('start-date').value;
-  const endDate = document.getElementById('end-date').value;
-
-  if (startDate && endDate) {
-    if (new Date(startDate) <= new Date(endDate)) {
-      console.log(`Selected Date Range:\nStart: ${startDate}\nEnd: ${endDate}`);
-    } else {
-      alert('End date must be later than or equal to start date.');
-    }
-  } else {
-    alert('Please select both start and end dates.');
-  }
-});
-</script>
 {% endblock %}

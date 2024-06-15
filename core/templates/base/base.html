@@ -45,7 +45,8 @@
       color: white !important;
       font-weight: 700;
     }
-  </style>
+    </style>
+    
 </head>
 
 <body>
@@ -110,7 +111,7 @@
                 <form class="p-3">
                   <div class="form-group m-0">
                     <div class="input-group">
-                      <input type="text" class="form-control" placeholder="Search ..."
+                      <input type="text" class="form-control"  method="get" action="{% url 'search'  %}" name="q" placeholder="Search ..."
                         aria-label="Recipient's username" />
                       <button class="btn btn-primary" type="submit">
                         <i class="mdi mdi-magnify"></i>
@@ -147,8 +148,8 @@
                   <i class="rounded-circle header-profile-user "
                     alt="Header Avatar" data-feather="user" ></i>
                   <span class="text-start ms-xl-2">
-                    <span class="d-none d-xl-inline-block ms-1 fw-medium user-name-text">{{request.user}}
-                      {{request.user.last_name}}</span>
+                    <span class="d-none d-xl-inline-block ms-1 fw-medium user-name-text">
+                      {{request.user.username}}</span>
                     <span class="d-none d-xl-block ms-1 fs-12 user-name-sub-text"> {% if admin %}
                       Admin
                       {% endif %}</span>
@@ -165,22 +166,14 @@
                     class="mdi mdi-account-circle text-muted fs-16 align-middle me-1"></i>
                   <span class="align-middle">Profile</span></a>
                 <div class="dropdown-divider"></div>
+
                 <a class="dropdown-item" href="pages-profile-settings.html"><i
                     class="mdi mdi-cog-outline text-muted fs-16 align-middle me-1"></i>
                   <span class="align-middle">Settings</span></a>
-                <a class="dropdown-item" href="auth-lockscreen-basic.html"><i
-                    class="mdi mdi-lock text-muted fs-16 align-middle me-1"></i>
-                  <span class="align-middle">Lock screen</span></a>
+        
                 <a class="dropdown-item" href="{% url 'sign-out' %}"><i
                     class="mdi mdi-logout text-muted fs-16 align-middle me-1"></i>
-                  <span class="align-middle" data-key="t-logout">Logout</span></a>
-                {% else %}
-                <a class="dropdown-item" href="auth-logout-basic.html"><i
-                    class="mdi mdi-logout text-muted fs-16 align-middle me-1"></i>
-                  <span class="align-middle" data-key="t-logout">Login</span></a>
-                <a class="dropdown-item" href="auth-logout-basic.html"><i
-                    class="mdi mdi-logout text-muted fs-16 align-middle me-1"></i>
-                  <span class="align-middle" data-key="t-logout">Sign up</span></a>
+                  <span class="align-middle" data-key="t-logout">Logout</span></a>   
                 {% endif %}
               </div>
             </div>
@@ -219,39 +212,8 @@
     </script>
     </header>
 
-    <!-- removeNotificationModal -->
-    <div id="removeNotificationModal" class="modal fade zoomIn" tabindex="-1" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
-              id="NotificationModalbtn-close"></button>
-          </div>
-          <div class="modal-body">
-            <div class="mt-2 text-center">
-              <lord-icon src="https://cdn.lordicon.com/gsqxdxog.json" trigger="loop"
-                colors="primary:#f7b84b,secondary:#f06548" style="width: 100px; height: 100px"></lord-icon>
-              <div class="mt-4 pt-2 fs-15 mx-4 mx-sm-5">
-                <h4>Are you sure ?</h4>
-                <p class="text-muted mx-4 mb-0">
-                  Are you sure you want to remove this Notification ?
-                </p>
-              </div>
-            </div>
-            <div class="d-flex gap-2 justify-content-center mt-4 mb-2">
-              <button type="button" class="btn w-sm btn-light" data-bs-dismiss="modal">
-                Close
-              </button>
-              <button type="button" class="btn w-sm btn-danger" id="delete-notification">
-                Yes, Delete It!
-              </button>
-            </div>
-          </div>
-        </div>
-        <!-- /.modal-content -->
-      </div>
       <!-- /.modal-dialog -->
-    </div>
+   
     <!-- /.modal -->
     <!-- ========== App Menu ========== -->
     <div class="app-menu navbar-menu">
@@ -288,36 +250,15 @@
             <img class="rounded header-profile-user" src="{% static 'assets/images/users/avatar-1.jpg' %}"
               alt="Header Avatar" />
             <span class="text-start">
-              <span class="d-block fw-medium sidebar-user-name-text">Anna Adame</span>
-              <span class="d-block fs-14 sidebar-user-name-sub-text"><i
-                  class="ri ri-circle-fill fs-10 text-success align-baseline"></i>
-                <span class="align-middle">Online</span></span>
-            </span>
+              <span class="d-block fw-medium sidebar-user-name-text">{{request.user}}</span>
           </span>
         </button>
         <div class="dropdown-menu dropdown-menu-end">
           <!-- item-->
-          <h6 class="dropdown-header">Welcome Anna!</h6>
+          <h6 class="dropdown-header">Welcome {{request.user}}!</h6>
           <a class="dropdown-item" href="pages-profile.html"><i
               class="mdi mdi-account-circle text-muted fs-16 align-middle me-1"></i>
             <span class="align-middle">Profile</span></a>
-          <a class="dropdown-item" href="apps-chat.html"><i
-              class="mdi mdi-message-text-outline text-muted fs-16 align-middle me-1"></i>
-            <span class="align-middle">Messages</span></a>
-          <a class="dropdown-item" href="apps-tasks-kanban.html"><i
-              class="mdi mdi-calendar-check-outline text-muted fs-16 align-middle me-1"></i>
-            <span class="align-middle">Taskboard</span></a>
-          <a class="dropdown-item" href="pages-faqs.html"><i
-              class="mdi mdi-lifebuoy text-muted fs-16 align-middle me-1"></i>
-            <span class="align-middle">Help</span></a>
-          <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="pages-profile.html"><i
-              class="mdi mdi-wallet text-muted fs-16 align-middle me-1"></i>
-            <span class="align-middle">Balance : <b>$5971.67</b></span></a>
-          <a class="dropdown-item" href="pages-profile-settings.html"><span
-              class="badge bg-success-subtle text-success mt-1 float-end">New</span><i
-              class="mdi mdi-cog-outline text-muted fs-16 align-middle me-1"></i>
-            <span class="align-middle">Settings</span></a>
           <a class="dropdown-item" href="auth-lockscreen-basic.html"><i
               class="mdi mdi-lock text-muted fs-16 align-middle me-1"></i>
             <span class="align-middle">Lock screen</span></a>
@@ -1599,6 +1540,53 @@
 
   <!-- Sweet Alerts js -->
   <script src="{% static 'assets/libs/sweetalert2/sweetalert2.min.js' %}"></script>
+  <script>
+    $(document).ready(function () {
+        $('#dwnldBtn').on('click', function () {
+            var doc = new jspdf.jsPDF('p', 'mm', 'a4');
+            var content = document.querySelector('#pdfcontent');
+    
+            html2canvas(content).then(canvas => {
+                var imgData = canvas.toDataURL('image/png');
+                var imgWidth = 190;
+                var pageHeight = 297;
+                var imgHeight = canvas.height * imgWidth / canvas.width;
+                var heightLeft = imgHeight;
+                var position = 10;
+    
+                doc.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight);
+                heightLeft -= pageHeight;
+    
+                while (heightLeft >= 0) {
+                    position = heightLeft - imgHeight;
+                    doc.addPage();
+                    doc.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight);
+                    heightLeft -= pageHeight;
+                }
+                
+                var timestamp = new Date().toISOString().replace(/[\-:]/g, "").replace("T", "_").split(".")[0];
+                var filename = 'rapport_tables_multiples_' + timestamp + '.pdf';
+                
+                doc.save(filename);
+            });
+        });
+    });
+    
+    document.getElementById('submit-dates').addEventListener('click', function() {
+      const startDate = document.getElementById('start-date').value;
+      const endDate = document.getElementById('end-date').value;
+    
+      if (startDate && endDate) {
+        if (new Date(startDate) <= new Date(endDate)) {
+          console.log(`Selected Date Range:\nStart: ${startDate}\nEnd: ${endDate}`);
+        } else {
+          alert('End date must be later than or equal to start date.');
+        }
+      } else {
+        alert('Please select both start and end dates.');
+      }
+    });
+    </script>
 </body>
 
 </html>
