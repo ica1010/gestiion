@@ -42,10 +42,9 @@ def add_user(request):
         messages.error(request, "Invalid request method.")
         return redirect(reverse('sign-up'))
     
-
 def login_view(request):
     if request.user.is_authenticated:
-        messages.warning(request, f'You are already logged in.')
+        messages.warning(request, 'You are already logged in.')
         return redirect('homePage')
     if request.method == "POST":
         username = request.POST.get('username')
@@ -53,14 +52,14 @@ def login_view(request):
 
         try:
             user = authenticate(request, username=username, password=password)
-            try:
-                profile = SupplierProfile.objects.get(user=user)
-            except:
-                profile = AdminProfile.objects.get(user=user)
-
-            if profile.active == False :
-                return HttpResponse('your account was disabled')
             if user is not None:
+                try:
+                    profile = AdminProfile.objects.get(user=user)
+                except AdminProfile.DoesNotExist:
+                    profile = SupplierProfile.objects.get(user=user)
+
+                if not profile.active:
+                    return HttpResponse('Your account was disabled')
                 login(request, user)
                 messages.success(request, 'You are logged in.')
                 return redirect('homePage')
@@ -70,6 +69,7 @@ def login_view(request):
             messages.error(request, f'User with username \'{username}\' does not exist.')
 
     return render(request, 'registration/login.html')
+
 
 def logout_view(request):
     logout(request)
