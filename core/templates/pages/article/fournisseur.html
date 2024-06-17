@@ -53,7 +53,7 @@
                       <i class="ri-add-line align-bottom me-1"></i> Ajouter un
                       nouveau fournisseur
                     </button>
-                    <button type="button" class="btn btn-info">
+                    <button type="button" class="btn btn-info"  id="dwnldBtn">
                       <i class="ri-file-download-line align-bottom me-1"></i>
                       Importer la liste
                     </button>
@@ -274,33 +274,35 @@
             </div>
             <!--end modal -->
           </div>
-          <div class="card-body card" id="pdfcontent">
-            <!-- Table des entrées -->
-            <div class="table-responsive table-card mb-1">
-                <h1 class="p-3 text-center">Liste des Fournisseurs    {% if start_date %}
-                    du {{ start_date|date:"d M Y"}} au {{ end_date|date:"d M Y" }}
-                    {% endif %}</h1>
-                <table class="table align-middle" id="ent">
-                    <thead class="table-light text-muted">
-                        <tr>
-                            <th>Code Fournisseur</th>
-                            <th>Nom du fournisseur</th>
-                            <th>Date D'ajout</th>
-                        </tr>
-                    </thead>
-                    <tbody class="list form-check-all">
-                        {% for fournisseur in fournisseurs %}
-                        <tr>
-                            <td>#{{ fournisseur.fid }}</td>
-                            <td>{{ fournisseur.title }}</td>
-                            <td>{{ fournisseur.date|date:"d M Y" }}</td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-            <!-- Fin de la table des entrées -->
-        </div>
+          <div class="d-block modal " style="z-index: -9999;">
+            <div class="card-body card" id="pdfcontent">
+              <!-- Table des entrées -->
+              <div class="table-responsive table-card mb-1">
+                  <h1 class="p-3 text-center">Liste des Fournisseurs    {% if start_date %}
+                      du {{ start_date|date:"d M Y"}} au {{ end_date|date:"d M Y" }}
+                      {% endif %}</h1>
+                  <table class="table align-middle" id="ent">
+                      <thead class="table-light text-muted">
+                          <tr>
+                              <th>Code Fournisseur</th>
+                              <th>Nom du fournisseur</th>
+                              <th>Date D'ajout</th>
+                          </tr>
+                      </thead>
+                      <tbody class="list form-check-all">
+                          {% for fournisseur in fournisseurs %}
+                          <tr>
+                              <td>#{{ fournisseur.fid }}</td>
+                              <td>{{ fournisseur.title }}</td>
+                              <td>{{ fournisseur.date|date:"d M Y" }}</td>
+                          </tr>
+                          {% endfor %}
+                      </tbody>
+                  </table>
+              </div>
+              <!-- Fin de la table des entrées -->
+          </div>
+          </div>
         </div>
       </div>
       <!--end col-->

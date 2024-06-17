@@ -455,7 +455,7 @@ def Four_list(request):
             fournisseurs = fournisseurs.filter(date__gte=start_date)
 
     if end_date:
-        end_date = parse_date(end_date)
+        end_date = parse_date(end_date)  
         if end_date:
             fournisseurs = fournisseurs.filter(date__lte=end_date)
     context={

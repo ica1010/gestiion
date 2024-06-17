@@ -38,7 +38,7 @@
 <!-- <script src="//cdn.rawgit.com/rainabba/jquery-table2excel/1.1.0/dist/jquery.table2excel.min.js"></script> -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-  
+
   <style>
     .logo{
       font-size: 2.3rem !important;
@@ -46,7 +46,7 @@
       font-weight: 700;
     }
     </style>
-    
+
 </head>
 
 <body>
@@ -139,7 +139,7 @@
               </button>
             </div>
 
-  
+
             {% if request.user.is_authenticated %}
             <div class="dropdown ms-sm-3 header-item topbar-user">
               <button type="button" class="btn material-shadow-none" id="page-header-user-dropdown"
@@ -170,10 +170,10 @@
                 <a class="dropdown-item" href="pages-profile-settings.html"><i
                     class="mdi mdi-cog-outline text-muted fs-16 align-middle me-1"></i>
                   <span class="align-middle">Settings</span></a>
-        
+
                 <a class="dropdown-item" href="{% url 'sign-out' %}"><i
                     class="mdi mdi-logout text-muted fs-16 align-middle me-1"></i>
-                  <span class="align-middle" data-key="t-logout">Logout</span></a>   
+                  <span class="align-middle" data-key="t-logout">Logout</span></a>
                 {% endif %}
               </div>
             </div>
@@ -213,7 +213,7 @@
     </header>
 
       <!-- /.modal-dialog -->
-   
+
     <!-- /.modal -->
     <!-- ========== App Menu ========== -->
     <div class="app-menu navbar-menu">
@@ -340,14 +340,14 @@
             <li class="nav-item">
               <a class="nav-link menu-link {% if request.path == '/fournisseur/' %} active {% endif %}"
                 href="{% url 'fourn'  %}">
-                <i class="bx bx-store"></i>
+                <i class="las la-industry"></i>
                 <span data-key="t-widgets">List des Founisseur</span>
               </a>
             </li>
             <li class="nav-item">
               <a class="nav-link menu-link {% if request.path == '/services/' %} active {% endif %}"
                 href="{% url 'serv'  %}">
-                <i class="bx bx-store"></i>
+                <i class="las la-building"></i>
                 <span data-key="t-widgets">List des Services</span>
               </a>
             </li>
@@ -360,14 +360,14 @@
             <li class="nav-item">
               <a class="nav-link menu-link {% if request.path == '/deliveries/' %} active {% endif %}"
                 href="{% url 'deliveries'  %}">
-                <i class=" bx bx-task"></i>
+                <i class=" las la-shipping-fast"></i>
                 <span data-key="t-widgets">Liste des Sortie</span>
               </a>
             </li>
             <li class="nav-item">
               <a class="nav-link menu-link {% if request.path == '/supplies/' %} active {% endif %}"
                 href="{% url 'supplies'  %}">
-                <i class="las la-tags"></i>
+                <i class="las la-box-open"></i>
                 <span data-key="t-widgets">Liste des Entrer</span>
               </a>
             </li>
@@ -379,7 +379,7 @@
             <li class="nav-item">
               <a class="nav-link menu-link {% if request.path == '/suppliers/' %} active {% endif %}"
                 href="{% url 'suppliers'  %}">
-                <i class="las la-user-tag"></i><span data-key="t-widgets">Supplies</span>
+                <i class="las la-user-tie"></i><span data-key="t-widgets">Supplies</span>
               </a>
             </li>
 
@@ -390,7 +390,7 @@
             <li class="nav-item">
               <a class="nav-link menu-link {% if request.path == '/reports/' %} active {% endif %}"
                 href="{% url 'reports'  %}">
-                <i class="las la-user-tag"></i><span data-key="t-widgets">reports</span>
+                <i class="las la-calendar-week"></i><span data-key="t-widgets">reports</span>
               </a>
             </li>
             {% endif %}
@@ -405,7 +405,7 @@
     <!-- Left Sidebar End -->
     <!-- Vertical Overlay-->
     <div class="vertical-overlay">
-      
+
     </div>
 
     <!-- ============================================================== -->
@@ -601,7 +601,7 @@
                 <input id="customizer-theme01" name="data-theme" type="radio" value="default"
                   class="form-check-input" />
                 <label class="form-check-label p-0" for="customizer-theme01">
-                  <img src="{% static '../../../../themesbrand.com/velzon/assets/images/demo/default.png' %}" alt=""
+                  <img src="{% static 'assets/images/demos/default.png' %}" alt=""
                     class="img-fluid" />
                 </label>
               </div>
@@ -611,7 +611,7 @@
               <div class="form-check card-radio">
                 <input id="customizer-theme02" name="data-theme" type="radio" value="saas" class="form-check-input" />
                 <label class="form-check-label p-0" for="customizer-theme02">
-                  <img src="{% static '../../../../themesbrand.com/velzon/assets/images/demo/saas.png' %}" alt=""
+                  <img src="{% static 'assets/images/demos/saas.png' %}" alt=""
                     class="img-fluid" />
                 </label>
               </div>
@@ -622,7 +622,7 @@
                 <input id="customizer-theme03" name="data-theme" type="radio" value="corporate"
                   class="form-check-input" />
                 <label class="form-check-label p-0" for="customizer-theme03">
-                  <img src="{% static '../../../../themesbrand.com/velzon/assets/images/demo/corporate.png' %}" alt=""
+                  <img src="{% static 'assets/images/demos/corporate.png' %}" alt=""
                     class="img-fluid" />
                 </label>
               </div>
@@ -632,7 +632,7 @@
               <div class="form-check card-radio">
                 <input id="customizer-theme04" name="data-theme" type="radio" value="galaxy" class="form-check-input" />
                 <label class="form-check-label p-0" for="customizer-theme04">
-                  <img src="{% static '../../../../themesbrand.com/velzon/assets/images/demo/galaxy.png' %}" alt=""
+                  <img src="{% static 'assets/images/demos/galaxy.png' %}" alt=""
                     class="img-fluid" />
                 </label>
               </div>
@@ -643,7 +643,7 @@
                 <input id="customizer-theme05" name="data-theme" type="radio" value="material"
                   class="form-check-input" />
                 <label class="form-check-label p-0" for="customizer-theme05">
-                  <img src="{% static '../../../../themesbrand.com/velzon/assets/images/demo/material.png' %}" alt=""
+                  <img src="{% static 'assets/images/demos/material.png' %}" alt=""
                     class="img-fluid" />
                 </label>
               </div>
@@ -654,7 +654,7 @@
                 <input id="customizer-theme06" name="data-theme" type="radio" value="creative"
                   class="form-check-input" />
                 <label class="form-check-label p-0" for="customizer-theme06">
-                  <img src="{% static '../../../../themesbrand.com/velzon/assets/images/demo/creative.png' %}" alt=""
+                  <img src="{% static 'assets/images/demos/creative.png' %}" alt=""
                     class="img-fluid" />
                 </label>
               </div>
@@ -665,7 +665,7 @@
                 <input id="customizer-theme07" name="data-theme" type="radio" value="minimal"
                   class="form-check-input" />
                 <label class="form-check-label p-0" for="customizer-theme07">
-                  <img src="{% static '../../../../themesbrand.com/velzon/assets/images/demo/minimal.png' %}" alt=""
+                  <img src="{% static 'assets/images/demos/minimal.png' %}" alt=""
                     class="img-fluid" />
                 </label>
               </div>
@@ -675,7 +675,7 @@
               <div class="form-check card-radio">
                 <input id="customizer-theme08" name="data-theme" type="radio" value="modern" class="form-check-input" />
                 <label class="form-check-label p-0" for="customizer-theme08">
-                  <img src="{% static '../../../../themesbrand.com/velzon/assets/images/demo/modern.png' %}" alt=""
+                  <img src="{% static 'assets/images/demos/modern.png' %}" alt=""
                     class="img-fluid" />
                 </label>
               </div>
@@ -687,7 +687,7 @@
                 <input id="customizer-theme09" name="data-theme" type="radio" value="interactive"
                   class="form-check-input" />
                 <label class="form-check-label p-0" for="customizer-theme09">
-                  <img src="{% static '../../../../themesbrand.com/velzon/assets/images/demo/interactive.png' %}" alt=""
+                  <img src="{% static 'assets/images/demos/interactive.png' %}" alt=""
                     class="img-fluid" />
                 </label>
               </div>
@@ -700,7 +700,7 @@
                 <input id="customizer-theme10" name="data-theme" type="radio" value="classic"
                   class="form-check-input" />
                 <label class="form-check-label p-0" for="customizer-theme10">
-                  <img src="{% static '../../../../themesbrand.com/velzon/assets/images/demo/classic.png' %}" alt=""
+                  <img src="{% static 'assets/images/demos/classic.png' %}" alt=""
                     class="img-fluid" />
                 </label>
               </div>
@@ -713,7 +713,7 @@
                 <input id="customizer-theme11" name="data-theme" type="radio" value="vintage"
                   class="form-check-input" />
                 <label class="form-check-label p-0" for="customizer-theme11">
-                  <img src="{% static '../../../../themesbrand.com/velzon/assets/images/demo/vintage.png' %}" alt=""
+                  <img src="{% static 'assets/images/demos/vintage.png' %}" alt=""
                     class="img-fluid" />
                 </label>
               </div>
@@ -1273,7 +1273,7 @@
                 <input class="form-check-input" type="radio" name="data-sidebar-image" id="sidebarimg-01"
                   value="img-1" />
                 <label class="form-check-label p-0 avatar-sm h-auto" for="sidebarimg-01">
-                  <img src="{% static 'assets/images/sidebar/img-1.jpg' %}" alt=""
+                  <img src="{% static '/assets/images/sidebar/img-1.jpg' %}" alt=""
                     class="avatar-md w-auto object-fit-cover" />
                 </label>
               </div>
@@ -1540,53 +1540,42 @@
 
   <!-- Sweet Alerts js -->
   <script src="{% static 'assets/libs/sweetalert2/sweetalert2.min.js' %}"></script>
-  <script>
-    $(document).ready(function () {
-        $('#dwnldBtn').on('click', function () {
-            var doc = new jspdf.jsPDF('p', 'mm', 'a4');
-            var content = document.querySelector('#pdfcontent');
+<script>
+  $('#dwnldBtn').on('click', function () {
+    // Convertir le contenu du tableau en PDF
+    var doc = new jspdf.jsPDF('p', 'mm', 'a4');
+    var content = document.querySelector('#pdfcontent');
     
-            html2canvas(content).then(canvas => {
-                var imgData = canvas.toDataURL('image/png');
-                var imgWidth = 190;
-                var pageHeight = 297;
-                var imgHeight = canvas.height * imgWidth / canvas.width;
-                var heightLeft = imgHeight;
-                var position = 10;
-    
+    html2canvas(content)
+        .then(canvas => {
+            var imgData = canvas.toDataURL('image/png');
+            var imgWidth = 190;
+            var pageHeight = 297;
+            var imgHeight = canvas.height * imgWidth / canvas.width;
+            var heightLeft = imgHeight;
+            var position = 10;
+
+            doc.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight);
+            heightLeft -= pageHeight;
+
+            while (heightLeft >= 0) {
+                position = heightLeft - imgHeight;
+                doc.addPage();
                 doc.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight);
                 heightLeft -= pageHeight;
-    
-                while (heightLeft >= 0) {
-                    position = heightLeft - imgHeight;
-                    doc.addPage();
-                    doc.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight);
-                    heightLeft -= pageHeight;
-                }
-                
-                var timestamp = new Date().toISOString().replace(/[\-:]/g, "").replace("T", "_").split(".")[0];
-                var filename = 'rapport_tables_multiples_' + timestamp + '.pdf';
-                
-                doc.save(filename);
-            });
+            }
+
+            var timestamp = new Date().toISOString().replace(/[\-:]/g, "").replace("T", "_").split(".")[0];
+            var filename = 'rapport_tables_multiples_' + timestamp + '.pdf';
+
+            doc.save(filename);
+        })
+        .catch(error => {
+            console.error('Une erreur est survenue lors de la conversion en PDF :', error);
         });
-    });
-    
-    document.getElementById('submit-dates').addEventListener('click', function() {
-      const startDate = document.getElementById('start-date').value;
-      const endDate = document.getElementById('end-date').value;
-    
-      if (startDate && endDate) {
-        if (new Date(startDate) <= new Date(endDate)) {
-          console.log(`Selected Date Range:\nStart: ${startDate}\nEnd: ${endDate}`);
-        } else {
-          alert('End date must be later than or equal to start date.');
-        }
-      } else {
-        alert('Please select both start and end dates.');
-      }
-    });
-    </script>
+});
+
+</script>
 </body>
 
 </html>
