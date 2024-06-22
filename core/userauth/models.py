@@ -8,8 +8,8 @@ class User(AbstractUser):
     id= ShortUUIDField(unique=True, length=4, max_length= 20 ,prefix='', alphabet='1234567890',primary_key=True)
     email = models.EmailField(unique=True)
     username = models.CharField(max_length=60, unique=True)
-    image= models.ImageField(upload_to='profile', default="./default_Profile.png")
-    phone = models.PositiveIntegerField(blank=True, null=True)
+    image= models.ImageField(default="./default_Profile.png")
+    phone = models.CharField(max_length=200, blank=True, null=True)
 
     def __str__(self):
         return self.username

@@ -1,0 +1,226 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block 'content' %}
+<div class="main-content">
+    <div class="page-content">
+        <div class="container-fluid">
+
+            <!-- start page title -->
+            <div class="row">
+                <div class="col-12">
+                    <div
+                        class="page-title-box d-sm-flex align-items-center justify-content-between bg-galaxy-transparent">
+                        <h4 class="mb-sm-0">Me</h4>
+
+                        <div class="page-title-right">
+                            <ol class="breadcrumb m-0">
+                                <li class="breadcrumb-item"><a href="javascript: void(0);">Ecommerce</a></li>
+                                <li class="breadcrumb-item"><a href="javascript: void(0);">Profile</a></li>
+                                <li class="breadcrumb-item active">me</li>
+                            </ol>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <!-- end page title -->
+
+            <form id="createproduct-form" autocomplete="off" class="needs-validation" novalidate method="post"
+                enctype="multipart/form-data" action="">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-lg-3"></div>
+                    <div class="col-lg-6 col-md-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="mb-4">
+                                    <h5 class="fs-14 mb-1">Profile Image</h5>
+                                    <p class="text-muted">your can change or delete your profie image.</p>
+                                    <div class="text-start">
+                                        <div class="position-relative d-inline-block">
+                                            <div class="position-absolute top-100 start-100 translate-middle">
+                                                <label for="product-image-input" class="mb-0" data-bs-toggle="tooltip"
+                                                    data-bs-placement="right" title="Select Image">
+                                                    <div class="avatar-xs">
+                                                        <div
+                                                            class="avatar-title bg-light border rounded-circle text-muted cursor-pointer">
+                                                            <i class="ri-image-fill"></i>
+                                                        </div>
+                                                    </div>
+                                                </label>
+                                                <input class="form-control d-none" name="main-image"
+                                                    value='{{request.user.image.url}}'
+                                                    id="product-image-input" type="file"
+                                                    accept="image/png, image/gif, image/jpeg, image/png" required>
+                                            </div>
+                                            <div class="avatar-lg">
+                                                <div class="avatar-title bg-light rounded-circle display-6 text-muted overflow-hidden">
+                                                    <img src='{{request.user.image.url}}'
+                                                        id="product-img" class="avatar-md h-auto w-200">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="mb-3 col-md-6">
+                                        <label class="form-label" for="product-title-input">username</label>
+                                        <input type="text" class="form-control " id="product-title-input"
+                                            value="{{request.user.username}}" name="username"
+                                            placeholder="Enter product title" required>
+                                        <div class="invalid-feedback">Please your must enter a correct username </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="mb-3 col-md-6">
+                                        <label class="form-label" for="product-title-input">Email</label>
+                                        <input type="email" class="form-control " id="product-title-input"
+                                            value="{{request.user.email}}" name="email"
+                                            placeholder="Enter your email" required>
+                                        <div class="invalid-feedback">Please your must enter a correct email </div>
+                                    </div>
+                                    <div class="mb-3 col-md-6">
+                                        <label class="form-label" for="product-title-input">Phonenumber</label>
+                                        <input type="number" class="form-control " id="product-title-input"
+                                            value='{{request.user.phone}}'name="phone"
+                                            placeholder="Enter your Phonenumber" required>
+                                        <div class="invalid-feedback">Please your must enter a correct phone number </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="mb-3 col-md-6">
+                                        <label class="form-label" for="product-title-input">First name</label>
+                                        <input type="text" class="form-control " id="product-title-input"
+                                            value="{{request.user.first_name}}" name="first"
+                                            placeholder="Enter your first name" required>
+                                        <div class="invalid-feedback">Please your must enter a correct name </div>
+                                    </div>
+                                    <div class="mb-3 col-md-6">
+                                        <label class="form-label" for="product-title-input">Last name</label>
+                                        <input type="text" class="form-control " id="product-title-input"
+                                            value="{{request.user.last_name}}" name="last"
+                                            placeholder="Enter your last name" required>
+                                        <div class="invalid-feedback">Please your must enter a correct name </div>
+                                    </div>
+                                </div>
+
+<hr>
+<h4>change password</h4>
+                                <div class="row">
+                                    <div class="mb-3 col-md-6">
+                                        <label class="form-label" for="product-title-input">your current password</label>
+                                        <input type="password" class="form-control " id="product-title-input"
+                                            value="{{request.user.password}}" name="pwd"
+                                            placeholder="Enter your curent password">
+                                        
+                                    </div>
+                                    <div class="mb-3 col-md-6">
+                                        <label class="form-label" for="product-title-input">the new password</label>
+                                        <input type="text" class="form-control " id="product-title-input"
+                                            name="n-pwd"
+                                            placeholder="Enter the new password">
+                                
+                                    </div>
+                                </div>
+
+                                <div style="display: none;">
+                                    <h5 class="fs-14 mb-1">Product Gallery</h5>
+                                    <p class="text-muted">Add Product Gallery Images.</p>
+
+                                    <div class="dropzone">
+                                        <div class="fallback">
+                                            <input name="image-files" multiple type="file"
+                                                accept="image/png, image/gif, image/jpeg">
+                                        </div>
+                                        <center>
+                                            <div class="dz-message needsclick">
+                                                <div class="mb-3">
+                                                    <i class="display-4 text-muted ri-upload-cloud-2-fill"></i>
+                                                </div>
+                                                <h5>Drop files here or click to upload.</h5>
+                                            </div>
+                                        </center>
+                                    </div>
+
+                                    <ul class="list-unstyled mb-0" id="dropzone-preview">
+                                        <li class="mt-2" id="dropzone-preview-list">
+                                            <!-- This is used as the file preview template -->
+                                            <div class="border rounded">
+                                                <div class="d-flex p-2">
+                                                    <div class="flex-shrink-0 me-3">
+                                                        <div class="avatar-sm bg-light rounded">
+                                                            <img data-dz-thumbnail class="img-fluid rounded d-block"
+                                                                src="#" alt="Product-Image" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="flex-grow-1">
+                                                        <div class="pt-1">
+                                                            <h5 class="fs-14 mb-1" data-dz-name>&nbsp;</h5>
+                                                            <p class="fs-13 text-muted mb-0" data-dz-size></p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="flex-shrink-0 ms-3">
+                                                        <button data-dz-remove
+                                                            class="btn btn-sm btn-danger">Delete</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                    <!-- end dropzon-preview -->
+                                </div>
+                            </div>
+                        </div>
+                        <!-- end card -->
+                        <div class="text-end mb-3 row">
+                            <div class="col-6 d-flex">
+                                <div>
+                                    <button type="submit" class="btn btn-outline-danger w-100">Quit</button>
+                                </div>
+                            </div>
+                            <div class="col-6 d-flex">
+                                <div class="d-flex gap-2 justify-content-end">
+                                    <div>
+                                        <button type="submit" class="btn btn-outline-info">Apply changes</button>
+                                    </div>
+                                    <div>
+                                        <button type="submit" class="btn btn-outline-success">Ok</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- end card -->
+
+                    </div>
+                    <div class="col-lg-3"></div>
+                    <!-- end col -->
+                </div>
+                <!-- end row -->
+
+            </form>
+
+        </div>
+        <!-- container-fluid -->
+    </div>
+    <!-- End Page-content -->
+
+    <footer class="footer">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-6">
+                    <script>document.write(new Date().getFullYear())</script> © Velzon.
+                </div>
+                <div class="col-sm-6">
+                    <div class="text-sm-end d-none d-sm-block">
+                        Design & Develop by Themesbrand
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+</div>
+
+
+{% endblock %}

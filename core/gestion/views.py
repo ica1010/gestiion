@@ -2,7 +2,7 @@
 from django.db.models import Q
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth import logout,authenticate, login
-from django.contrib import messages, auth 
+from django.contrib import messages, auth
 from django.contrib.auth.decorators import login_required , permission_required
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.core.paginator import EmptyPage, Paginator, PageNotAnInteger
@@ -39,7 +39,7 @@ def HomePage(request):
         products = Product.objects.all()
         deliveries = Delivery.objects.filter(user = request.user)
         supplies = Supply.objects.filter(user = request.user)
-     
+
     product_count = products.count()
     deliveries_count = deliveries.count()
     supplies_count = supplies.count()
@@ -57,14 +57,14 @@ def HomePage(request):
 
 ######################################################## article views #################################################################################################
 def Add_article(request):
-    categories = Category.objects.all() 
+    categories = Category.objects.all()
     if request.method == 'POST':
         code = request.POST['code']
         title = request.POST['title']
         description = request.POST['description']
         stock = request.POST['stock']
         category = request.POST['category']
-        short_description = request.POST['short-description']
+        # short_description = request.POST['short-description']
         image = request.FILES.get('main-image')
         images = request.FILES.getlist('image-files')
 
@@ -76,23 +76,21 @@ def Add_article(request):
             category = category,
             quantity = stock,
             description = description,
-            short_description =short_description,
+            # short_description =short_description,
             image = image
         )
-        if code : 
+        if code :
             new_article.pid = code
 
         new_article.save()
-        for image in images:
-            ProductImages.objects.create(images=image, product=new_article)
         messages.success(request, 'the product was added successfully')
         return redirect('article_list')
-    
+
     context = {
         'categories':categories,
     }
     return render(request, 'pages/article/add_article.html',context)
-  
+
 def Article_list(request):
     start_date = request.GET.get('start-date')
     end_date = request.GET.get('end-date')
@@ -111,7 +109,7 @@ def Article_list(request):
     page = request.GET.get('page')
     paged_products = paginator.get_page(page)
     product_count = paged_products.count(value=products)
-    
+
     context = {
         'products' :products ,
         'categories' :categories ,
@@ -126,7 +124,7 @@ def Article_list(request):
 
 def Article_detail(request, pid):
     product = Product.objects.get(pid = pid)
-    
+
     context = {
         'product' :product
     }
@@ -159,7 +157,7 @@ def Edit_article(request, pid):
         messages.success(request, f'the product {product.title} was update successfully')
         return redirect('article_list')
 
-    
+
     context = {
         'product' :product,
         'categories':categories
@@ -223,7 +221,7 @@ def search_view(request):
 
     products = Product.objects.filter(Q(title__icontains=query))
     category = Category.objects.filter(Q(title__icontains=query))
-    
+
     context = {
         'products': products,
         'category': category,
@@ -253,10 +251,10 @@ def toggle_supplier_status(request):
 def Suppliers(request):
     user_id = request.GET.get('user_id')
     suppliers = SupplierProfile.objects.all()
-    
+
     if user_id :
         user_profile = SupplierProfile.objects.get(user__id = user_id)
-        user_profile.active != user_profile.active 
+        user_profile.active != user_profile.active
     admin = AdminProfile.objects.all()
     all_user = list(admin)+list(suppliers)
     context = {
@@ -278,7 +276,7 @@ def Del_supplier(request, id):
         messages.success(request, "L'administrateur a été supprimé avec succès.")
     else:
         messages.success(request, "Le fournisseur a été supprimé avec succès.")
-    
+
     return redirect(reverse('suppliers'))
 
 def Supply_view(request):
@@ -291,7 +289,7 @@ def Supply_view(request):
     admin = is_admin(request.user)
     if admin :
         supplies = Supply.objects.all().order_by('-date')
-        
+
         if start_date:
             start_date = parse_date(start_date)
             if start_date:
@@ -316,7 +314,7 @@ def Supply_view(request):
     }
     return render(request, 'pages/supplies/supplies.html', context)
 
-def Deliveries(request) : 
+def Deliveries(request) :
     products = Product.objects.all()
     start_date = request.GET.get('start-date')
     end_date = request.GET.get('end-date')
@@ -380,8 +378,8 @@ def Add_Delivery(request):
             quantity = quantities[products.index(product)],
         )
     newDelivery.save()
-        
-    return redirect(url) 
+
+    return redirect(url)
 
 def Add_supply(request):
     url = request.META.get('HTTP_REFERER')
@@ -407,7 +405,7 @@ def Add_supply(request):
         product_e.quantity = product_e.quantity + int(quantities[products.index(product)])
         product_e.save()
         response = f'products = {products}, fourn = {fournisseur}, livre = {livrer_name}, phone = {livrer_phone}, detail = {detail}'
-        try : 
+        try :
             new_supply  = Supply.objects.create(
                 user = request.user,
                 product = product_e,
@@ -425,11 +423,11 @@ def Add_supply(request):
         except Exception as e :
             messages.error(request, e)
             return url
-        
-    return redirect(url) 
+
+    return redirect(url)
 
 
-def DeliveryDetail(request, did) : 
+def DeliveryDetail(request, did) :
     delivery = Delivery.objects.get(did=did)
     products = DeliveryProduct.objects.filter(delivery=delivery.id)
     context = {
@@ -438,7 +436,7 @@ def DeliveryDetail(request, did) :
     }
     return render(request, 'pages/deliveries/delivery-detail.html', context)
 
-def SupplyDetail(request, sid) : 
+def SupplyDetail(request, sid) :
     supply = Supply.objects.get(sid=sid)
     context = {
         'supply':supply,
@@ -455,7 +453,7 @@ def Four_list(request):
             fournisseurs = fournisseurs.filter(date__gte=start_date)
 
     if end_date:
-        end_date = parse_date(end_date)  
+        end_date = parse_date(end_date)
         if end_date:
             fournisseurs = fournisseurs.filter(date__lte=end_date)
     context={
@@ -466,7 +464,7 @@ def Four_list(request):
         'fournisseurs':fournisseurs,
     }
     return render(request, 'pages/article/fournisseur.html', context)
-    
+
 
 def Serv_list(request):
     start_date = request.GET.get('start-date')
@@ -487,10 +485,10 @@ def Serv_list(request):
         'end_date': end_date,
         'start_date_i': start_date.strftime('%Y-%m-%d') if start_date else None,
         'end_date_i': end_date.strftime('%Y-%m-%d') if end_date else None,
-       
+
     }
     return render(request, 'pages/article/service.html', context)
-    
+
 def delete_fourn(request, fid):
     url = request.META.get('HTTP_REFERER')
     fournisseur = Fournisseur.objects.get(fid=fid)
@@ -499,7 +497,7 @@ def delete_fourn(request, fid):
     messages.success(request , message)
     return redirect(url)
 
-    
+
 def delete_serv(request, sid):
     url = request.META.get('HTTP_REFERER')
     service = Service.objects.get(sid=sid)
@@ -520,7 +518,7 @@ def update_fourn(request, fid):
             fournisseur.title=new_tilte
         if code:
             fournisseur.fid=code
-        
+
         fournisseur.save()
         messages.success(request , 'modification fait avec success')
     except Exception as e :
@@ -540,7 +538,7 @@ def update_fourn(request, fid):
             fournisseur.title=new_tilte
         if code:
             fournisseur.fid=code
-        
+
         fournisseur.save()
         messages.success(request , 'modification fait avec success')
     except Exception as e :
@@ -560,7 +558,7 @@ def update_serv(request, sid):
             service.title=new_tilte
         if code:
             service.sid=code
-        
+
         service.save()
         messages.success(request , 'modification fait avec success')
     except Exception as e :
@@ -580,7 +578,7 @@ def add_fourn(request):
         )
         if code_fournisseur:
             new_fourn.fid = code_fournisseur
-            
+
         new_fourn.save()
         messages.success(request , f'{new_fourn.title} , a été ajouté aux fournisseur avec succes')
         return redirect(url)
@@ -588,7 +586,7 @@ def add_fourn(request):
     except Exception as e :
         messages.success(request ,e)
         return redirect(url)
-    
+
 
 def add_serv(request):
     url = request.META.get('HTTP_REFERER')
@@ -602,7 +600,7 @@ def add_serv(request):
         )
         if code_serv:
             new_serv.sid = code_serv
-            
+
         new_serv.save()
         messages.success(request , f'{new_serv.title} , a été ajouté aux services avec succes')
         return redirect(url)
@@ -610,7 +608,7 @@ def add_serv(request):
     except Exception as e :
         messages.success(request ,e)
         return redirect(url)
-    
+
 
 def reports(request):
     start_date = request.GET.get('start-date')
@@ -634,7 +632,7 @@ def reports(request):
             deliveries = deliveries.filter(date__lte=end_date)
 
     deliveries_product = DeliveryProduct.objects.all()
-    
+
     context = {
         'products': products,
         'supplies': supplies,
@@ -646,5 +644,5 @@ def reports(request):
         'end_date_i': end_date.strftime('%Y-%m-%d') if end_date else None,
 
     }
-    
+
     return render(request, 'pages/report/reports.html', context)

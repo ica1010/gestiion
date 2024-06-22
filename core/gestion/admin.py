@@ -1,11 +1,10 @@
 from django.contrib import admin
 
-from . models import Category, Product,Service,Fournisseur, Delivery,Supply,ProductImages, DeliveryProduct
+from . models import Category, Product,Service,Fournisseur, Delivery,Supply, DeliveryProduct
 
 # Register your models here.
 admin.site.register(Category)
 admin.site.register(Product)
-admin.site.register(ProductImages)
 admin.site.register(Service)
 admin.site.register(Fournisseur)
 admin.site.register(Delivery)

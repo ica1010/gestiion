@@ -28,7 +28,8 @@
                 enctype="multipart/form-data" action="{% url 'add_article'  %}">
                 {% csrf_token %}
                 <div class="row">
-                    <div class="col-lg-8">
+                    <div class="col-lg-3"></div>
+                    <div class="col-lg-6 col-md-12">
                         <div class="card">
                             <div class="card-body">
                                 <div class="row">
@@ -51,42 +52,10 @@
                                         <div class="invalid-feedback">Please Enter a product title.</div>
                                     </div>
                                 </div>
-                                <div>
-                                    <label>Product Description</label>
-                                    <textarea id="ckeditor-classic" name="description" id="" cols="30"
-                                        rows="10"></textarea>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- end card -->
-
-                        <div class="card">
-                            <div class="card-header">
-                                <h5 class="card-title mb-0">Product Short Description</h5>
-                            </div>
-                            <div class="card-body">
-                                <p class="text-muted mb-2">Add short description for product</p>
-                                <textarea class="form-control" name="short-description"
-                                    style="height: 200px !important;"
-                                    placeholder="Must enter minimum of a 100 characters" rows="3"></textarea>
-                            </div>
-                            <!-- end card body -->
-                        </div>
-
-                        <!-- end card -->
-                    </div>
-                    <!-- end col -->
-
-                    <div class="col-lg-4">
-                        <div class="card">
-                            <div class="card-header">
-                                <h5 class="card-title mb-0">Product Gallery</h5>
-                            </div>
-                            <div class="card-body">
                                 <div class="mb-4">
                                     <h5 class="fs-14 mb-1">Product Image</h5>
                                     <p class="text-muted">Add Product main Image.</p>
-                                    <div class="text-center">
+                                    <div class="text-start">
                                         <div class="position-relative d-inline-block">
                                             <div class="position-absolute top-100 start-100 translate-middle">
                                                 <label for="product-image-input" class="mb-0" data-bs-toggle="tooltip"
@@ -98,13 +67,13 @@
                                                         </div>
                                                     </div>
                                                 </label>
-                                                <input class="form-control d-none" name="main-image" value=""
+                                                <input class="form-control d-none" name="main-image" value='{% static "/assets/images/new-document.png" %}'
                                                     id="product-image-input" type="file"
-                                                    accept="image/png, image/gif, image/jpeg">
+                                                    accept="image/png, image/gif, image/jpeg, image/png"  required >
                                             </div>
                                             <div class="avatar-lg">
-                                                <div class="avatar-title bg-light rounded display-4 text-muted">
-                                                    <img src="#" id="product-img" class="avatar-md h-auto">
+                                                <div class="avatar-title bg-light rounded display-6 text-muted">
+                                                    <img src='{% static "/assets/images/new-document.png" %}' id="product-img" class="avatar-md h-auto">
                                                 </div>
                                             </div>
                                         </div>
@@ -156,6 +125,11 @@
                                     </ul>
                                     <!-- end dropzon-preview -->
                                 </div>
+                                <div>
+                                    <label>Product Description</label>
+                                    <textarea id="ckeditor-classic" name="description" id="" cols="30"
+                                        rows="10"></textarea>
+                                </div>
                             </div>
                         </div>
                         <!-- end card -->
@@ -180,31 +154,26 @@
                         </div>
                         <div class="card">
                             <div class="card-header">
-                                <ul class="nav nav-tabs-custom card-header-tabs border-bottom-0" role="tablist">
-                                    <li class="nav-item">
-                                        <a class="nav-link active" data-bs-toggle="tab" href="#addproduct-general-info"
-                                            role="tab">
-                                            Stock
-                                        </a>
-                                    </li>
-                                </ul>
+                                <h5 class="fs-14 mb-1">Product Quantity</h5>
                             </div>
                             <!-- end card header -->
                             <div class="card-body">
                                 <div class="tab-content">
                                     <div class="tab-pane active" id="addproduct-general-info" role="tabpanel">
-                                     
                                         <div class="row">
-                                            <div class="col-lg-12 col-sm-12">
-                                                <div class="mb-3">
-                                                    <label class="form-label" for="stocks-input">Stocks</label>
-                                                    <input type="number" name="stock" class="form-control"
+                                            <div class="col-1 p-0 text-center justify-content-center">
+                                                <a class="btn rounded-circle border-dark bx bx-minus p-2" id="reduce"></a>
+                                            </div>
+                                            <div class="col-3 text-center justify-content-center">
+                                                <div class="my-0 mx-0">
+                                                    <input type="number" value=10  name="stock" class="form-control text-center"
                                                         id="stocks-input" placeholder="Stocks" required>
                                                     <div class="invalid-feedback">Please Enter a product stocks.</div>
                                                 </div>
                                             </div>
-
-                                            <!-- end col -->
+                                            <div class="col-1 text-center justify-content-center" >
+                                                <a class="btn rounded-circle border-dark bx bx-plus p-2" id="add" ></a>
+                                            </div>
                                         </div>
                                         <!-- end row -->
                                     </div>
@@ -217,32 +186,13 @@
                             </div>
                             <!-- end card body -->
                         </div>
-                        <!-- end card -->
-
-                        <!-- end card -->
-                        <!-- 
-                        <div class="card">
-                             
-                            <div class="card-header">
-                                <h5 class="card-title mb-0">Product Tags</h5>
-                            </div>
-                            <div class="card-body">
-                                <div class="hstack gap-3 align-items-start">
-                                    <div class="flex-grow-1">
-                                        <input class="form-control"  data-choices data-choices-multiple-remove="true" placeholder="Enter tags" type="text" value="Cotton" />
-                                    </div>
-                                </div>
-                            </div>
-                          
-                        </div>
-                      end card -->
-
                         <div class="text-end mb-3">
                             <button type="submit" class="btn btn-success w-100">Submit</button>
                         </div>
                         <!-- end card -->
 
                     </div>
+                    <div class="col-lg-3"></div>
                     <!-- end col -->
                 </div>
                 <!-- end row -->
@@ -269,4 +219,25 @@
         </div>
     </footer>
 </div>
+
+<script>
+  let qttyinput = document.querySelector('#stocks-input')
+   $('#add').on('click', function () {
+        console.log('quantities :',+qttyinput.value)
+        qttyinput.value = +qttyinput.value + 1
+        console.log(qttyinput.value)
+});
+
+$('#reduce').on('click', function () {
+    if (+qttyinput.value > 0) {
+        console.log('quantities :',+qttyinput.value)
+    qttyinput.value = +qttyinput.value - 1
+    console.log(qttyinput.value)
+    } else {
+        console.log('ecxeded')
+    }
+   
+});
+
+</script>
 {% endblock %}

@@ -22,24 +22,16 @@ class Product(models.Model):
     quantity = models.PositiveIntegerField()
 
     description = models.TextField()
-    short_description = models.CharField(max_length=100, default='')
-    keywords = models.CharField(max_length=100, default='')
+    # short_description = models.CharField(max_length=100, default='')
+    # keywords = models.CharField(max_length=100, default='')
 
-    image = models.ImageField(default='product.jpg')
+    image = models.ImageField(default='product_image/new-document.png',null = False, upload_to='product_image' )
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.title
-
-class ProductImages(models.Model):
-    images=models.ImageField(upload_to='product-images',default='product.jpg') 
-    product = models.ForeignKey(Product,on_delete=models.SET_NULL , null=True, related_name='product_images')
-    date= models.DateTimeField(auto_now_add=True)
-
-    class Meta:
-        verbose_name_plural='Product Images'
 
 class Service(models.Model):
     sid = ShortUUIDField(unique=True, length=10, max_length= 20 , alphabet='abcdefghijklmnopqrstuvwxyz1234567890' , editable=False,  prefix='Service-')
@@ -97,8 +89,9 @@ class Action(models.Model):
     aid = ShortUUIDField(unique=True, length=10, max_length= 20 , alphabet='abcdefghijklmnopqrstuvwxyz1234567890' , editable=False,  prefix='Action-')
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     action = models.TextField()
+    private = models.BooleanField(default=False)
 
-    at = models.DateTimeField(auto_now_add=True)
+    date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return 

@@ -54,9 +54,14 @@ def login_view(request):
             user = authenticate(request, username=username, password=password)
             if user is not None:
                 try:
-                    profile = AdminProfile.objects.get(user=user)
-                except AdminProfile.DoesNotExist:
                     profile = SupplierProfile.objects.get(user=user)
+                    
+                except SupplierProfile.DoesNotExist:
+                    try:
+                        profile = AdminProfile.objects.get(user=user)
+                    except:
+                        AdminProfile.objects.create(user=user)
+                        profile = AdminProfile.objects.get(user=user)
 
                 if not profile.active:
                     return HttpResponse('Your account was disabled')
@@ -75,3 +80,28 @@ def logout_view(request):
     logout(request)
     messages.success(request, 'you are now logged out ')
     return redirect('sign-in')
+
+def Profile(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        email = request.POST['email']
+        phone=request.POST['phone']
+        first = request.POST['first']
+        last = request.POST['last']
+        image = request.FILES.get('main-image')
+
+        user = User.objects.get(id = request.user.id)
+        user.username = username
+        user.email = email
+        user.phone = phone
+        user.first_name = first
+        user.last_name = last
+        if image:
+            user.image=image
+
+        user.save()
+        messages.success(request, f'your profile was update successfully')
+        return redirect ('homePage')
+
+
+    return render(request,'registration/profile.html')
