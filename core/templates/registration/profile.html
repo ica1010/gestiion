@@ -49,14 +49,15 @@
                                                     </div>
                                                 </label>
                                                 <input class="form-control d-none" name="main-image"
-                                                    value='{{request.user.image.url}}'
-                                                    id="product-image-input" type="file"
-                                                    accept="image/png, image/gif, image/jpeg, image/png" required>
+                                                    value='{{request.user.image.url}}' id="product-image-input"
+                                                    type="file" accept="image/png, image/gif, image/jpeg, image/png"
+                                                    required>
                                             </div>
                                             <div class="avatar-lg">
-                                                <div class="avatar-title bg-light rounded-circle display-6 text-muted overflow-hidden">
-                                                    <img src='{{request.user.image.url}}'
-                                                        id="product-img" class="avatar-md h-auto w-200">
+                                                <div
+                                                    class="avatar-title bg-light rounded-circle display-6 text-muted overflow-hidden">
+                                                    <img src='{{request.user.image.url}}' id="product-img"
+                                                        class="avatar-md h-auto w-200">
                                                 </div>
                                             </div>
                                         </div>
@@ -76,16 +77,17 @@
                                     <div class="mb-3 col-md-6">
                                         <label class="form-label" for="product-title-input">Email</label>
                                         <input type="email" class="form-control " id="product-title-input"
-                                            value="{{request.user.email}}" name="email"
-                                            placeholder="Enter your email" required>
+                                            value="{{request.user.email}}" name="email" placeholder="Enter your email"
+                                            required>
                                         <div class="invalid-feedback">Please your must enter a correct email </div>
                                     </div>
                                     <div class="mb-3 col-md-6">
                                         <label class="form-label" for="product-title-input">Phonenumber</label>
                                         <input type="number" class="form-control " id="product-title-input"
-                                            value='{{request.user.phone}}'name="phone"
+                                            value='{{request.user.phone}}' name="phone"
                                             placeholder="Enter your Phonenumber" required>
-                                        <div class="invalid-feedback">Please your must enter a correct phone number </div>
+                                        <div class="invalid-feedback">Please your must enter a correct phone number
+                                        </div>
                                     </div>
                                 </div>
 
@@ -106,22 +108,21 @@
                                     </div>
                                 </div>
 
-<hr>
-<h4>change password</h4>
+                                <hr>
+                                <h4>change password</h4>
                                 <div class="row">
                                     <div class="mb-3 col-md-6">
-                                        <label class="form-label" for="product-title-input">your current password</label>
+                                        <label class="form-label" for="product-title-input">your current
+                                            password</label>
                                         <input type="password" class="form-control " id="product-title-input"
-                                            value="{{request.user.password}}" name="pwd"
-                                            placeholder="Enter your curent password">
-                                        
+                                            name="current_password" placeholder="Enter your curent password">
+
                                     </div>
                                     <div class="mb-3 col-md-6">
                                         <label class="form-label" for="product-title-input">the new password</label>
                                         <input type="text" class="form-control " id="product-title-input"
-                                            name="n-pwd"
-                                            placeholder="Enter the new password">
-                                
+                                            name="new_password" placeholder="Enter the new password">
+
                                     </div>
                                 </div>
 

@@ -1,4 +1,7 @@
-{% extends 'base/base.html' %} {% load static %} {% block 'content' %}
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block 'content' %}
 <div class="main-content">
   <div class="page-content">
     <div class="container-fluid">
@@ -33,15 +36,11 @@
                   <div class="flex-shrink-0">
                     <div class="dropdown card-header-dropdown">
                       <div class="date-range-picker">
-                        <form method="get" class="d-flex"
-                          style="gap: 05px;justify-content: center;align-items: center;">
+                        <form method="get" class="d-flex" style="gap: 5px; justify-content: center; align-items: center;">
                           <label for="start-date" class="form-label m-0">From: </label>
-                          <input type="date" id="start-date" class="form-control" name="start-date"
-                            value="{{ start_date_i }}">
-
+                          <input type="date" id="start-date" class="form-control" name="start-date" value="{{ start_date_i }}">
                           <label for="end-date" class="form-label m-0">To: </label>
-                          <input type="date" id="end-date" class="form-control" name="end-date" value="{{ end_date_i}}">
-
+                          <input type="date" id="end-date" class="form-control" name="end-date" value="{{ end_date_i }}">
                           <button type="submit" id="submit-dates" class="btn btn-info">Filter</button>
                         </form>
                       </div>
@@ -50,14 +49,11 @@
                 </div>
                 <div class="col-sm-auto">
                   <div class="d-flex gap-1 flex-wrap">
-                    <button type="button" class="btn btn-success add-btn" data-bs-toggle="modal" id="create-btn"
-                      data-bs-target="#showModal">
-                      <i class="ri-add-line align-bottom me-1"></i> Ajouter une
-                      Sortie
+                    <button type="button" class="btn btn-success add-btn" data-bs-toggle="modal" id="create-btn" data-bs-target="#showModal">
+                      <i class="ri-add-line align-bottom me-1"></i> Add Delivery
                     </button>
                     <button type="button" class="btn btn-info" id="dwnldBtn">
-                      <i class="ri-file-download-line align-bottom me-1"></i>
-                      Import
+                      <i class="ri-file-download-line align-bottom me-1"></i> Import
                     </button>
                   </div>
                 </div>
@@ -89,238 +85,59 @@
                     <tbody class="list form-check-all">
                       {% for delivery in deliveries %}
                       <tr>
-                        <th scope="row">
+                        <td scope="row">
                           <div class="form-check">
                             <input class="form-check-input" type="checkbox" name="checkAll" value="option1" />
                           </div>
-                        </th>
+                        </td>
                         <td class="id">
-                          <a href="{% url 'delivery' delivery.did  %}"
-                            class="fw-medium link-primary">#{{delivery.did}}</a>
+                          <a href="{% url 'delivery' delivery.did %}" class="fw-medium link-primary">#{{ delivery.did }}</a>
                         </td>
                         {% if admin %}
                         <td class="customer_name">
                           {% if request.user == delivery.user %}
                           Vous
                           {% else %}
-                          {{delivery.user}}
-
+                          {{ delivery.user }}
                           {% endif %}
                         </td>
                         {% endif %}
-                        <td class="customer_name">{{delivery.service}}</td>
-                        <td class="customer_name">{{delivery.post}}</td>
-                        <td class="date">{{delivery.date|date:"d M Y"}}</td>
+                        <td class="customer_name">{{ delivery.service }}</td>
+                        <td class="customer_name">{{ delivery.post }}</td>
+                        <td class="date">{{ delivery.date|date:"d M Y" }}</td>
                         <td>
                           <ul class="list-inline hstack gap-2 mb-0">
-                            <li class="list-inline-item" data-bs-toggle="tooltip" data-bs-trigger="hover"
-                              data-bs-placement="top" aria-label="View" data-bs-original-title="View">
-                              <a href="{% url 'delivery' delivery.did  %}" class="text-primary d-inline-block">
+                            <li class="list-inline-item" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" aria-label="View" data-bs-original-title="View">
+                              <a href="{% url 'delivery' delivery.did %}" class="text-primary d-inline-block">
                                 <i class="ri-eye-fill fs-16"></i>
                               </a>
                             </li>
-                            <li class="list-inline-item edit" data-bs-toggle="tooltip" data-bs-trigger="hover"
-                              data-bs-placement="top" aria-label="Edit" data-bs-original-title="Edit">
-                              <a href="#showModal" data-bs-toggle="modal"
-                                class="text-primary d-inline-block edit-item-btn">
+                            <li class="list-inline-item edit" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" aria-label="Edit" data-bs-original-title="Edit">
+                              <a href="#showModal" data-bs-toggle="modal" class="text-primary d-inline-block edit-item-btn">
                                 <i class="ri-pencil-fill fs-16"></i>
                               </a>
                             </li>
                           </ul>
                         </td>
                       </tr>
+                      {% empty %}
+                      <tr>
+                        <td colspan="7" class="text-center">No deliveries found.</td>
+                      </tr>
                       {% endfor %}
                     </tbody>
                   </table>
                   <div class="noresult" style="display: none">
                     <div class="text-center">
-                      <lord-icon src="https://cdn.lordicon.com/msoeawqm.json" trigger="loop"
-                        colors="primary:#405189,secondary:#0ab39c" style="width: 75px; height: 75px"></lord-icon>
+                      <lord-icon src="https://cdn.lordicon.com/msoeawqm.json" trigger="loop" colors="primary:#405189,secondary:#0ab39c" style="width: 75px; height: 75px"></lord-icon>
                       <h5 class="mt-2">Sorry! No Result Found</h5>
                       <p class="text-muted">
-                        We've searched more than 150+ Orders We did not find any
-                        orders for you search.
+                        We've searched more than 150+ Orders We did not find any orders for your search.
                       </p>
                     </div>
                   </div>
                 </div>
-
               </div>
-              <div class="modal fade" id="showModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-                aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered">
-                  <div class="modal-content">
-                    <div class="modal-header bg-light p-3">
-                      <h5 class="modal-title" id="exampleModalLabel">&nbsp;</h5>
-                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
-                        id="close-modal"></button>
-                    </div>
-                    <form class="tablelist-form" autocomplete="off" action="{% url 'add_delivery'  %}" method="post">
-                      {% csrf_token %}
-                      <div class="modal-body">
-                        <div class="mb-3">
-                          <div class="row my-4" id="prod-form">
-                            <div class="col-8">
-                              <label for="payment-field" class="form-label">Article</label>
-                              <select class="form-control" data-trigger="" name="product">
-                                <option value="" selected disabled>
-                                  Article
-                                </option>
-                                {% for product in products %}
-                                <option value="{{product.title}}">
-                                  ({{product.pid}}) {{product.title}}
-                                </option>
-
-                                {% endfor %}
-                              </select>
-                            </div>
-                            <div class="col-4">
-                              <label for="" class="form-label">Quantity</label>
-                              <div class="d-flex p-0 m-0 flex-row gap-3 ">
-                                <div class="col py-1 text-center align-items-center justify-content-center">
-                                    <a class="btn rounded-circle border-dark bx bx-minus p-1" id="reduce"></a>
-                                </div>
-                                <div class="text-center justify-content-center align-items-center">
-                                    <div class="my-0 mx-0" style="width: fit-content !important;">
-                                        <input type="number" value=10  name="quantity" class="form-control text-center  px-1"
-                                            id="stocks-input" placeholder="Enter quantity"" required style="max-width: fit-content !important;">
-                                        <div class="invalid-feedback">Please Enter a product stocks.</div>
-                                    </div>
-                                </div>
-                                <div class="col text-center justify-content-center align-items-center py-1" >
-                                    <a class="btn rounded-circle border-dark bx bx-plus p-1" id="add" ></a>
-                                </div>
-                            </div>
-                            </div>
-                            {% for product in products  %}
-                            <p class="m-2 p-0  {% if 10 >= product.quantity %} text-danger {% else %} text-success {% endif %}" style="font-size: 12px;">Quantités en  stock : {{product.quantity}} <span class="text-dark">|</span> <span class="m-2 p-0 text-danger" style="font-size: 12px;">Quantités restante : 5</span></p>
-                            {% endfor %}
-                          </div>
-                          <div id="form-box"></div>
-                          <div class="row">
-                            <div class="mt-3">
-                              <a class=" btn border-success text-success" style="cursor: pointer"
-                                onclick="dupliquerElement()">Ajouter une nouvelle article a la sortie</a>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="row gy-4 mb-3">
-                          <div class="col-12">
-                            <label for="post-field" class="form-label">Code sortie</label>
-                            <input type="text" name="code" class="form-control">
-                          </div>
-                        </div>
-                        <div class="row gy-4 mb-3">
-                          <div class="col-md-6">
-                            <div>
-                              <label for="service-field" class="form-label">Service</label>
-                              <select id="id_service" class="form-control" name="service" required="">
-                                <option value="">Service</option>
-                                {% for service in services %}
-                                <option value="{{ service.title }}">
-                                  {{ service.title }}
-                                </option>
-                                {% endfor %}
-                              </select>
-                            </div>
-                          </div>
-                          <div class="col-md-6">
-                            <div>
-                              <label for="post-field" class="form-label">Burreau</label>
-                              <input type="text" name="post" class="form-control">
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="modal-footer">
-                        <div class="hstack gap-2 justify-content-end">
-                          <button type="button" class="btn btn-light" data-bs-dismiss="modal">
-                            Close
-                          </button>
-                          <button type="submit" class="btn btn-success" id="add-btn">
-                            Add Order
-                          </button>
-                          <!-- <button type="button" class="btn btn-success" id="edit-btn">Update</button> -->
-                        </div>
-                      </div>
-                    </form>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Modal -->
-              <div class="modal fade flip" id="deleteOrder" tabindex="-1" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered">
-                  <div class="modal-content">
-                    <div class="modal-body p-5 text-center">
-                      <lord-icon src="https://cdn.lordicon.com/gsqxdxog.json" trigger="loop"
-                        colors="primary:#405189,secondary:#f06548" style="width: 90px; height: 90px"></lord-icon>
-                      <div class="mt-4 text-center">
-                        <h4>You are about to delete a order ?</h4>
-                        <p class="text-muted fs-15 mb-4">
-                          Deleting your order will remove all of your
-                          information from our database.
-                        </p>
-                        <div class="hstack gap-2 justify-content-center remove">
-                          <button class="btn btn-link link-success fw-medium text-decoration-none"
-                            id="deleteRecord-close" data-bs-dismiss="modal">
-                            <i class="ri-close-line me-1 align-middle"></i>
-                            Close
-                          </button>
-                          <button class="btn btn-danger" id="delete-record">
-                            Yes, Delete It
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <!--end modal -->
-            </div>
-          </div>
-          <div class="d-block modal" style="z-index: -9999;">
-            <div class="card-body card" id="pdfcontent">
-              <!-- Table des sorties -->
-              <div class="table-responsive table-card mb-1">
-                <h1 class="p-3 text-center">Liste des Sorties
-                  {% if start_date %}
-                  du {{ start_date|date:"d M Y"}} au {{ end_date|date:"d M Y" }}
-                  {% endif %}</h1>
-                <table class="table align-middle" id="out">
-                  <thead class="table-light text-muted">
-                    <tr>
-                      <th>Code Sortie</th>
-                      <th>Fait par</th>
-                      <th>Produits livrés</th>
-                      <th>Service</th>
-                      <th>Bureau</th>
-                      <th>Date</th>
-                    </tr>
-                  </thead>
-                  <tbody class="list form-check-all">
-                    {% for delivery in deliveries %}
-                    <tr>
-                      <td>#{{ delivery.did }}</td>
-                      <td>{{ delivery.user }}</td>
-                      <td>
-                        <ul>
-                          {% for item in deliveries_product %}
-                          {% if item.delivery.did == delivery.did %}
-                          <li>({{ item.product.pid }}) {{ item.product.title }} | Quantité: {{ item.quantity }}</li>
-                          {% endif %}
-                          {% endfor %}
-                        </ul>
-                      </td>
-                      <td>{{ delivery.service }}</td>
-                      <td>{{ delivery.post }}</td>
-                      <td>{{ delivery.date|date:"d M Y" }}</td>
-                    </tr>
-                    {% endfor %}
-                  </tbody>
-                </table>
-              </div>
-              <!-- Fin de la table des sorties -->
             </div>
           </div>
         </div>
@@ -333,17 +150,146 @@
   <!-- End Page-content -->
 </div>
 
+<div class="modal fade" id="showModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header bg-light p-3">
+        <h5 class="modal-title" id="exampleModalLabel">&nbsp;</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"></button>
+      </div>
+      <form class="tablelist-form" autocomplete="off" action="{% url 'add_delivery' %}" method="post">
+        {% csrf_token %}
+        <div class="modal-body">
+          <div class="mb-3">
+            <div class="row my-4" id="prod-form">
+              <div class="col-8">
+                <label for="payment-field" class="form-label">Article</label>
+                <select class="form-control product-select" name="product">
+                  <option value="" selected disabled>Article</option>
+                  {% for product in products %}
+                  <option value="{{ product.title }}" data-quantity="{{ product.quantity }}" data-product-id="{{ product.id }}">
+                    ({{ product.pid }}) {{ product.title }}
+                  </option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="col-4">
+                <label for="" class="form-label">Quantity</label>
+                <div class="d-flex p-0 m-0 flex-row gap-3">
+                  <div class="col py-1 text-center align-items-center justify-content-center">
+                    <a class="btn rounded-circle border-dark bx bx-minus p-1 btn-reduce" id="reduce"></a>
+                  </div>
+                  <div class="text-center justify-content-center align-items-center">
+                    <div class="my-0 mx-0" style="width: fit-content !important;">
+                      <input type="number" value="10" name="quantity" class="form-control text-center px-1 quantity-input" id="stocks-input" placeholder="Enter quantity" required style="max-width: fit-content !important;">
+                      <div class="invalid-feedback">Please Enter a product stocks.</div>
+                    </div>
+                  </div>
+                  <div class="col text-center justify-content-center align-items-center py-1">
+                    <a class="btn rounded-circle border-dark bx bx-plus p-1 btn-add" id="add"></a>
+                  </div>
+                </div>
+              </div>
+              <p class="m-2 p-0 stock-info" style="font-size: 12px;">
+                Quantités en stock : <span class="stock-quantity"></span> 
+                <span class="text-dark">|</span> 
+                Quantités restante : <span class="remaining-quantity"></span>
+              </p>
+            </div>
+            <div id="form-box"></div>
+            <div class="row">
+              <div class="mt-3">
+                <a class=" btn border-success text-success" style="cursor: pointer" onclick="dupliquerElement()">Add another product to the delivery</a>
+              </div>
+            </div>
+          </div>
+          <div class="row gy-4 mb-3">
+            <div class="col-12">
+              <label for="post-field" class="form-label">Delivery Code</label>
+              <input type="text" name="code" class="form-control">
+            </div>
+          </div>
+          <div class="row gy-4 mb-3">
+            <div class="col-md-6">
+              <div>
+                <label for="service-field" class="form-label">Service</label>
+                <select id="id_service" class="form-control" name="service" required="">
+                  <option value="">Service</option>
+                  {% for service in services %}
+                  <option value="{{ service.title }}">
+                    {{ service.title }}
+                  </option>
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div>
+                <label for="post-field" class="form-label">Bureau</label>
+                <input type="text" name="post" class="form-control">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <div class="hstack gap-2 justify-content-end">
+            <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-success" id="add-btn">Add Order</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
 <script>
   function dupliquerElement() {
-    // Sélectionnez l'élément que vous souhaitez dupliquer
     var elementA = document.getElementById("prod-form");
-
-    // Créez une copie de l'élément
     var cloneElement = elementA.cloneNode(true);
-
-    // Ajoutez la copie à un conteneur dans le DOM
     var conteneurElements = document.getElementById("form-box");
     conteneurElements.appendChild(cloneElement);
+
+    // Ajout des écouteurs d'événements pour le nouvel élément dupliqué
+    attachEventListeners(cloneElement);
+  }
+
+  function attachEventListeners(element) {
+    // Réduit la quantité
+    element.querySelector('.btn-reduce').addEventListener('click', function() {
+      var qttyinput = element.querySelector('.quantity-input');
+      if (+qttyinput.value > 0) {
+        qttyinput.value = +qttyinput.value - 1;
+        updateRemainingQuantity(element);
+      }
+    });
+
+    // Augmente la quantité
+    element.querySelector('.btn-add').addEventListener('click', function() {
+      var qttyinput = element.querySelector('.quantity-input');
+      qttyinput.value = +qttyinput.value + 1;
+      updateRemainingQuantity(element);
+    });
+
+    // Met à jour la quantité restante lorsque l'utilisateur modifie directement la quantité
+    element.querySelector('.quantity-input').addEventListener('input', function() {
+      updateRemainingQuantity(element);
+    });
+
+    // Met à jour les quantités lorsque l'utilisateur sélectionne un produit
+    element.querySelector('.product-select').addEventListener('change', function() {
+      var selectedOption = this.options[this.selectedIndex];
+      var stockQuantity = parseInt(selectedOption.getAttribute('data-quantity'));
+      element.querySelector('.stock-quantity').textContent = stockQuantity;
+      updateRemainingQuantity(element);
+    });
+  }
+
+  function updateRemainingQuantity(element) {
+    var qttyinput = element.querySelector('.quantity-input');
+    var stockQuantity = parseInt(element.querySelector('.stock-quantity').textContent);
+    var remainingQuantity = stockQuantity - parseInt(qttyinput.value);
+
+    element.querySelector('.remaining-quantity').textContent = remainingQuantity;
   }
 
   $(document).ready(function () {
@@ -365,25 +311,9 @@
         });
       }
     });
-    let qttyinput = document.querySelector('#stocks-input')
-    $('#add').on('click', function () {
-      console.log('quantities :', +qttyinput.value)
-      qttyinput.value = +qttyinput.value + 1
-      console.log(qttyinput.value)
-    });
 
-    $('#reduce').on('click', function () {
-      if (+qttyinput.value > 0) {
-        console.log('quantities :', +qttyinput.value)
-        qttyinput.value = +qttyinput.value - 1
-        console.log(qttyinput.value)
-      } else {
-        console.log('ecxeded')
-      }
-
-    });
-
-
+    // Attache les écouteurs d'événements pour l'élément de formulaire initial
+    attachEventListeners(document.getElementById("prod-form"));
   });
 </script>
 

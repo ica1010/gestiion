@@ -6,7 +6,7 @@ from userauth.form import UserRegisterForm
 from django.contrib import messages
 from django.contrib.auth import login , authenticate, logout
 from userauth.models import AdminProfile, SupplierProfile, User
-
+from django.contrib.auth import update_session_auth_hash
 
 def add_user(request):
     url = request.META.get('HTTP_REFERER')
@@ -89,6 +89,8 @@ def Profile(request):
         first = request.POST['first']
         last = request.POST['last']
         image = request.FILES.get('main-image')
+        current_password = request.POST['current_password']
+        new_password = request.POST['new_password']
 
         user = User.objects.get(id = request.user.id)
         user.username = username
@@ -98,7 +100,15 @@ def Profile(request):
         user.last_name = last
         if image:
             user.image=image
-
+        if new_password :
+            if not user.check_password(current_password):
+                messages.error(request, 'Your current password is incorrect.')
+            else:
+                user.set_password(new_password)
+                user.save()
+                update_session_auth_hash(request, user)  # Important, to update the session with the new password
+                messages.success(request, 'Your password was successfully updated!')
+                return redirect('homePage')
         user.save()
         messages.success(request, f'your profile was update successfully')
         return redirect ('homePage')
