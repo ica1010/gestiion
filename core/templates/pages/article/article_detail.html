@@ -65,11 +65,15 @@
                                                     <div class="text-muted">Updated : <span class="text-body fw-medium"> {{product.updated_at |date:"d M Y"}} </span></div>
                                                 </div>
                                             </div>
-                                            <div class="flex-shrink-0">
-                                                <div>
-                                                    <a href="{% url 'edit_article' product.pid  %}" class="btn btn-light" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit"><i class="ri-pencil-fill align-bottom"></i></a>
-                                                </div>
+                                           
+                                           {% if admin %}
+                                           <div class="flex-shrink-0">
+                                            <div>
+                                                <a href="{% url 'edit_article' product.pid  %}" class="btn btn-light" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit"><i class="ri-pencil-fill align-bottom"></i></a>
                                             </div>
+                                        </div>
+                                           {% endif %}
+                                            
                                         </div>
 
                                         <div class="row mt-4">
@@ -120,20 +124,13 @@
                                                     <li class="nav-item" role="presentation">
                                                         <a class="nav-link active" id="nav-speci-tab" data-bs-toggle="tab" href="#nav-speci" role="tab" aria-controls="nav-speci" aria-selected="true">Details</a>
                                                     </li>
-                                                    <li class="nav-item" role="presentation">
-                                                        <a class="nav-link" id="nav-detail-tab" data-bs-toggle="tab" href="#nav-detail" role="tab" aria-controls="nav-detail" aria-selected="false" tabindex="-1">Short details</a>
-                                                    </li>
+                                                
                                                 </ul>
                                             </nav>
                                             <div class="tab-content border border-top-0 p-4" id="nav-tabContent">
                                                 <div class="tab-pane fade active show" id="nav-speci" role="tabpanel" aria-labelledby="nav-speci-tab">
                                                     <div class="table-responsive">
                                                        {{product.description|safe}}
-                                                    </div>
-                                                </div>
-                                                <div class="tab-pane fade" id="nav-detail" role="tabpanel" aria-labelledby="nav-detail-tab">
-                                                    <div>
-                                                       {{product.short_description}}
                                                     </div>
                                                 </div>
                                             </div>

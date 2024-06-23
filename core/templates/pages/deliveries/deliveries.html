@@ -181,7 +181,7 @@
                   </div>
                   <div class="text-center justify-content-center align-items-center">
                     <div class="my-0 mx-0" style="width: fit-content !important;">
-                      <input type="number" value="10" name="quantity" class="form-control text-center px-1 quantity-input" id="stocks-input" placeholder="Enter quantity" required style="max-width: fit-content !important;">
+                      <input type="number" value="0" name="quantity" class="form-control text-center px-1 quantity-input" id="stocks-input" placeholder="Enter quantity" required style="max-width: fit-content !important;">
                       <div class="invalid-feedback">Please Enter a product stocks.</div>
                     </div>
                   </div>
@@ -191,7 +191,7 @@
                 </div>
               </div>
               <p class="m-2 p-0 stock-info" style="font-size: 12px;">
-                Quantités en stock : <span class="stock-quantity"></span> 
+                <span class="stock-quantity d-none"></span> 
                 <span class="text-dark">|</span> 
                 Quantités restante : <span class="remaining-quantity"></span>
               </p>
@@ -290,6 +290,13 @@
     var remainingQuantity = stockQuantity - parseInt(qttyinput.value);
 
     element.querySelector('.remaining-quantity').textContent = remainingQuantity;
+    if (remainingQuantity <= 10) {
+      console.log(element.querySelector('.remaining-quantity').className = 'remaining-quantity text-danger')
+    }
+    else{
+      console.log(element.querySelector('.remaining-quantity').className = 'remaining-quantity')
+  
+    }
   }
 
   $(document).ready(function () {

@@ -163,7 +163,116 @@
                             {% endif %}
                             <!-- end col -->
                         </div> <!-- end row-->
-
+                        <div class="row">
+                            <div class="col-xl-6">
+                                <!-- templates/products.html -->
+                                <div class="card">
+                                    <div class="card-header align-items-center d-flex">
+                                        <h4 class="card-title mb-0 flex-grow-1">Articles</h4>
+                                        <div class="flex-shrink-0">
+                                            <div class="dropdown card-header-dropdown">
+                                                <a class="text-reset dropdown-btn" href="#" data-bs-toggle="dropdown"
+                                                    aria-haspopup="true" aria-expanded="false">
+                                                    <span class="fw-semibold text-uppercase fs-12">Sort by:</span>
+                                                    <span class="text-muted">{{ filter_option|title }}<i
+                                                            class="mdi mdi-chevron-down ms-1"></i></span>
+                                                </a>
+                                                <div class="dropdown-menu dropdown-menu-end">
+                                                    <a class="dropdown-item" href="?filter=today">Today</a>
+                                                    <a class="dropdown-item" href="?filter=yesterday">Yesterday</a>
+                                                    <a class="dropdown-item" href="?filter=last_7_days">Last 7 Days</a>
+                                                    <a class="dropdown-item" href="?filter=last_30_days">Last 30 Days</a>
+                                                    <a class="dropdown-item" href="?filter=this_month">This Month</a>
+                                                    <a class="dropdown-item" href="?filter=last_month">Last Month</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div><!-- end card header -->
+            
+                                    <div class="card-body">
+                                        <div class="table-responsive table-card">
+                                            <table class="table table-hover table-centered align-middle table-nowrap mb-0">
+                                                <tbody>
+                                                   {% if products_all %}
+                                                   {% for product in products_all %}
+                                                   <tr>
+                                                       <td>
+                                                           <div class="d-flex align-items-center">
+                                                               <div class="avatar-sm bg-light rounded p-1 me-2">
+                                                                   <a href="{{ product.image.url }}"> <img
+                                                                           src="{{ product.image.url }}" alt=""
+                                                                           class="img-fluid d-block rounded"></a>
+                                                               </div>
+                                                               <div>
+                                                                   <h5 class="fs-14 my-1"><a
+                                                                           href="{% url 'article_detail' product.pid %}"
+                                                                           class="text-reset">{{ product.title }}</a></h5>
+                                                                   <span class="text-muted">{{ product.created_at|date:"d M Y" }}</span>
+                                                               </div>
+                                                           </div>
+                                                       </td>
+                                                       <td>
+                                                           <h5 class="fs-14 my-1 fw-normal">{{ product.category }}</h5>
+                                                           <span class="text-muted">Category</span>
+                                                       </td>
+                                                       <td>
+                                                           <h5 class="fs-14 my-1 fw-normal" style="{% if product.quantity <= 10 %}color: red;{% endif %}"> {% if product.quantity <= 0 %} Out of stock {% else %} {{ product.quantity }}
+                                                                {% endif %} {% if product.quantity <= 10 %} !{% endif %}</h5>
+            <span class="text-muted" style="{% if product.stock < 10 %}color: red !important;{% endif %}">{% if product.quantity > 0 %}
+               Stock
+            {% endif %} </span>
+            
+                                                       </td>
+            
+                                                   </tr>
+                                                   {% endfor %}
+                                                   {% else  %}
+                                                       <center class="my-5"><h5>
+                                                       {{ filter_option|title }} :
+                                                    Aucun produit n'as été trouvés 
+                                                       </h5></center>
+                                                   {% endif %}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-3">
+                                <!-- templates/products.html -->
+                                <div class="card">
+                                    <div class="card-header align-items-center d-flex">
+                                        <h4 class="card-title mb-0 flex-grow-1">Categories</h4>
+                                    </div><!-- end card header -->
+            
+                                    <div class="card-body">
+                                        <div class="table-responsive table-card">
+                                            <table class="table table-hover table-centered align-middle table-nowrap mb-0">
+                                                <tbody>
+                                                    {% for category in categories_all %}
+                                                    <tr>
+                                                        <td>
+                                                            <div class="d-flex align-items-center">
+                                                                <div>
+                                                                    <h5 class="fs-14 my-1"><a class="text-reset">{{ category.title }}</a></h5>
+                                                                    <span class="text-muted">{{ category.created_at|date:"d M Y" }}</span>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <span class="badge bg-light text-muted">{{category.category.count}} </span> <br>
+                                                            <span class="text-muted">Products</span>
+                                                        </td>
+            
+                                                    </tr>
+                                                    {% endfor %}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div> <!-- end .h-100-->
 
                 </div> <!-- end col -->
@@ -321,118 +430,11 @@
                         </div> <!-- end card-->
                     </div> <!-- end .rightbar-->
 
-                </div> <!-- end col -->
+                </div> 
+                <!-- end col -->
+              
             </div>
-            <div class="row">
-                <div class="col-xl-6">
-                    <!-- templates/products.html -->
-                    <div class="card">
-                        <div class="card-header align-items-center d-flex">
-                            <h4 class="card-title mb-0 flex-grow-1">Articles</h4>
-                            <div class="flex-shrink-0">
-                                <div class="dropdown card-header-dropdown">
-                                    <a class="text-reset dropdown-btn" href="#" data-bs-toggle="dropdown"
-                                        aria-haspopup="true" aria-expanded="false">
-                                        <span class="fw-semibold text-uppercase fs-12">Sort by:</span>
-                                        <span class="text-muted">{{ filter_option|title }}<i
-                                                class="mdi mdi-chevron-down ms-1"></i></span>
-                                    </a>
-                                    <div class="dropdown-menu dropdown-menu-end">
-                                        <a class="dropdown-item" href="?filter=today">Today</a>
-                                        <a class="dropdown-item" href="?filter=yesterday">Yesterday</a>
-                                        <a class="dropdown-item" href="?filter=last_7_days">Last 7 Days</a>
-                                        <a class="dropdown-item" href="?filter=last_30_days">Last 30 Days</a>
-                                        <a class="dropdown-item" href="?filter=this_month">This Month</a>
-                                        <a class="dropdown-item" href="?filter=last_month">Last Month</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div><!-- end card header -->
-
-                        <div class="card-body">
-                            <div class="table-responsive table-card">
-                                <table class="table table-hover table-centered align-middle table-nowrap mb-0">
-                                    <tbody>
-                                       {% if products_all %}
-                                       {% for product in products_all %}
-                                       <tr>
-                                           <td>
-                                               <div class="d-flex align-items-center">
-                                                   <div class="avatar-sm bg-light rounded p-1 me-2">
-                                                       <a href="{{ product.image.url }}"> <img
-                                                               src="{{ product.image.url }}" alt=""
-                                                               class="img-fluid d-block rounded"></a>
-                                                   </div>
-                                                   <div>
-                                                       <h5 class="fs-14 my-1"><a
-                                                               href="{% url 'article_detail' product.pid %}"
-                                                               class="text-reset">{{ product.title }}</a></h5>
-                                                       <span class="text-muted">{{ product.created_at|date:"d M Y" }}</span>
-                                                   </div>
-                                               </div>
-                                           </td>
-                                           <td>
-                                               <h5 class="fs-14 my-1 fw-normal">{{ product.category }}</h5>
-                                               <span class="text-muted">Category</span>
-                                           </td>
-                                           <td>
-                                               <h5 class="fs-14 my-1 fw-normal" style="{% if product.quantity <= 10 %}color: red;{% endif %}"> {% if product.quantity <= 0 %} Out of stock {% else %} {{ product.quantity }}
-                                                    {% endif %} {% if product.quantity <= 10 %} !{% endif %}</h5>
-<span class="text-muted" style="{% if product.stock < 10 %}color: red !important;{% endif %}">{% if product.quantity > 0 %}
-   Stock
-{% endif %} </span>
-
-                                           </td>
-
-                                       </tr>
-                                       {% endfor %}
-                                       {% else  %}
-                                           <center class="my-5"><h5>
-                                           {{ filter_option|title }} :
-                                        Aucun produit n'as été trouvés 
-                                           </h5></center>
-                                       {% endif %}
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-3">
-                    <!-- templates/products.html -->
-                    <div class="card">
-                        <div class="card-header align-items-center d-flex">
-                            <h4 class="card-title mb-0 flex-grow-1">Categories</h4>
-                        </div><!-- end card header -->
-
-                        <div class="card-body">
-                            <div class="table-responsive table-card">
-                                <table class="table table-hover table-centered align-middle table-nowrap mb-0">
-                                    <tbody>
-                                        {% for category in categories_all %}
-                                        <tr>
-                                            <td>
-                                                <div class="d-flex align-items-center">
-                                                    <div>
-                                                        <h5 class="fs-14 my-1"><a class="text-reset">{{ category.title }}</a></h5>
-                                                        <span class="text-muted">{{ category.created_at|date:"d M Y" }}</span>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <span class="badge bg-light text-muted">{{category.category.count}} </span> <br>
-                                                <span class="text-muted">Products</span>
-                                            </td>
-
-                                        </tr>
-                                        {% endfor %}
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            
         </div>
         <!-- container-fluid -->
     </div>

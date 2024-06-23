@@ -145,8 +145,18 @@
               <button type="button" class="btn material-shadow-none" id="page-header-user-dropdown"
                 data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <span class="d-flex align-items-center">
+                  
+                  {% if request.user.image %}
+                  <div class="avatar-sm">
+                    <div class="avatar-title bg-light rounded-circle display-6 text-muted overflow-hidden">
+                        <img src="{{request.user.image.url}}" id="product-img" class="avatar-md h-auto w-200">
+                    </div>
+                </div>
+                  {% else %}
                   <i class="rounded-circle header-profile-user "
                     alt="Header Avatar" data-feather="user" ></i>
+                  {% endif %}
+          
                   <span class="text-start ms-xl-2">
                     <span class="d-none d-xl-inline-block ms-1 fw-medium user-name-text">
                       {{request.user}}</span>
@@ -247,8 +257,16 @@
         <button type="button" class="btn material-shadow-none" id="page-header-user-dropdown" data-bs-toggle="dropdown"
           aria-haspopup="true" aria-expanded="false">
           <span class="d-flex align-items-center gap-2">
-            <img class="rounded header-profile-user" src="{% static 'assets/images/users/avatar-1.jpg' %}"
-              alt="Header Avatar" />
+            {% if request.user.image %}
+            <div class="avatar-sm">
+              <div class="avatar-title bg-light rounded-circle display-6 text-muted overflow-hidden">
+                  <img src="{{request.user.image.url}}" id="product-img" class="avatar-md h-auto w-200">
+              </div>
+          </div>
+            {% else %}
+            <i class="rounded-circle header-profile-user "
+              alt="Header Avatar" data-feather="user" ></i>
+            {% endif %}
             <span class="text-start">
               <span class="d-block fw-medium sidebar-user-name-text">{{request.user}}</span>
           </span>

@@ -200,7 +200,14 @@
                                                                     </span>
                                                                 </td>
                                                                 <td data-column-id="stock" class="gridjs-td">
-                                                                    {{product.quantity}}
+                                                                   
+                                                                        <h5 class="fs-14 my-1 fw-normal" style="{% if product.quantity <= 10 %}color: red;{% endif %}"> {% if product.quantity <= 0 %} Out of stock {% else %} {{ product.quantity }}
+                                                                             {% endif %} {% if product.quantity <= 10 %} !{% endif %}</h5>
+                         <span class="text-muted" style="{% if product.stock < 10 %}color: red !important;{% endif %}">{% if product.quantity > 0 %}
+                            Stock
+                         {% endif %} </span>
+                         
+                                                                 
                                                                 </td>
                                                                 <td data-column-id="rating" class="gridjs-td">
                                                                     {{product.created_at |date:"d M Y"}}

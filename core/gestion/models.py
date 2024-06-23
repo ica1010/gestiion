@@ -25,7 +25,7 @@ class Product(models.Model):
     # short_description = models.CharField(max_length=100, default='')
     # keywords = models.CharField(max_length=100, default='')
 
-    image = models.ImageField(default='product_image/new-document.png',null = False, upload_to='product_image' )
+    image = models.ImageField(default="./new-document.png", null = False,blank= False, upload_to='product_image' )
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

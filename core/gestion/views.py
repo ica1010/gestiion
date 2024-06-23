@@ -66,7 +66,6 @@ def Add_article(request):
         category = request.POST['category']
         # short_description = request.POST['short-description']
         image = request.FILES.get('main-image')
-        images = request.FILES.getlist('image-files')
 
         category = Category.objects.get(
             title=category
@@ -76,11 +75,12 @@ def Add_article(request):
             category = category,
             quantity = stock,
             description = description,
-            # short_description =short_description,
-            image = image
         )
         if code :
             new_article.pid = code
+
+        if image :
+            new_article.image = image
 
         new_article.save()
         messages.success(request, 'the product was added successfully')
@@ -285,7 +285,6 @@ def Supply_view(request):
     start_date = request.GET.get('start-date')
     end_date = request.GET.get('end-date')
 
-    admin = False
     admin = is_admin(request.user)
     if admin :
         supplies = Supply.objects.all().order_by('-date')
@@ -302,7 +301,17 @@ def Supply_view(request):
 
 
     else :
-        supplies = Supply.objects.filter(user = request.user, date__gte=start_date).order_by('-date')
+        supplies = Supply.objects.filter(user = request.user).order_by('-date')
+        if start_date:
+            start_date = parse_date(start_date)
+            if start_date:
+                supplies = supplies.filter(date__gte=start_date)
+
+        if end_date:
+            end_date = parse_date(end_date)
+            if end_date:
+                supplies = supplies.filter(date__lte=end_date)
+                
     context = {
         'supplies':supplies,
         'products':products,
