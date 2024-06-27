@@ -29,6 +29,7 @@ def is_admin(user):
 def HomePage(request):
     admin = False
     suppliers = SupplierProfile.objects.all()
+    actions = Action.objects.all()
 
     admin = is_admin(request.user)
     if admin :
@@ -46,6 +47,7 @@ def HomePage(request):
     suppliers_count = suppliers.count()
 
     context={
+        'actions':actions,
         'products':products,
         'product_count':product_count,
         'deliveries_count':deliveries_count,
@@ -83,6 +85,10 @@ def Add_article(request):
             new_article.image = image
 
         new_article.save()
+        new_action = Action.objects.create(
+            user = request.user,
+            action = new_article    
+        )
         messages.success(request, 'the product was added successfully')
         return redirect('article_list')
 
@@ -137,9 +143,7 @@ def Edit_article(request, pid):
         title = request.POST['title']
         description = request.POST['description']
         stock = request.POST['stock']
-        keywords = request.POST['keywords']
         cat = request.POST['category']
-        short_description = request.POST['short-description']
         image = request.FILES.get('main-image')
 
         category = Category.objects.get(title=cat)
@@ -149,8 +153,7 @@ def Edit_article(request, pid):
         product.category = category
         product.quantity = int(stock)
         product.description = description
-        product.short_description =short_description
-        product.keywords = keywords
+        
         if image :
             product.image = image
         product.save()

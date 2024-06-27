@@ -140,6 +140,50 @@
               </div>
             </div>
           </div>
+
+          <div class="d-block modal" style="z-index: -9999;">
+            <div class="card-body card" id="pdfcontent">
+              <div class="table-responsive table-card mb-1">
+                <h1 class="p-3 text-center">Liste des Sorties  
+                {% if start_date %}
+                du {{ start_date|date:"d M Y"}} au {{ end_date|date:"d M Y" }}
+                {% endif %}</h1>
+                <table class="table align-middle" id="out">
+                    <thead class="table-light text-muted">
+                        <tr>
+                            <th>Code Sortie</th>
+                            <th>Fait par</th>
+                            <th>Produits livrés</th>
+                            <th>Service</th>
+                            <th>Bureau</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+                    <tbody class="list form-check-all">
+                        {% for delivery in deliveries %}
+                        <tr>
+                            <td>#{{ delivery.did }}</td>
+                            <td>{{ delivery.user }}</td>
+                            <td>
+                                <ul>
+                                    {% for item in deliveries_product %}
+                                    {% if item.delivery.did == delivery.did %}
+                                    <li>({{ item.product.pid }}) {{ item.product.title }} | Quantité: {{ item.quantity }}</li>
+                                    {% endif %}
+                                    {% endfor %}
+                                </ul>
+                            </td>
+                            <td>{{ delivery.service }}</td>
+                            <td>{{ delivery.post }}</td>
+                            <td>{{ delivery.date|date:"d M Y" }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+          </div>
+           </div>
+
         </div>
         <!--end col-->
       </div>
@@ -173,6 +217,11 @@
                   {% endfor %}
                 </select>
               </div>
+              <style>
+                .z{
+                  color: #ffffff36;
+                }
+              </style>
               <div class="col-4">
                 <label for="" class="form-label">Quantity</label>
                 <div class="d-flex p-0 m-0 flex-row gap-3">
@@ -192,7 +241,7 @@
               </div>
               <p class="m-2 p-0 stock-info" style="font-size: 12px;">
                 <span class="stock-quantity d-none"></span> 
-                <span class="text-dark">|</span> 
+                <span class="text-dark"></span> 
                 Quantités restante : <span class="remaining-quantity"></span>
               </p>
             </div>

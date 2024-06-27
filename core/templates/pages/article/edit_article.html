@@ -8,7 +8,8 @@
             <!-- start page title -->
             <div class="row">
                 <div class="col-12">
-                    <div class="page-title-box d-sm-flex align-items-center justify-content-between bg-galaxy-transparent">
+                    <div
+                        class="page-title-box d-sm-flex align-items-center justify-content-between bg-galaxy-transparent">
                         <h4 class="mb-sm-0">Edit Product</h4>
 
                         <div class="page-title-right">
@@ -23,236 +24,208 @@
             </div>
             <!-- end page title -->
 
-            <form id="createproduct-form" autocomplete="off" class="needs-validation" novalidate method="post" enctype="multipart/form-data" action="{% url 'edit_article' product.pid %}">
+            <form id="createproduct-form" autocomplete="off" class="needs-validation" novalidate method="post"
+                enctype="multipart/form-data" action="{% url 'edit_article' product.pid %}">
                 {% csrf_token %}
                 <div class="row">
-                    <div class="col-lg-8">
+                    <div class="col-md-3"></div>
+                    <div class="col-lg-6">
                         <div class="card">
                             <div class="card-body">
-                                <div class="mb-3">
-                                    <label class="form-label" for="product-title-input">Product code</label>
-                                    <input type="text" class="form-control" id="product-title-input" value="{{product.pid}}" disabled name="title" placeholder="Enter product title" required>
+                                <div class="row">
+                                    <div class="mb-3 col-md-6">
+                                        <label class="form-label" for="product-title-input">Product code</label>
+                                        <input type="text" class="form-control" id="product-title-input"
+                                            value="{{product.pid}}" disabled  name="code" placeholder="Enter product title" required >
+                                    </div>
+                                    <div class="mb-3 col-md-6">
+                                        <label class="form-label" for="product-title-input">Product Title</label>
+                                        <input type="hidden" class="form-control" id="formAction" name="formAction"
+                                            value="add">
+                                        <input type="text" class="form-control d-none" id="product-id-input">
+                                        <input type="text" class="form-control" id="product-title-input"
+                                            value="{{product.title}}" name="title" placeholder="Enter product title"
+                                            required>
+                                        <div class="invalid-feedback">Please Enter a product title.</div>
+                                    </div>
                                 </div>
-                                <div class="mb-3">
-                                    <label class="form-label" for="product-title-input">Product Title</label>
-                                    <input type="hidden" class="form-control" id="formAction" name="formAction" value="add">
-                                    <input type="text" class="form-control d-none" id="product-id-input">
-                                    <input type="text" class="form-control" id="product-title-input" value="{{product.title}}" name="title" placeholder="Enter product title" required>
-                                    <div class="invalid-feedback">Please Enter a product title.</div>
+                                <div class="">
+                                    <div class="">
+                                        <h5 class="card-title mb-0">Product Gallery</h5>
+                                    </div>
+                                    <div class="">
+                                        <div class="mb-4">
+                                            <div class="">
+                                                <div class="position-relative d-inline-block">
+                                                    <div class="position-absolute top-100 start-100 translate-middle">
+                                                        <label for="product-image-input" class="mb-0"
+                                                            data-bs-toggle="tooltip" data-bs-placement="right"
+                                                            title="Select Image">
+                                                            <div class="avatar-xs">
+                                                                <div
+                                                                    class="avatar-title bg-light border rounded-circle text-muted cursor-pointer">
+                                                                    <i class="ri-image-fill"></i>
+                                                                </div>
+                                                            </div>
+                                                        </label>
+                                                        <input class="form-control d-none" name="main-image"
+                                                            id="product-image-input" type="file"
+                                                            accept="image/png, image/gif, image/jpeg">
+                                                    </div>
+                                                    <div class="avatar-lg">
+                                                        <div class="avatar-title bg-light rounded display-4 text-muted">
+                                                            <img src="{{product.image.url}}" id="product-img"
+                                                                class="avatar-md h-auto">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div style="display: none;">
+                                            <h5 class="fs-14 mb-1">Product Gallery</h5>
+                                            <p class="text-muted">Add Product Gallery Images.</p>
+
+                                            <div class="dropzone">
+                                                <div class="fallback">
+                                                    <input name="image-files" multiple type="file"
+                                                        accept="image/png, image/gif, image/jpeg">
+                                                </div>
+                                                <center>
+                                                    <div class="dz-message needsclick">
+                                                        <div class="mb-3">
+                                                            <i class="display-4 text-muted ri-upload-cloud-2-fill"></i>
+                                                        </div>
+                                                        <h5>Drop files here or click to upload.</h5>
+                                                    </div>
+                                                </center>
+                                            </div>
+
+                                            <ul class="list-unstyled mb-0" id="dropzone-preview">
+                                                <li class="mt-2" id="dropzone-preview-list">
+                                                    <!-- This is used as the file preview template -->
+                                                    <div class="border rounded">
+                                                        <div class="d-flex p-2">
+                                                            <div class="flex-shrink-0 me-3">
+                                                                <div class="avatar-sm bg-light rounded">
+                                                                    <img data-dz-thumbnail
+                                                                        class="img-fluid rounded d-block" src="#"
+                                                                        alt="Product-Image" />
+                                                                </div>
+                                                            </div>
+                                                            <div class="flex-grow-1">
+                                                                <div class="pt-1">
+                                                                    <h5 class="fs-14 mb-1" data-dz-name>&nbsp;</h5>
+                                                                    <p class="fs-13 text-muted mb-0" data-dz-size></p>
+                                                                </div>
+                                                            </div>
+                                                            <div class="flex-shrink-0 ms-3">
+                                                                <button data-dz-remove
+                                                                    class="btn btn-sm btn-danger">Delete</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                            <!-- end dropzon-preview -->
+                                        </div>
+                                    </div>
                                 </div>
                                 <div>
                                     <label>Product Description</label>
-                                    <textarea id="ckeditor-classic" name="description" id="">{{product.description}} </textarea>
+                                    <textarea id="ckeditor-classic" name="description"
+                                        id="">{{product.description}} </textarea>
                                 </div>
                             </div>
+                          
                         </div>
-                        <!-- end card -->
-                        <div class="card">
-                            <div class="card-header">
-                                <h5 class="card-title mb-0">Product Short Description</h5>
-                            </div>
-                            <div class="card-body">
-                                <p class="text-muted mb-2">Add short description for product</p>
-                                <textarea class="form-control" style="height: 200px !important;" name="short-description" placeholder="Must enter minimum of a 100 characters" rows="3"> {{product.short_description}} </textarea>
-                            </div>
-                            <!-- end card body -->
-                        </div>
-                    
-                        <!-- end card -->
-
-                       
-                        <!-- end card -->
-                    </div>
-                    <!-- end col -->
-
-                    <div class="col-lg-4">
-                        <div class="card">
-                            <div class="card-header">
-                                <h5 class="card-title mb-0">Product Gallery</h5>
-                            </div>
-                            <div class="card-body">
-                                <div class="mb-4">
-                                    <div class="text-center">
-                                        <div class="position-relative d-inline-block">
-                                            <div class="position-absolute top-100 start-100 translate-middle">
-                                                <label for="product-image-input" class="mb-0" data-bs-toggle="tooltip" data-bs-placement="right" title="Select Image">
-                                                    <div class="avatar-xs">
-                                                        <div class="avatar-title bg-light border rounded-circle text-muted cursor-pointer">
-                                                            <i class="ri-image-fill"></i>
-                                                        </div>
-                                                    </div>
-                                                </label>
-                                                <input class="form-control d-none" name="main-image" id="product-image-input" type="file" accept="image/png, image/gif, image/jpeg">
-                                            </div>
-                                            <div class="avatar-lg">
-                                                <div class="avatar-title bg-light rounded display-4 text-muted">
-                                                    <img src="{{product.image.url}}" id="product-img" class="avatar-md h-auto">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div style="display: none;">
-                                    <h5 class="fs-14 mb-1">Product Gallery</h5>
-                                    <p class="text-muted">Add Product Gallery Images.</p>
-
-                                    <div class="dropzone" >
-                                        <div class="fallback">
-                                            <input name="image-files" multiple type="file" accept="image/png, image/gif, image/jpeg">
-                                        </div>
-                                       <center>
-                                        <div class="dz-message needsclick">
-                                            <div class="mb-3">
-                                                <i class="display-4 text-muted ri-upload-cloud-2-fill"></i>
-                                            </div>
-                                            <h5>Drop files here or click to upload.</h5>
-                                        </div>
-                                       </center>
-                                    </div>
-
-                                    <ul class="list-unstyled mb-0" id="dropzone-preview">
-                                        <li class="mt-2" id="dropzone-preview-list">
-                                            <!-- This is used as the file preview template -->
-                                            <div class="border rounded">
-                                                <div class="d-flex p-2">
-                                                    <div class="flex-shrink-0 me-3">
-                                                        <div class="avatar-sm bg-light rounded">
-                                                            <img data-dz-thumbnail class="img-fluid rounded d-block" src="#" alt="Product-Image" />
-                                                        </div>
-                                                    </div>
-                                                    <div class="flex-grow-1">
-                                                        <div class="pt-1">
-                                                            <h5 class="fs-14 mb-1" data-dz-name>&nbsp;</h5>
-                                                            <p class="fs-13 text-muted mb-0" data-dz-size></p>
-                                                        </div>
-                                                    </div>
-                                                    <div class="flex-shrink-0 ms-3">
-                                                        <button data-dz-remove class="btn btn-sm btn-danger">Delete</button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                    <!-- end dropzon-preview -->
-                                </div>
-                            </div>
-                        </div>
-                        
                         <div class="card">
                             <div class="card-header">
                                 <h5 class="card-title mb-0">Product Categories</h5>
                             </div>
                             <div class="card-body">
-                                <p class="text-muted mb-2"> <a href="#" data-bs-toggle="modal" data-bs-target="#exampleModalPopovers" class="float-end text-decoration-underline">Add
+                                <p class="text-muted mb-2"> <a href="#" data-bs-toggle="modal"
+                                        data-bs-target="#exampleModalPopovers"
+                                        class="float-end text-decoration-underline">Add
                                         New</a>Select product category</p>
-                                <select class="form-select" id="choices-category-input" name="category" data-choices data-choices-search-false>
-                                   {% for category in categories %}
-                                    <option value="{{category.title}}" {% if product.category == category %} selected {% endif %} >{{category.title}}</option>
-                                   {% endfor %}
+                                <select class="form-select" id="choices-category-input" name="category"
+                                    data-choices data-choices-search-false>
+                                    {% for category in categories %}
+                                    <option value="{{category.title}}" {% if product.category == category %}
+                                        selected {% endif %}>{{category.title}}</option>
+                                    {% endfor %}
                                 </select>
                             </div>
                             <!-- end card body -->
                         </div>
                         <div class="card">
                             <div class="card-header">
-                                <ul class="nav nav-tabs-custom card-header-tabs border-bottom-0" role="tablist">
-                                    <li class="nav-item">
-                                        <a class="nav-link active" data-bs-toggle="tab" href="#addproduct-general-info" role="tab">
-                                            Stock & keywords
-                                        </a>
-                                    </li>
-                                </ul>
+                                <h5 class="fs-14 mb-1">Product Quantity</h5>
                             </div>
                             <!-- end card header -->
                             <div class="card-body">
                                 <div class="tab-content">
                                     <div class="tab-pane active" id="addproduct-general-info" role="tabpanel">
-                                        <div class="row">
-                                            <div class="col-lg-12">
-                                                <div class="mb-3">
-                                                    <label class="form-label" for="meta-keywords-input">Keywords</label>
-                                                    <input type="text" class="form-control" name="keywords" value="{{product.keywords}}" placeholder="Enter meta keywords" id="meta-keywords-input">
-                                                </div>
-                                            </div>
-                                            <!-- end col -->
-                                        </div>
-                                        <!-- end row -->
-
-                                        <div class="row">
-                                            <div class="col-lg-12 col-sm-12">
-                                                <div class="mb-3">
-                                                    <label class="form-label" for="stocks-input">Stocks</label>
-                                                    <input type="number" name="stock" class="form-control" value="{{product.quantity}}" id="stocks-input" placeholder="Stocks" required>
+                                        <div class="row align-items-center">
+                                           
+                                            <div class="col-3 text-center justify-content-center">
+                                                <div class="my-0 mx-0">
+                                                    <input type="number" value={{product.quantity}}  name="stock" class="form-control text-center"
+                                                        id="stocks-input" placeholder="Stocks" required>
                                                     <div class="invalid-feedback">Please Enter a product stocks.</div>
                                                 </div>
                                             </div>
-                                        
-                                            <!-- end col -->
+                                            <div class="col-1 p-0 text-center justify-content-center">
+                                                <a class="btn rounded-circle border-dark bx bx-up-arrow-alt p-2 m'1" id="add" ></a>
+                                                <a class="btn rounded-circle border-dark bx bx-down-arrow-alt  p-2" id="reduce"></a>
+                                            </div>
                                         </div>
                                         <!-- end row -->
                                     </div>
                                     <!-- end tab-pane -->
 
-                                    <div class="tab-pane" id="addproduct-metadata" role="tabpanel">
-                                       
-                                    </div>
+
                                     <!-- end tab pane -->
                                 </div>
                                 <!-- end tab content -->
                             </div>
                             <!-- end card body -->
                         </div>
-                        <!-- end card -->
-
-                        <!-- end card -->
-                          <!-- 
-                        <div class="card">
-                             
-                            <div class="card-header">
-                                <h5 class="card-title mb-0">Product Tags</h5>
-                            </div>
-                            <div class="card-body">
-                                <div class="hstack gap-3 align-items-start">
-                                    <div class="flex-grow-1">
-                                        <input class="form-control"  data-choices data-choices-multiple-remove="true" placeholder="Enter tags" type="text" value="Cotton" />
-                                    </div>
-                                </div>
-                            </div>
-                          
-                        </div>
-                      end card -->
-
-                      
                         <div class="text-end mb-3">
                             <button type="submit" class="btn btn-success w-100">Submit</button>
                         </div>
-                        <!-- end card -->
-
                     </div>
-                    <!-- end col -->
+                    <div class="col-md-3"></div>
+
                 </div>
                 <!-- end row -->
-
+   
+             
             </form>
 
         </div>
         <!-- container-fluid -->
     </div>
     <!-- End Page-content -->
-
-    <footer class="footer">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-sm-6">
-                    <script>document.write(new Date().getFullYear())</script> © Velzon.
-                </div>
-                <div class="col-sm-6">
-                    <div class="text-sm-end d-none d-sm-block">
-                        Design & Develop by Themesbrand
-                    </div>
-                </div>
-            </div>
-        </div>
-    </footer>
 </div>
+
+<script>
+    let qttyinput = document.querySelector('#stocks-input')
+     $('#add').on('click', function () {
+          console.log('quantities :',+qttyinput.value)
+          qttyinput.value = +qttyinput.value + 1
+          console.log(qttyinput.value)
+  });
+  
+  $('#reduce').on('click', function () {
+      if (+qttyinput.value > 0) {
+          console.log('quantities :',+qttyinput.value)
+      qttyinput.value = +qttyinput.value - 1
+      console.log(qttyinput.value)
+      } else {
+          console.log('ecxeded')
+      }
+     
+  });
+  
+  </script>
 {% endblock %}
