@@ -91,11 +91,11 @@
             <form class="app-search d-none d-md-block" method="get" action="{% url 'search'  %}"  >
               <div class="position-relative">
                 <input type="text" class="form-control" placeholder="Search..." autocomplete="off" name="q"  id="search-options"
-                  value="" />
+                  value="hello" />
                 <span class="mdi mdi-magnify search-widget-icon"></span>
                 <span class="mdi mdi-close-circle search-widget-icon search-widget-icon-close d-none"
                   id="search-close-options"></span>
-              </div
+              </div>
             </form>
           </div>
 
@@ -108,14 +108,11 @@
               </button>
               <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end p-0"
                 aria-labelledby="page-header-search-dropdown">
-                <form class="p-3">
+                <form class="p-3" method="get" action="{% url 'search'  %}" >
                   <div class="form-group m-0">
                     <div class="input-group">
-                      <input type="text" class="form-control"  method="get" action="{% url 'search'  %}" name="q" placeholder="Search ..."
+                      <input type="text" class="form-control" name="q" placeholder="Search ..."
                         aria-label="Recipient's username" />
-                      <button class="btn btn-primary" type="submit">
-                        <i class="mdi mdi-magnify"></i>
-                      </button>
                     </div>
                   </div>
                 </form>
@@ -1558,14 +1555,17 @@
 
   <!-- Sweet Alerts js -->
   <script src="{% static 'assets/libs/sweetalert2/sweetalert2.min.js' %}"></script>
-<script>
-  $('#dwnldBtn').on('click', function () {
-    // Convertir le contenu du tableau en PDF
-    var doc = new jspdf.jsPDF('p', 'mm', 'a4');
-    var content = document.querySelector('#pdfcontent');
-    
-    html2canvas(content)
-        .then(canvas => {
+  <script>
+    $('#dwnldBtn').on('click', function () {
+        // Convert the content of the table to PDF
+        const { jsPDF } = window.jspdf;
+        var doc = new jsPDF('p', 'mm', 'a4');
+        var content = document.querySelector('#pdfcontent');
+        
+        // Temporarily make the content visible
+        content.style.display = 'block';
+
+        html2canvas(content).then(canvas => {
             var imgData = canvas.toDataURL('image/png');
             var imgWidth = 190;
             var pageHeight = 297;
@@ -1587,12 +1587,14 @@
             var filename = 'rapport_tables_multiples_' + timestamp + '.pdf';
 
             doc.save(filename);
-        })
-        .catch(error => {
-            console.error('Une erreur est survenue lors de la conversion en PDF :', error);
-        });
-});
 
+            // Hide the content again
+            content.style.display = 'none';
+        }).catch(error => {
+            console.error('An error occurred while converting to PDF:', error);
+            content.style.display = 'none';
+        });
+    });
 </script>
 </body>
 
