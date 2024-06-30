@@ -146,7 +146,7 @@
                   {% if request.user.image %}
                   <div class="avatar-sm">
                     <div class="avatar-title bg-light rounded-circle display-6 text-muted overflow-hidden">
-                        <img src="{{request.user.image.url}}" id="product-img" class="avatar-md h-auto w-200">
+                        <img src="{{request.user.image.url}}" class="avatar-md h-auto w-200">
                     </div>
                 </div>
                   {% else %}
@@ -257,7 +257,7 @@
             {% if request.user.image %}
             <div class="avatar-sm">
               <div class="avatar-title bg-light rounded-circle display-6 text-muted overflow-hidden">
-                  <img src="{{request.user.image.url}}" id="product-img" class="avatar-md h-auto w-200">
+                  <img src="{{request.user.image.url}}" class="avatar-md h-auto w-200">
               </div>
           </div>
             {% else %}

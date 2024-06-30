@@ -268,14 +268,15 @@ def Suppliers(request):
 
 def Del_supplier(request, id):
     try:
-        user = get_object_or_404(AdminProfile, user__id=id)
-        is_admin = True
+        person = get_object_or_404(AdminProfile, user__id=id)
     except:
-        user = get_object_or_404(SupplierProfile, user__id=id)
-        is_admin = False
+        person = get_object_or_404(SupplierProfile, user__id=id)
 
-    user.delete()
-    if is_admin:
+    if person.user.id == request.user.id :
+        pass
+    else:
+        person.delete()
+    if is_admin(User.objects.get(username = person)):
         messages.success(request, "L'administrateur a été supprimé avec succès.")
     else:
         messages.success(request, "Le fournisseur a été supprimé avec succès.")

@@ -1,6 +1,8 @@
 {% extends 'base/base.html' %}
 {% load static %}
 {% block 'content' %}
+<style>
+</style>
 <div class="main-content">
 
     <div class="page-content">
@@ -77,7 +79,11 @@
 
                                                 
                                                 <td class="id" style="display:none;"><a href="javascript:void(0);" class="fw-medium link-primary">#{{supplier.sid}} /a></td>
-                                                <td class="customer_name">{{supplier.user.username}} 
+                                                <td class="customer_name"><div class="avatar-sm">
+                                                    <div class="avatar-title bg-light rounded-circle display-1 text-muted overflow-hidden">
+                                                       <a href="{{supplier.user.image.url}}" target="_blank"> <img src="{{supplier.user.image.url}}" class="avatar-md h-auto w-200"></a>
+                                                    </div>
+                                                </div>{{supplier.user.username}} 
                                                     {% if supplier in admin %}
                                                     <span class="badge bg-success-subtle text-success text-uppercase" style="border: none;">
                                                         Admin 
