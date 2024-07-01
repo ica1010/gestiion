@@ -53,7 +53,7 @@
                       <i class="ri-add-line align-bottom me-1"></i> Add Delivery
                     </button>
                     <button type="button" class="btn btn-info" id="dwnldBtn">
-                      <i class="ri-file-download-line align-bottom me-1"></i> Import
+                      <i class="ri-file-download-line align-bottom me-1"></i> Importer la liste des sorties
                     </button>
                   </div>
                 </div>
@@ -108,12 +108,12 @@
                         <td>
                           <ul class="list-inline hstack gap-2 mb-0">
                             <li class="list-inline-item" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" aria-label="View" data-bs-original-title="View">
-                              <a href="{% url 'delivery' delivery.did %}" class="text-primary d-inline-block">
+                              <a href="{% url 'delivery' delivery.did %}" class="btn btn-soft-secondary btn-sm dropdown d-inline-block">
                                 <i class="ri-eye-fill fs-16"></i>
                               </a>
                             </li>
                             <li class="list-inline-item edit" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" aria-label="Edit" data-bs-original-title="Edit">
-                              <a href="#showModal" data-bs-toggle="modal" class="text-primary d-inline-block edit-item-btn">
+                              <a href="#showModal" data-bs-toggle="modal" class="btn btn-soft-secondary btn-sm dropdown d-inline-block edit-item-btn">
                                 <i class="ri-pencil-fill fs-16"></i>
                               </a>
                             </li>

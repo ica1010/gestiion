@@ -41,11 +41,7 @@
                                     <div class="d-flex gap-1 flex-wrap">
                                       <button type="button" class="btn btn-success add-btn" data-bs-toggle="modal" id="create-btn"
                                         data-bs-target="#showModal">
-                                        <i class="ri-add-line align-bottom me-1"></i> Ajouter un utilisations
-                                      </button>
-                                      <button type="button" class="btn btn-info">
-                                        <i class="ri-file-download-line align-bottom me-1"></i>
-                                        Import
+                                        <i class="ri-add-line align-bottom me-1"></i> Ajouter un nouveau utilisateur
                                       </button>
                                     </div>
                                   </div>
@@ -76,10 +72,9 @@
                                             {% for supplier in all_user %}
 
                                             <tr>
-
-                                                
-                                                <td class="id" style="display:none;"><a href="javascript:void(0);" class="fw-medium link-primary">#{{supplier.sid}} /a></td>
-                                                <td class="customer_name"><div class="avatar-sm">
+                                                <td class="customer_name">
+                                              <div class="d-flex align-items-center gap-3">
+                                                      <div class="avatar-sm">
                                                     <div class="avatar-title bg-light rounded-circle display-1 text-muted overflow-hidden">
                                                        <a href="{{supplier.user.image.url}}" target="_blank"> <img src="{{supplier.user.image.url}}" class="avatar-md h-auto w-200"></a>
                                                     </div>
@@ -92,6 +87,7 @@
                                                 {% if request.user == supplier.user %}
                                                     (Vous)
                                                 {% endif %}
+                                              </div>
                                                      </td>
                                                 <td class="email">{{supplier.user.email}}</td>
                                                 <td class="phone">{{supplier.user.phone}}</td>
@@ -108,103 +104,48 @@
                                                     </form>
                                                 </td>
                                                 <td>
-                                                    <ul class="list-inline hstack gap-2 mb-0" {% if request.user == supplier.user %}
-                                                    style="display: none;"
-                                                    {% endif %}>
+                                                    <ul class="list-inline hstack gap-2 mb-0"  style="{% if request.user == supplier.user %} display: none;  {% endif %}">
                                                         <li class="list-inline-item" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Remove">
-                                                            <a class="text-danger d-inline-block remove-item-btn" data-bs-toggle="modal" href="#deleteRecordModal">
+                                                            <a class="btn btn-soft-danger btn-sm dropdown d-inline-block remove-item-btn" data-bs-toggle="modal" href="#deleteRecordModal-{{supplier.user.id}}">
                                                                 <i class="ri-delete-bin-5-fill fs-16"></i>
                                                             </a>
                                                         </li>
                                                     </ul>
                                                 </td> 
-                                                <div class="modal fade" id="{{supplier.sid}}" tabindex="-1" aria-hidden="true">
-                                                    <div class="modal-dialog modal-dialog-centered">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header bg-light p-3">
-                                                                <h5 class="modal-title" id="exampleModalLabel"></h5>
-                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"></button>
-                                                            </div>
-                                                            <form class="tablelist-form" autocomplete="off">
-                                                                <div class="modal-body">
-                                                                    <input type="hidden" id="id-field" />
-                    
-                                                                    <div class="mb-3" id="modal-id" style="display: none;">
-                                                                        <label for="id-field1" class="form-label">ID</label>
-                                                                        <input type="text" id="id-field1" class="form-control" placeholder="ID" readonly />
-                                                                    </div>
-                    
-                                                                    <div class="mb-3">
-                                                                        <label for="customername-field" class="form-label">Customer Name</label>
-                                                                        <input type="text" id="customername-field" class="form-control" value="" required />
-                                                                        <div class="invalid-feedback">Please enter a customer name.</div>
-                                                                    </div>
-                    
-                                                                    <div class="mb-3">
-                                                                        <label for="email-field" class="form-label">Email</label>
-                                                                        <input type="email" id="email-field" class="form-control" placeholder="Enter email" required />
-                                                                        <div class="invalid-feedback">Please enter an email.</div>
-                                                                    </div>
-                    
-                                                                    <div class="mb-3">
-                                                                        <label for="phone-field" class="form-label">Phone</label>
-                                                                        <input type="text" id="phone-field" class="form-control" placeholder="Enter phone no." required />
-                                                                        <div class="invalid-feedback">Please enter a phone.</div>
-                                                                    </div>
-                    
-                                                                    <div class="mb-3">
-                                                                        <label for="date-field" class="form-label">Joining Date</label>
-                                                                        <input type="date" id="date-field" class="form-control" data-provider="flatpickr" data-date-format="d M, Y" required placeholder="Select date" />
-                                                                        <div class="invalid-feedback">Please select a date.</div>
-                                                                    </div>
-                    
-                                                                    <div>
-                                                                        <label for="status-field" class="form-label">Status</label>
-                                                                        <select class="form-control" data-choices data-choices-search-false name="status-field" id="status-field"  required>
-                                                                            <option value="">Status</option>
-                                                                            <option value="Active">Active</option>
-                                                                            <option value="Block">Block</option>
-                                                                        </select>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="modal-footer">
-                                                                    <div class="hstack gap-2 justify-content-end">
-                                                                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
-                                                                        <button type="submit" class="btn btn-success" id="add-btn">Add Customer</button>
-                                                                        <!-- <button type="button" class="btn btn-success" id="edit-btn">Update</button> -->
-                                                                    </div>
-                                                                </div>
-                                                            </form>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                        
                     
                                                 <!-- Modal -->
-                                                <div class="modal fade zoomIn" id="deleteRecordModal" tabindex="-1" aria-hidden="true">
-                                                    <div class="modal-dialog modal-dialog-centered">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <button type="button" class="btn-close" id="deleteRecord-close" data-bs-dismiss="modal" aria-label="Close" id="btn-close"></button>
-                                                            </div>
-                                                            <div class="modal-body">
-                                                                <div class="mt-2 text-center">
-                                                                    <lord-icon src="https://cdn.lordicon.com/gsqxdxog.json" trigger="loop" colors="primary:#f7b84b,secondary:#f06548" style="width:100px;height:100px"></lord-icon>
-                                                                    <div class="mt-4 pt-2 fs-15 mx-4 mx-sm-5">
-                                                                        <h4>Are you sure ?</h4>
-                                                                        <p class="text-muted mx-4 mb-0">Are you sure you want to remove this record ?</p>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="d-flex gap-2 justify-content-center mt-4 mb-2">
-                                                                    <button type="button" class="btn w-sm btn-light" data-bs-dismiss="modal">Close</button>
-                                                                    <a type="button" class="btn w-sm btn-danger" id="delete-record" href="{% url 'delete_user' supplier.user.id %}">Yes, Delete It!</a>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                              
                                                 <!--end modal -->
                                             </tr>
                                             {% endfor %}
+
+                                            
+                                            {% for supplier in all_user %}
+                                            <div class="modal fade zoomIn" id="deleteRecordModal-{{supplier.user.id}}" tabindex="-1" aria-hidden="true">
+                                                <div class="modal-dialog modal-dialog-centered">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <button type="button" class="btn-close" id="deleteRecord-close" data-bs-dismiss="modal" aria-label="Close" id="btn-close"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <div class="mt-2 text-center">
+                                                                <lord-icon src="https://cdn.lordicon.com/gsqxdxog.json" trigger="loop" colors="primary:#f7b84b,secondary:#f06548" style="width:100px;height:100px"></lord-icon>
+                                                                <div class="mt-4 pt-2 fs-15 mx-4 mx-sm-5">
+                                                                    <h4>Are you sure ?</h4>
+                                                                    <p class="text-muted mx-4 mb-0">Are you sure you want to remove this user ?</p>
+                                                                </div>
+                                                            </div>
+                                                            <div class="d-flex gap-2 justify-content-center mt-4 mb-2">
+                                                                <button type="button" class="btn w-sm btn-light" data-bs-dismiss="modal">Close</button>
+                                                                <a type="button" class="btn w-sm btn-danger" id="delete-record" href="{% url 'delete_user' supplier.user.id %}">Yes, Delete It!</a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            {% endfor %}
+                                                
 
                                         </tbody>
                                     </table>
