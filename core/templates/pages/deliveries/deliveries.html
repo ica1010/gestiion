@@ -204,8 +204,8 @@
         {% csrf_token %}
         <div class="modal-body">
           <div class="mb-3">
-            <div class="row my-4" id="prod-form">
-              <div class="col-8">
+            <div class="my-4" id="prod-form">
+              <div class="col-12 mb-3" >
                 <label for="payment-field" class="form-label">Article</label>
                 <select class="form-control product-select" name="product">
                   <option value="" selected disabled>Article</option>
@@ -221,7 +221,8 @@
                   color: #ffffff36;
                 }
               </style>
-              <div class="col-4">
+            <div class="row">
+              <div class="col-6">
                 <label for="" class="form-label">Quantity</label>
                 <div class="d-flex p-0 m-0 flex-row gap-3">
                   <div class="col py-1 text-center align-items-center justify-content-center">
@@ -238,11 +239,15 @@
                   </div>
                 </div>
               </div>
-              <p class="m-2 p-0 stock-info" style="font-size: 12px;">
-                <span class="stock-quantity d-none"></span> 
-                <span class="text-dark"></span> 
-                Quantités restante : <span class="remaining-quantity"></span>
-              </p>
+              <div class="col-6" style="    text-align: center;
+    align-content: center;">
+                <p class="m-2 p-0 stock-info" style="font-size: 12px;">
+                  <span class="stock-quantity d-none"></span> 
+                  <span class="text-dark"></span> 
+                  Quantités restante : <span class="remaining-quantity"></span>
+                </p>
+              </div>
+            </div>
             </div>
             <div id="form-box"></div>
             <div class="row">
@@ -258,7 +263,7 @@
             </div>
           </div>
           <div class="row gy-4 mb-3">
-            <div class="col-md-6">
+            <div class="col-md-12">
               <div>
                 <label for="service-field" class="form-label">Service</label>
                 <select id="id_service" class="form-control" name="service" required="">
@@ -271,7 +276,7 @@
                 </select>
               </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-12">
               <div>
                 <label for="post-field" class="form-label">Bureau</label>
                 <input type="text" name="post" class="form-control">
