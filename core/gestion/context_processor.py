@@ -32,7 +32,7 @@ def default(request):
     else:
         start_date = today
     
-    products_all = Product.objects.filter(created_at__gte=start_date)
+    products_all = Product.objects.all().order_by('quantity')
     product_all_count = products_all.count()
 
     categories_all = Category.objects.all()

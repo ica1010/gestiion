@@ -100,7 +100,7 @@ def Add_article(request):
 def Article_list(request):
     start_date = request.GET.get('start-date')
     end_date = request.GET.get('end-date')
-    products = Product.objects.all()
+    products = Product.objects.all().order_by('quantity')
     if start_date:
         start_date = parse_date(start_date)
         if start_date:
