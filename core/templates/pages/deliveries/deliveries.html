@@ -244,7 +244,9 @@
                 <p class="m-2 p-0 stock-info" style="font-size: 12px;">
                   <span class="stock-quantity d-none"></span> 
                   <span class="text-dark"></span> 
-                  Quantités restante : <span class="remaining-quantity"></span>
+                  Quantités restante :
+                  
+                <input type="text" value='' name="" id="" class="form-control remaining-quantity " readonly>
                 </p>
               </div>
             </div>
@@ -296,85 +298,67 @@
 </div>
 
 <script>
-  function dupliquerElement() {
-    var elementA = document.getElementById("prod-form");
-    var cloneElement = elementA.cloneNode(true);
-    var conteneurElements = document.getElementById("form-box");
-    conteneurElements.appendChild(cloneElement);
+function dupliquerElement() {
+  var elementA = document.getElementById("prod-form");
+  var cloneElement = elementA.cloneNode(true);
+  var conteneurElements = document.getElementById("form-box");
+  conteneurElements.appendChild(cloneElement);
 
-    // Ajout des écouteurs d'événements pour le nouvel élément dupliqué
-    attachEventListeners(cloneElement);
-  }
+  // Ajoute les écouteurs d'événements pour le nouvel élément dupliqué
+  attachEventListeners(cloneElement);
+}
 
-  function attachEventListeners(element) {
-    // Réduit la quantité
-    element.querySelector('.btn-reduce').addEventListener('click', function() {
-      var qttyinput = element.querySelector('.quantity-input');
-      if (+qttyinput.value > 0) {
-        qttyinput.value = +qttyinput.value - 1;
-        updateRemainingQuantity(element);
-      }
-    });
-
-    // Augmente la quantité
-    element.querySelector('.btn-add').addEventListener('click', function() {
-      var qttyinput = element.querySelector('.quantity-input');
-      qttyinput.value = +qttyinput.value + 1;
-      updateRemainingQuantity(element);
-    });
-
-    // Met à jour la quantité restante lorsque l'utilisateur modifie directement la quantité
-    element.querySelector('.quantity-input').addEventListener('input', function() {
-      updateRemainingQuantity(element);
-    });
-
-    // Met à jour les quantités lorsque l'utilisateur sélectionne un produit
-    element.querySelector('.product-select').addEventListener('change', function() {
-      var selectedOption = this.options[this.selectedIndex];
-      var stockQuantity = parseInt(selectedOption.getAttribute('data-quantity'));
-      element.querySelector('.stock-quantity').textContent = stockQuantity;
-      updateRemainingQuantity(element);
-    });
-  }
-
-  function updateRemainingQuantity(element) {
+function attachEventListeners(element) {
+  // Réduit la quantité
+  element.querySelector('.btn-reduce').addEventListener('click', function() {
     var qttyinput = element.querySelector('.quantity-input');
-    var stockQuantity = parseInt(element.querySelector('.stock-quantity').textContent);
-    var remainingQuantity = stockQuantity - parseInt(qttyinput.value);
-
-    element.querySelector('.remaining-quantity').textContent = remainingQuantity;
-    if (remainingQuantity <= 10) {
-      console.log(element.querySelector('.remaining-quantity').className = 'remaining-quantity text-danger')
+    if (+qttyinput.value > 0) {
+      qttyinput.value = +qttyinput.value - 1;
+      updateRemainingQuantity(element);
     }
-    else{
-      console.log(element.querySelector('.remaining-quantity').className = 'remaining-quantity')
-  
-    }
-  }
-
-  $(document).ready(function () {
-    $("#id_service").change(function () {
-      var service_id = $(this).val();
-      $("#id_post").empty();
-      if (service_id) {
-        $.ajax({
-          url: "/get_posts/",
-          data: { service_id: service_id },
-          dataType: "json",
-          success: function (data) {
-            $.each(data.posts, function (key, value) {
-              $("#id_post").append(
-                $("<option>").text(value).attr("value", key)
-              );
-            });
-          },
-        });
-      }
-    });
-
-    // Attache les écouteurs d'événements pour l'élément de formulaire initial
-    attachEventListeners(document.getElementById("prod-form"));
   });
-</script>
 
+  // Augmente la quantité
+  element.querySelector('.btn-add').addEventListener('click', function() {
+    var qttyinput = element.querySelector('.quantity-input');
+    qttyinput.value = +qttyinput.value + 1;
+    updateRemainingQuantity(element);
+  });
+
+  // Met à jour la quantité restante lorsque l'utilisateur modifie directement la quantité
+  element.querySelector('.quantity-input').addEventListener('input', function() {
+    updateRemainingQuantity(element);
+  });
+
+  // Met à jour les quantités lorsque l'utilisateur sélectionne un produit
+  element.querySelector('.product-select').addEventListener('change', function() {
+    var selectedOption = this.options[this.selectedIndex];
+    var stockQuantity = parseInt(selectedOption.getAttribute('data-quantity'));
+    element.querySelector('.stock-quantity').textContent = stockQuantity;
+    updateRemainingQuantity(element);
+  });
+}
+
+function updateRemainingQuantity(element) {
+  var qttyinput = element.querySelector('.quantity-input');
+  var stockQuantity = parseInt(element.querySelector('.stock-quantity').textContent) || 0;
+  var remainingQuantity = stockQuantity - parseInt(qttyinput.value);
+
+  var remainingQuantityElement = element.querySelector('.remaining-quantity');
+  remainingQuantityElement.value = remainingQuantity;  // Met à jour la valeur du champ input
+
+  if (remainingQuantity <= 10) {
+    remainingQuantityElement.classList.add('bg-danger');
+    remainingQuantityElement.classList.remove('text-dark');
+  } else {
+    remainingQuantityElement.classList.add('text-dark');
+    remainingQuantityElement.classList.remove('bg-danger');
+  }
+}
+
+// Attache les écouteurs d'événements pour l'élément de formulaire initial
+$(document).ready(function () {
+  attachEventListeners(document.getElementById("prod-form"));
+});
+</script>
 {% endblock %}
