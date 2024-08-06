@@ -73,6 +73,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'whitenoise.middleware.WhiteNoiseMiddleware',
             ],
         },
     },
@@ -97,7 +98,7 @@ else :
     # Replace the SQLite DATABASES configuration with PostgreSQL:
     DATABASES = {
     
-    'default': dj_database_url.parse('postgresql://event_3uva_user:SU5H4zaF4KQJNwuNq53wTxPOOG8vVXyu@dpg-cqcc3suehbks738crrvg-a/event_3uva')
+    'default': dj_database_url.parse('postgresql://post_z1ka_user:Ki9yKYZtVmcqhaJXedERLoC1zqYZBNne@dpg-cq8ec2ks1f4s73cjth00-a/post_z1ka')
 }
 
 # Password validation
@@ -142,6 +143,15 @@ STATICFILES_DIRS = [
 MEDIA_URL='/media/'
 MEDIA_ROOT = BASE_DIR /'media'
 
+
+
+# This production code might break development mode, so we check whether we're in DEBUG mode
+if not DEBUG:
+    # Tell Django to copy static assets into a path called `staticfiles` (this is specific to Render)
+    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+    # Enable the WhiteNoise storage backend, which compresses static files to reduce disk use
+    # and renames the files with unique names for each version to support long-term caching
+    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
