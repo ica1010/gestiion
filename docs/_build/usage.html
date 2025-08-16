@@ -1,0 +1,250 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Guide d’utilisation &mdash; Gestiion 1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=f2a433a1"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="API Reference" href="api.html" />
+    <link rel="prev" title="Installation" href="installation.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Gestiion
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contenu :</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#prerequis">Prérequis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#installation-des-dependances">Installation des dépendances</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#configuration">Configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Guide d’utilisation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#tableau-de-bord">Tableau de bord</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#navigation">Navigation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#gestion-des-clients">Gestion des clients</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#gestion-des-projets">Gestion des projets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#facturation">Facturation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#rapports">Rapports</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api.html#base-url">Base URL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#authentication">Authentication</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#endpoints">Endpoints</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#clients">Clients</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#projects">Projects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#time-entries">Time Entries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#invoices">Invoices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#error-responses">Error Responses</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="development.html">Guide de développement</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="development.html#environnement-de-developpement">Environnement de développement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="development.html#structure-du-projet">Structure du projet</a></li>
+<li class="toctree-l2"><a class="reference internal" href="development.html#tests">Tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="development.html#bonnes-pratiques">Bonnes pratiques</a></li>
+<li class="toctree-l2"><a class="reference internal" href="development.html#deploiement">Déploiement</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contribuer au projet</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#comment-contribuer">Comment contribuer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#bonnes-pratiques-de-codage">Bonnes pratiques de codage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#environnement-de-developpement">Environnement de développement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#questions">Questions ?</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Référence API :</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">core</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="manage.html">manage module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="manage.html#manage.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Gestiion</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Guide d’utilisation</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/usage.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="guide-d-utilisation">
+<h1>Guide d’utilisation<a class="headerlink" href="#guide-d-utilisation" title="Link to this heading"></a></h1>
+<p>Ce guide vous explique comment utiliser l’application Gestiion.</p>
+<section id="tableau-de-bord">
+<h2>Tableau de bord<a class="headerlink" href="#tableau-de-bord" title="Link to this heading"></a></h2>
+<p>Le tableau de bord est la page principale de l’application après la connexion. Il affiche :</p>
+<ul class="simple">
+<li><p>Un aperçu des statistiques clés</p></li>
+<li><p>Les dernières activités</p></li>
+<li><p>Les notifications importantes</p></li>
+</ul>
+</section>
+<section id="navigation">
+<h2>Navigation<a class="headerlink" href="#navigation" title="Link to this heading"></a></h2>
+<p>L’application dispose d’une barre de navigation latérale avec les sections suivantes :</p>
+<ul class="simple">
+<li><p><strong>Tableau de bord</strong> : Vue d’ensemble de l’application</p></li>
+<li><p><strong>Clients</strong> : Gestion des clients</p></li>
+<li><p><strong>Projets</strong> : Suivi des projets</p></li>
+<li><p><strong>Facturation</strong> : Gestion des factures et paiements</p></li>
+<li><p><strong>Rapports</strong> : Génération de rapports</p></li>
+</ul>
+</section>
+<section id="gestion-des-clients">
+<h2>Gestion des clients<a class="headerlink" href="#gestion-des-clients" title="Link to this heading"></a></h2>
+<p>### Ajouter un client</p>
+<ol class="arabic simple">
+<li><p>Cliquez sur “Clients” dans la barre de navigation</p></li>
+<li><p>Cliquez sur le bouton “Nouveau client”</p></li>
+<li><p>Remplissez le formulaire avec les informations du client</p></li>
+<li><p>Cliquez sur “Enregistrer”</p></li>
+</ol>
+<p>### Modifier un client</p>
+<ol class="arabic simple">
+<li><p>Recherchez le client dans la liste</p></li>
+<li><p>Cliquez sur l’icône de modification (crayon)</p></li>
+<li><p>Modifiez les informations nécessaires</p></li>
+<li><p>Cliquez sur “Enregistrer”</p></li>
+</ol>
+</section>
+<section id="gestion-des-projets">
+<h2>Gestion des projets<a class="headerlink" href="#gestion-des-projets" title="Link to this heading"></a></h2>
+<p>### Créer un projet</p>
+<ol class="arabic simple">
+<li><p>Allez dans la section “Projets”</p></li>
+<li><p>Cliquez sur “Nouveau projet”</p></li>
+<li><p>Sélectionnez le client</p></li>
+<li><p>Remplissez les détails du projet</p></li>
+<li><p>Cliquez sur “Créer”</p></li>
+</ol>
+<p>### Suivi du temps</p>
+<ol class="arabic simple">
+<li><p>Dans la vue du projet, cliquez sur “Ajouter du temps”</p></li>
+<li><p>Sélectionnez la tâche ou créez-en une nouvelle</p></li>
+<li><p>Entrez la durée et une description</p></li>
+<li><p>Cliquez sur “Enregistrer”</p></li>
+</ol>
+</section>
+<section id="facturation">
+<h2>Facturation<a class="headerlink" href="#facturation" title="Link to this heading"></a></h2>
+<p>### Créer une facture</p>
+<ol class="arabic simple">
+<li><p>Allez dans la section “Facturation”</p></li>
+<li><p>Cliquez sur “Nouvelle facture”</p></li>
+<li><p>Sélectionnez le client et le projet</p></li>
+<li><p>Ajoutez les éléments facturables</p></li>
+<li><p>Cliquez sur “Générer la facture”</p></li>
+</ol>
+<p>### Envoyer une facture</p>
+<ol class="arabic simple">
+<li><p>Dans la liste des factures, trouvez la facture</p></li>
+<li><p>Cliquez sur l’icône d’envoi (enveloppe)</p></li>
+<li><p>Vérifiez l’adresse email et le message</p></li>
+<li><p>Cliquez sur “Envoyer”</p></li>
+</ol>
+</section>
+<section id="rapports">
+<h2>Rapports<a class="headerlink" href="#rapports" title="Link to this heading"></a></h2>
+<p>### Générer un rapport</p>
+<ol class="arabic simple">
+<li><p>Allez dans la section “Rapports”</p></li>
+<li><p>Sélectionnez le type de rapport</p></li>
+<li><p>Définissez la période</p></li>
+<li><p>Appliquez les filtres nécessaires</p></li>
+<li><p>Cliquez sur “Générer”</p></li>
+</ol>
+<p>### Exporter un rapport</p>
+<ol class="arabic simple">
+<li><p>Une fois le rapport généré, cliquez sur “Exporter”</p></li>
+<li><p>Choisissez le format (PDF, Excel, CSV)</p></li>
+<li><p>Le téléchargement commencera automatiquement</p></li>
+</ol>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="installation.html" class="btn btn-neutral float-left" title="Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="api.html" class="btn btn-neutral float-right" title="API Reference" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Votre Nom.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
